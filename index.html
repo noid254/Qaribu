@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO Meta Tags -->
+    <title>Skill - Your Borderless Currency</title>
+    <meta name="description" content="Your gateway to local events and services. Discover events, book tickets, manage digital receipts for your assets, and connect with your community." />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://nikosoko.app/" />
+    <meta property="og:title" content="Skill - Your Borderless Currency" />
+    <meta property="og:description" content="Your gateway to local events and services. Discover events, book tickets, manage digital receipts for your assets, and connect with your community." />
+    <meta property="og:image" content="https://picsum.photos/seed/nikosoko-og/1200/630" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://nikosoko.app/" />
+    <meta property="twitter:title" content="Skill - Your Borderless Currency" />
+    <meta property="twitter:description" content="Your gateway to local events and services. Discover events, book tickets, manage digital receipts for your assets, and connect with your community." />
+    <meta property="twitter:image" content="https://picsum.photos/seed/nikosoko-og/1200/630" />
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#1A2B48" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/vite.svg"> <!-- Placeholder icon -->
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Poppins', 'sans-serif'],
+              serif: ['Playfair Display', 'serif'],
+            },
+            colors: {
+              'brand-navy': '#1A2B48',
+              'brand-gold': '#F59E0B',
+              'icon-orange': '#D97706',
+              'icon-lime': '#65A30D',
+              'icon-blue': '#2563EB',
+              'icon-purple': '#7C3AED',
+            },
+          },
+        },
+      }
+    </script>
+    <style>
+      html, body {
+        overflow-x: hidden;
+      }
+      body {
+        background-color: #F9FAFB; /* bg-gray-50 */
+        /* Hide scrollbar for IE, Edge and Firefox */
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      html::-webkit-scrollbar,
+      body::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+      }
+      /* Custom Animations & Transitions for UI Polish */
+      @keyframes fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes slide-in-up {
+        from { opacity: 0; transform: translateY(16px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fade-in {
+        animation: fade-in 0.5s ease-out forwards;
+      }
+      .animate-slide-in-up {
+        animation: slide-in-up 0.6s ease-out forwards;
+      }
+      /* Smooth transitions for interactive elements */
+      button, a, [role="button"], input, select, textarea, .cursor-pointer {
+        transition: all 0.2s ease-in-out;
+      }
+      button:active, .active-scale:active {
+        transform: scale(0.96);
+      }
+    </style>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.26.0"
+  }
+}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+  <body class="bg-gray-50 font-sans">
+    <div id="root"></div>
+    <script type="text/babel" data-presets="react,typescript" data-type="module" src="/index.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').then(registration => {
+            console.log('SW registered: ', registration);
+          }).catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

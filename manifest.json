@@ -1,0 +1,10 @@
+{
+  "short_name": "Niko Soko",
+  "name": "Niko Soko - Service Finder",
+  "description": "A minimalistic app to find and connect with essential service providers near you. Browse services, view profiles, and list your own services with an easy-to-use interface.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F9FAFB",
+  "theme_color": "#1F2937"
+}
