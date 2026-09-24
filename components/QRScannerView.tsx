@@ -56,7 +56,7 @@ const QRScannerView: React.FC<QRScannerViewProps> = ({ onScanSuccess, onBack }) 
                      <div className="absolute inset-0 opacity-30 bg-[url('https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=600')] bg-cover bg-center animate-pulse"></div>
                      
                      {/* Scanning Overlay */}
-                     <div className="relative w-64 h-64 border-2 border-brand-gold rounded-lg shadow-[0_0_0_9999px_rgba(0,0,0,0.7)] flex items-center justify-center">
+                     <div className="relative w-64 h-64 border-2 border-brand-gold rounded-Nonecontrol shadow-[0_0_0_9999px_rgba(0,0,0,0.7)] flex items-center justify-center">
                         <div className="absolute inset-0 border-t-4 border-brand-gold animate-[scan_2s_ease-in-out_infinite]"></div>
                         <div className="w-60 h-60 border border-white/20 rounded"></div>
                      </div>
@@ -74,54 +74,54 @@ const QRScannerView: React.FC<QRScannerViewProps> = ({ onScanSuccess, onBack }) 
                 </div>
 
                 <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col items-center z-10 bg-gradient-to-t from-black to-transparent space-y-4">
-                    <p className="text-white text-center text-xs opacity-70 mb-2">
+                    <p className="text-white text-center text-caption opacity-70 mb-2">
                         Developer Mode: Simulate Scans
                     </p>
                     
                     {/* Simulation Buttons for Testing */}
                     <div className="w-full space-y-3 max-h-64 overflow-y-auto">
-                        <div className="bg-gray-800/50 p-3 rounded-xl border border-gray-700/50 backdrop-blur-sm">
+                        <div className="bg-gray-800/50 p-3 rounded-Nonecontrol border border-gray-700/50 backdrop-blur-sm">
                             <p className="text-brand-gold text-[10px] font-bold uppercase mb-2 text-center tracking-wider">Setup Roles (Master QRs)</p>
                             <div className="grid grid-cols-3 gap-2">
                                 <button 
                                     onClick={handleSimulateMasterTenantScan}
-                                    className="bg-purple-600/80 text-white text-[10px] font-bold py-3 rounded-lg hover:bg-purple-700 backdrop-blur-md border border-purple-400/50"
+                                    className="bg-purple-600/80 text-white text-[10px] font-bold py-3 rounded-Nonecontrol hover:bg-purple-700 backdrop-blur-md border border-purple-400/50"
                                 >
                                     Tenant Key
                                 </button>
                                 <button 
                                     onClick={handleSimulateMasterGatemanScan}
-                                    className="bg-indigo-600/80 text-white text-[10px] font-bold py-3 rounded-lg hover:bg-indigo-700 backdrop-blur-md border border-indigo-400/50"
+                                    className="bg-indigo-600/80 text-white text-[10px] font-bold py-3 rounded-Nonecontrol hover:bg-indigo-700 backdrop-blur-md border border-indigo-400/50"
                                 >
                                     Gateman Key
                                 </button>
                                 <button 
                                     onClick={handleSimulateCoHostScan}
-                                    className="bg-pink-600/80 text-white text-[10px] font-bold py-3 rounded-lg hover:bg-pink-700 backdrop-blur-md border border-pink-400/50"
+                                    className="bg-pink-600/80 text-white text-[10px] font-bold py-3 rounded-Nonecontrol hover:bg-pink-700 backdrop-blur-md border border-pink-400/50"
                                 >
                                     Co-Host Key
                                 </button>
                             </div>
                         </div>
                         
-                        <div className="bg-gray-800/50 p-3 rounded-xl border border-gray-700/50 backdrop-blur-sm">
+                        <div className="bg-gray-800/50 p-3 rounded-Nonecontrol border border-gray-700/50 backdrop-blur-sm">
                             <p className="text-brand-gold text-[10px] font-bold uppercase mb-2 text-center tracking-wider">Access & Validation</p>
                             <div className="grid grid-cols-3 gap-2">
                                 <button 
                                     onClick={handleSimulatePremiseScan}
-                                    className="bg-white/10 text-white text-[10px] font-bold py-3 rounded-lg hover:bg-white/20 backdrop-blur-md border border-white/10"
+                                    className="bg-white/10 text-white text-[10px] font-bold py-3 rounded-Nonecontrol hover:bg-white/20 backdrop-blur-md border border-white/10"
                                 >
                                     Premise QR
                                 </button>
                                 <button 
                                     onClick={handleSimulateVisitorPass}
-                                    className="bg-success/80 text-white text-[10px] font-bold py-3 rounded-lg hover:bg-success-strong backdrop-blur-md border border-green-400/50"
+                                    className="bg-success/80 text-white text-[10px] font-bold py-3 rounded-Nonecontrol hover:bg-success-strong backdrop-blur-md border border-green-400/50"
                                 >
                                     Visitor Pass
                                 </button>
                                 <button 
                                     onClick={handleSimulateUniversalID}
-                                    className="bg-info/80 text-white text-[10px] font-bold py-3 rounded-lg hover:bg-info-strong backdrop-blur-md border border-blue-400/50"
+                                    className="bg-info/80 text-white text-[10px] font-bold py-3 rounded-Nonecontrol hover:bg-info-strong backdrop-blur-md border border-blue-400/50"
                                 >
                                     Universal ID
                                 </button>

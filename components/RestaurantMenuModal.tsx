@@ -1,6 +1,7 @@
 
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import type { ServiceProvider, MenuItem, MenuBundle, RestaurantEvent } from '../types';
+import { BackIcon, ShareIcon, TrashIcon, WhatsAppIcon as SharedWhatsAppIcon, ClockIcon as SharedClockIcon } from './Icons';
 
 interface RestaurantMenuModalProps {
     provider: ServiceProvider;
@@ -16,13 +17,12 @@ interface CartItem {
     relatedItems?: MenuItem[]; // Upsells for regular items
 }
 
-const BackIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>;
 const MinusIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" /></svg>;
 const PlusIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>;
-const ClockIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
-const TrashIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>;
-const WhatsAppIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99 0-3.903-.52-5.586-1.456l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 4.315 1.731 6.086l.474 1.039-1.04 3.833 3.855-1.017z" /></svg>;
-const ShareIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6.002l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.368a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" /></svg>;
+const ClockIcon = () => <SharedClockIcon className="h-3 w-3" />;
+
+const WhatsAppIcon = () => <SharedWhatsAppIcon className="h-4 w-4" />;
+
 const CloseIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>;
 
 // --- UI Components ---
@@ -39,7 +39,7 @@ const StoryRing: React.FC<{ label: string, isActive: boolean, image: string, onC
 );
 
 const EventBanner: React.FC<{ event: RestaurantEvent, onReserve: (e: RestaurantEvent) => void, isOwner?: boolean, onDelete?: (id: string) => void }> = ({ event, onReserve, isOwner, onDelete }) => (
-    <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-lg overflow-hidden relative group flex-shrink-0 border border-line transform transition hover:-translate-y-1">
+    <div className="w-full max-w-md mx-auto bg-white rounded-Nonecard shadow-lg overflow-hidden relative group flex-shrink-0 border border-line transform transition hover:-translate-y-1">
         <div className="relative h-56">
             <img src={event.imageUrl} alt={event.title} className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
@@ -62,13 +62,13 @@ const EventBanner: React.FC<{ event: RestaurantEvent, onReserve: (e: RestaurantE
                 <div className="flex justify-between items-end gap-3">
                     <div className="flex-1">
                          <h3 className="text-2xl font-bold font-serif leading-none mb-2 shadow-black drop-shadow-md">{event.title}</h3>
-                         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium opacity-90">
+                         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-caption font-medium opacity-90">
                             <div className="flex items-center gap-1"><ClockIcon /> {event.startTime} - {event.endTime}</div>
                             <div className="w-1 h-1 bg-white/50 rounded-full"></div>
                             <div>{new Date(event.date).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric'})}</div>
                          </div>
                     </div>
-                    <button onClick={() => onReserve(event)} className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold text-xs px-4 py-3 rounded-xl shadow-lg active:scale-95 transition-all flex items-center gap-2 flex-shrink-0">
+                    <button onClick={() => onReserve(event)} className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold text-caption px-4 py-3 rounded-Nonecard shadow-lg active:scale-95 transition-all flex items-center gap-2 flex-shrink-0">
                         <WhatsAppIcon />
                         <span>Reserve</span>
                     </button>
@@ -89,13 +89,13 @@ const InfiniteSlider: React.FC<{ items: MenuItem[], onSelect: (item: MenuItem) =
                     <div 
                         key={`${item.id}-${index}`} 
                         onClick={() => onSelect(item)}
-                        className="w-48 h-40 bg-white rounded-2xl shadow-md flex-shrink-0 overflow-hidden relative cursor-pointer group/card hover:shadow-lg transition-all"
+                        className="w-48 h-40 bg-white rounded-Nonecard shadow-md flex-shrink-0 overflow-hidden relative cursor-pointer group/card hover:shadow-lg transition-all"
                     >
                         <img src={item.images[0]} alt={item.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent p-3 flex flex-col justify-end">
                             <p className="text-brand-gold font-bold text-[10px] uppercase tracking-wider mb-0.5">Top Pick</p>
-                            <h4 className="text-white font-bold text-sm leading-tight line-clamp-2">{item.name}</h4>
-                            <p className="text-white/90 text-xs font-medium mt-1">Ksh {item.price}</p>
+                            <h4 className="text-white font-bold text-body leading-tight line-clamp-2">{item.name}</h4>
+                            <p className="text-white/90 text-caption font-medium mt-1">Ksh {item.price}</p>
                         </div>
                     </div>
                 ))}
@@ -114,13 +114,13 @@ const InfiniteSlider: React.FC<{ items: MenuItem[], onSelect: (item: MenuItem) =
 };
 
 const BundleCard: React.FC<{ bundle: MenuBundle, onAdd: () => void, onClick: () => void }> = ({ bundle, onAdd, onClick }) => (
-    <div onClick={onClick} className="w-72 flex-shrink-0 bg-white rounded-2xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] overflow-hidden border border-line relative group hover:shadow-lg transition-all cursor-pointer">
+    <div onClick={onClick} className="w-72 flex-shrink-0 bg-white rounded-Nonecard shadow-[0_4px_15px_rgba(0,0,0,0.05)] overflow-hidden border border-line relative group hover:shadow-lg transition-all cursor-pointer">
         <div className="h-44 relative overflow-hidden">
             <img src={bundle.imageUrl} alt={bundle.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-             <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-brand-navy text-[10px] font-bold px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm">
+             <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-brand-navy text-[10px] font-bold px-2 py-1 rounded-Nonecontrol flex items-center gap-1 shadow-sm">
                 <ClockIcon /> {bundle.availableTime}
             </div>
-            <div className="absolute bottom-3 right-3 bg-brand-navy text-white text-xs font-bold px-2.5 py-1 rounded-lg shadow-lg">
+            <div className="absolute bottom-3 right-3 bg-brand-navy text-white text-caption font-bold px-2.5 py-1 rounded-Nonecontrol shadow-lg">
                 -{Math.round(((bundle.originalPrice - bundle.price) / bundle.originalPrice) * 100)}% OFF
             </div>
         </div>
@@ -128,11 +128,11 @@ const BundleCard: React.FC<{ bundle: MenuBundle, onAdd: () => void, onClick: () 
             <div className="flex justify-between items-start mb-1">
                 <h3 className="font-bold text-ink text-lg font-serif leading-tight">{bundle.title}</h3>
             </div>
-            <p className="text-xs text-ink-soft line-clamp-2 mb-3">{bundle.description}</p>
+            <p className="text-caption text-ink-soft line-clamp-2 mb-3">{bundle.description}</p>
             
             <div className="flex flex-wrap gap-1.5 mb-4">
                 {bundle.items.slice(0, 3).map((i, idx) => (
-                    <span key={idx} className="text-[10px] bg-surface-sunken text-ink-soft px-2 py-1 rounded-md font-medium">{i}</span>
+                    <span key={idx} className="text-[10px] bg-surface-sunken text-ink-soft px-2 py-1 rounded-Nonecontrol font-medium">{i}</span>
                 ))}
                 {bundle.items.length > 3 && <span className="text-[10px] text-ink-faint px-1 py-1">+{bundle.items.length - 3} more</span>}
             </div>
@@ -151,8 +151,8 @@ const BundleCard: React.FC<{ bundle: MenuBundle, onAdd: () => void, onClick: () 
 );
 
 const MenuItemCard: React.FC<{ item: MenuItem, onAdd: () => void, onClick: () => void }> = ({ item, onAdd, onClick }) => (
-    <div onClick={onClick} className="flex gap-4 bg-white p-3 rounded-2xl shadow-sm border border-line mb-3 hover:shadow-md transition-all cursor-pointer">
-        <div className="w-28 h-28 rounded-xl overflow-hidden bg-surface-sunken flex-shrink-0 relative">
+    <div onClick={onClick} className="flex gap-4 bg-white p-3 rounded-Nonecard shadow-sm border border-line mb-3 hover:shadow-md transition-all cursor-pointer">
+        <div className="w-28 h-28 rounded-Nonecontrol overflow-hidden bg-surface-sunken flex-shrink-0 relative">
              <img src={item.images[0]} alt={item.name} className="w-full h-full object-cover" />
              {item.isVegetarian && <div className="absolute top-1 left-1 bg-success w-2 h-2 rounded-full shadow-sm ring-1 ring-white" title="Vegetarian"></div>}
              {item.isSpicy && <div className="absolute top-1 left-1 bg-danger w-2 h-2 rounded-full shadow-sm ring-1 ring-white" title="Spicy"></div>}
@@ -160,11 +160,11 @@ const MenuItemCard: React.FC<{ item: MenuItem, onAdd: () => void, onClick: () =>
         <div className="flex flex-col flex-grow justify-between py-1">
             <div>
                 <h4 className="font-bold text-ink font-serif text-lg leading-tight mb-1">{item.name}</h4>
-                <p className="text-xs text-ink-soft line-clamp-2 leading-relaxed">{item.description}</p>
+                <p className="text-caption text-ink-soft line-clamp-2 leading-relaxed">{item.description}</p>
             </div>
             <div className="flex justify-between items-end">
                 <span className="font-bold text-brand-navy text-base">Ksh {item.price}</span>
-                <button onClick={(e) => { e.stopPropagation(); onAdd(); }} className="text-xs font-bold text-brand-navy bg-brand-gold/20 border border-brand-gold/30 px-4 py-1.5 rounded-full uppercase hover:bg-brand-gold transition active:scale-95">
+                <button onClick={(e) => { e.stopPropagation(); onAdd(); }} className="text-caption font-bold text-brand-navy bg-brand-gold/20 border border-brand-gold/30 px-4 py-1.5 rounded-full uppercase hover:bg-brand-gold transition active:scale-95">
                     Add
                 </button>
             </div>
@@ -186,23 +186,23 @@ const AddEventModal: React.FC<{ onClose: () => void, onSave: (event: Omit<Restau
 
     return (
         <div className="fixed inset-0 bg-black/70 z-[60] flex items-center justify-center p-4 backdrop-blur-sm" onClick={onClose}>
-            <div className="bg-white rounded-2xl w-full max-w-md p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="bg-white rounded-Nonecard w-full max-w-md p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
                 <h2 className="text-xl font-bold mb-4 text-brand-navy">Create New Event</h2>
                 <form onSubmit={handleSubmit} className="space-y-3 max-h-[70vh] overflow-y-auto pr-2 no-scrollbar">
-                    <input placeholder="Event Title" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-brand-gold outline-none" required />
-                    <textarea placeholder="Description" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-brand-gold outline-none" />
-                    <input placeholder="Image URL" value={formData.imageUrl} onChange={e => setFormData({...formData, imageUrl: e.target.value})} className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-brand-gold outline-none" required />
+                    <input placeholder="Event Title" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full p-3 border rounded-Nonecontrol focus:ring-2 focus:ring-brand-gold outline-none" required />
+                    <textarea placeholder="Description" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full p-3 border rounded-Nonecontrol focus:ring-2 focus:ring-brand-gold outline-none" />
+                    <input placeholder="Image URL" value={formData.imageUrl} onChange={e => setFormData({...formData, imageUrl: e.target.value})} className="w-full p-3 border rounded-Nonecontrol focus:ring-2 focus:ring-brand-gold outline-none" required />
                     <div className="grid grid-cols-2 gap-3">
-                        <input type="date" value={formData.date} onChange={e => setFormData({...formData, date: e.target.value})} className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-brand-gold outline-none" required />
-                        <input type="number" placeholder="Price (Ksh)" value={formData.price || ''} onChange={e => setFormData({...formData, price: parseFloat(e.target.value)})} className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-brand-gold outline-none" required />
+                        <input type="date" value={formData.date} onChange={e => setFormData({...formData, date: e.target.value})} className="w-full p-3 border rounded-Nonecontrol focus:ring-2 focus:ring-brand-gold outline-none" required />
+                        <input type="number" placeholder="Price (Ksh)" value={formData.price || ''} onChange={e => setFormData({...formData, price: parseFloat(e.target.value)})} className="w-full p-3 border rounded-Nonecontrol focus:ring-2 focus:ring-brand-gold outline-none" required />
                     </div>
                     <div className="grid grid-cols-2 gap-3">
-                        <input type="time" value={formData.startTime} onChange={e => setFormData({...formData, startTime: e.target.value})} className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-brand-gold outline-none" required />
-                        <input type="time" value={formData.endTime} onChange={e => setFormData({...formData, endTime: e.target.value})} className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-brand-gold outline-none" required />
+                        <input type="time" value={formData.startTime} onChange={e => setFormData({...formData, startTime: e.target.value})} className="w-full p-3 border rounded-Nonecontrol focus:ring-2 focus:ring-brand-gold outline-none" required />
+                        <input type="time" value={formData.endTime} onChange={e => setFormData({...formData, endTime: e.target.value})} className="w-full p-3 border rounded-Nonecontrol focus:ring-2 focus:ring-brand-gold outline-none" required />
                     </div>
-                     <input type="number" placeholder="Total Seats" value={formData.totalSeats || ''} onChange={e => setFormData({...formData, totalSeats: parseInt(e.target.value)})} className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-brand-gold outline-none" required />
+                     <input type="number" placeholder="Total Seats" value={formData.totalSeats || ''} onChange={e => setFormData({...formData, totalSeats: parseInt(e.target.value)})} className="w-full p-3 border rounded-Nonecontrol focus:ring-2 focus:ring-brand-gold outline-none" required />
                     
-                    <button type="submit" className="w-full bg-brand-navy text-white font-bold py-3 rounded-xl mt-4 hover:bg-black transition">Publish Event</button>
+                    <button type="submit" className="w-full bg-brand-navy text-white font-bold py-3 rounded-Nonecontrol mt-4 hover:bg-black transition">Publish Event</button>
                 </form>
             </div>
         </div>
@@ -253,13 +253,13 @@ const FoodDetailModal: React.FC<{
                     ))}
                 </div>
                 {images.length > 1 && (
-                    <div className="absolute bottom-8 right-6 bg-black/50 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+                    <div className="absolute bottom-8 right-6 bg-black/50 backdrop-blur text-white text-caption font-bold px-3 py-1 rounded-full z-10">
                         {currentImageIndex + 1} / {images.length}
                     </div>
                 )}
                 <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/30 via-transparent to-transparent"></div>
             </div>
-            <div className="flex-1 bg-white -mt-6 rounded-t-3xl relative z-10 flex flex-col shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
+            <div className="flex-1 bg-white -mt-6 rounded-t-sheet relative z-10 flex flex-col shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
                 <div className="flex-1 p-6 overflow-y-auto no-scrollbar">
                     <div className="w-12 h-1 bg-surface-sunken rounded-full mx-auto mb-4"></div>
                     <div className="flex justify-between items-start gap-4 mb-2">
@@ -272,15 +272,15 @@ const FoodDetailModal: React.FC<{
                     </div>
                     <div className="flex flex-wrap gap-2 mb-4">
                         {isBundle ? (
-                            <span className="bg-brand-gold/10 text-brand-gold text-xs font-bold px-2 py-1 rounded-md uppercase tracking-wide">Bundle Deal</span>
+                            <span className="bg-brand-gold/10 text-brand-gold text-caption font-bold px-2 py-1 rounded-Nonecontrol uppercase tracking-wide">Bundle Deal</span>
                         ) : (
-                            <span className="bg-surface-sunken text-ink-soft text-xs font-bold px-2 py-1 rounded-md uppercase tracking-wide">{(item as MenuItem).category}</span>
+                            <span className="bg-surface-sunken text-ink-soft text-caption font-bold px-2 py-1 rounded-Nonecontrol uppercase tracking-wide">{(item as MenuItem).category}</span>
                         )}
                         {'isVegetarian' in item && item.isVegetarian && (
-                            <span className="bg-success-soft text-success-strong text-xs font-bold px-2 py-1 rounded-md uppercase tracking-wide">Veg</span>
+                            <span className="bg-success-soft text-success-strong text-caption font-bold px-2 py-1 rounded-Nonecontrol uppercase tracking-wide">Veg</span>
                         )}
                         {'isSpicy' in item && item.isSpicy && (
-                            <span className="bg-danger-soft text-danger text-xs font-bold px-2 py-1 rounded-md uppercase tracking-wide">Spicy</span>
+                            <span className="bg-danger-soft text-danger text-caption font-bold px-2 py-1 rounded-Nonecontrol uppercase tracking-wide">Spicy</span>
                         )}
                     </div>
                     <div className="space-y-4">
@@ -288,9 +288,9 @@ const FoodDetailModal: React.FC<{
                             {item.description}
                         </p>
                         {isBundle && (
-                            <div className="bg-surface-muted p-4 rounded-xl border border-line">
-                                <h4 className="font-bold text-ink text-sm mb-2">Includes:</h4>
-                                <ul className="list-disc list-inside text-sm text-ink-soft space-y-1">
+                            <div className="bg-surface-muted p-4 rounded-Nonecontrol border border-line">
+                                <h4 className="font-bold text-ink text-body mb-2">Includes:</h4>
+                                <ul className="list-disc list-inside text-body text-ink-soft space-y-1">
                                     {(item as MenuBundle).items.map((i, idx) => (
                                         <li key={idx}>{i}</li>
                                     ))}
@@ -301,24 +301,24 @@ const FoodDetailModal: React.FC<{
                 </div>
                 <div className="p-4 border-t border-line bg-white pb-8">
                     <div className="flex items-center gap-4">
-                        <div className="flex items-center bg-surface-sunken rounded-xl p-1">
+                        <div className="flex items-center bg-surface-sunken rounded-Nonecontrol p-1">
                             <button 
                                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                className="w-10 h-10 flex items-center justify-center text-ink-soft hover:bg-white rounded-lg transition shadow-sm"
+                                className="w-10 h-10 flex items-center justify-center text-ink-soft hover:bg-white rounded-Nonecontrol transition shadow-sm"
                             >
                                 <MinusIcon />
                             </button>
                             <span className="w-10 text-center font-bold text-lg">{quantity}</span>
                             <button 
                                 onClick={() => setQuantity(quantity + 1)}
-                                className="w-10 h-10 flex items-center justify-center text-ink-soft hover:bg-white rounded-lg transition shadow-sm"
+                                className="w-10 h-10 flex items-center justify-center text-ink-soft hover:bg-white rounded-Nonecontrol transition shadow-sm"
                             >
                                 <PlusIcon />
                             </button>
                         </div>
                         <button 
                             onClick={() => onAdd(quantity)}
-                            className="flex-1 bg-brand-navy text-white font-bold text-lg py-3.5 px-4 rounded-xl shadow-lg hover:bg-gray-800 transition active:scale-95 flex justify-between items-center"
+                            className="flex-1 bg-brand-navy text-white font-bold text-lg py-3.5 px-4 rounded-Nonecard shadow-lg hover:bg-gray-800 transition active:scale-95 flex justify-between items-center"
                         >
                             <span>Add to Order</span>
                             <span>Ksh {(item.price * quantity).toLocaleString()}</span>
@@ -465,7 +465,7 @@ const RestaurantMenuModal: React.FC<RestaurantMenuModalProps> = ({ provider, onC
                         <p className="text-[10px] text-ink-soft uppercase tracking-widest font-bold">Menu & Reservations</p>
                     </div>
                     {isOwner ? (
-                        <button onClick={() => setShowAddEvent(true)} className="bg-brand-navy text-white text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1 hover:bg-black transition">
+                        <button onClick={() => setShowAddEvent(true)} className="bg-brand-navy text-white text-caption font-bold px-3 py-2 rounded-Nonecontrol flex items-center gap-1 hover:bg-black transition">
                             <PlusIcon /> Event
                         </button>
                     ) : (
@@ -514,7 +514,7 @@ const RestaurantMenuModal: React.FC<RestaurantMenuModalProps> = ({ provider, onC
                         <div className="flex items-baseline gap-2 mb-4 pr-4 justify-between">
                             <div>
                                 <h3 className="text-xl font-bold font-serif text-ink">Chef's Bundles</h3>
-                                <p className="text-xs text-ink-soft font-medium mt-0.5">Best value meals, curated for you.</p>
+                                <p className="text-caption text-ink-soft font-medium mt-0.5">Best value meals, curated for you.</p>
                             </div>
                         </div>
                         <div className="flex gap-4 overflow-x-auto no-scrollbar pb-4 pr-4 snap-x">
@@ -555,7 +555,7 @@ const RestaurantMenuModal: React.FC<RestaurantMenuModalProps> = ({ provider, onC
 
              {cart.length > 0 && (
                 <div className="absolute bottom-6 left-4 right-4 z-40 animate-slide-in-up">
-                    <div className={`bg-brand-navy text-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 ${showCart ? 'max-h-[500px]' : 'max-h-20'}`}>
+                    <div className={`bg-brand-navy text-white rounded-Nonecard shadow-2xl overflow-hidden transition-all duration-300 ${showCart ? 'max-h-[500px]' : 'max-h-20'}`}>
                         <div 
                             className="p-4 flex justify-between items-center cursor-pointer hover:bg-black/20 transition"
                             onClick={() => setShowCart(!showCart)}
@@ -565,12 +565,12 @@ const RestaurantMenuModal: React.FC<RestaurantMenuModalProps> = ({ provider, onC
                                     {cart.reduce((s, i) => s + i.quantity, 0)}
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="text-xs font-bold text-brand-gold uppercase tracking-wide">Current Order</span>
+                                    <span className="text-caption font-bold text-brand-gold uppercase tracking-wide">Current Order</span>
                                     <span className="text-xl font-bold">Ksh {cartTotal.toLocaleString()}</span>
                                 </div>
                             </div>
                             <button 
-                                className="bg-[#25D366] text-white font-bold py-2.5 px-6 rounded-xl shadow-lg hover:bg-[#128C7E] active:scale-95 transition-transform flex items-center gap-2" 
+                                className="bg-[#25D366] text-white font-bold py-2.5 px-6 rounded-Nonecard shadow-lg hover:bg-[#128C7E] active:scale-95 transition-transform flex items-center gap-2" 
                                 onClick={(e) => { e.stopPropagation(); handleCheckout(); }}
                             >
                                 <WhatsAppIcon /> Checkout
@@ -585,14 +585,14 @@ const RestaurantMenuModal: React.FC<RestaurantMenuModalProps> = ({ provider, onC
                                     return (
                                         <div key={`${item.id}-${idx}`} className="flex justify-between items-center py-3 border-b border-white/10 last:border-0">
                                             <div className="flex-1 pr-4">
-                                                <p className="font-bold text-sm text-white">
+                                                <p className="font-bold text-body text-white">
                                                     {isBundle ? `[Bundle] ${(item as MenuBundle).title}` : (item as MenuItem).name}
                                                 </p>
-                                                <p className="text-xs text-gray-300">Ksh {item.price}</p>
+                                                <p className="text-caption text-gray-300">Ksh {item.price}</p>
                                             </div>
-                                            <div className="flex items-center gap-3 bg-black/30 rounded-lg p-1">
+                                            <div className="flex items-center gap-3 bg-black/30 rounded-Nonecontrol p-1">
                                                 <button onClick={() => removeFromCart(idx)} className="w-7 h-7 flex items-center justify-center text-white hover:bg-white/20 rounded transition"><MinusIcon /></button>
-                                                <span className="text-sm font-bold w-4 text-center">{cartItem.quantity}</span>
+                                                <span className="text-body font-bold w-4 text-center">{cartItem.quantity}</span>
                                                 <button onClick={() => addToCart(item, isBundle)} className="w-7 h-7 flex items-center justify-center text-white hover:bg-white/20 rounded transition"><PlusIcon /></button>
                                             </div>
                                         </div>

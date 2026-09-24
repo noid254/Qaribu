@@ -2,10 +2,11 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import type { ServiceProvider, SpecialBanner, CurrentPage } from '../types';
 import ServiceCard from './ServiceCard';
+import { BackIcon, SearchIcon as SharedSearchIcon } from './Icons';
 
 // --- Icons ---
-const BackIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>;
-const SearchIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>;
+
+const SearchIcon = () => <SharedSearchIcon className="h-6 w-6" />;
 
 const serviceFilters = {
     HOME: {
@@ -187,7 +188,7 @@ const ServiceMarketplace: React.FC<ServiceMarketplaceProps> = ({ providers, spec
                         <button
                             key={child}
                             onClick={() => setActiveChild(child)}
-                            className={`flex-shrink-0 px-4 py-1.5 text-xs font-semibold rounded-full capitalize transition-colors ${activeChild === child ? 'bg-brand-gold text-brand-navy' : 'bg-surface-sunken text-ink-soft'}`}
+                            className={`flex-shrink-0 px-4 py-1.5 text-caption font-semibold rounded-full capitalize transition-colors ${activeChild === child ? 'bg-brand-gold text-brand-navy' : 'bg-surface-sunken text-ink-soft'}`}
                         >
                             {child}
                         </button>
@@ -236,7 +237,7 @@ const ServiceMarketplace: React.FC<ServiceMarketplaceProps> = ({ providers, spec
                         
                         <header className="absolute top-0 left-0 right-0 pt-4 px-4 flex justify-between items-center text-white z-10">
                             <button onClick={onBack} className="p-2 -ml-2"><BackIcon /></button>
-                            <span className="font-bold tracking-widest text-sm">NIKOSOKO</span>
+                            <span className="font-bold tracking-widest text-body">NIKOSOKO</span>
                             <div className="flex items-center gap-4">
                                 <button onClick={() => setIsSearchActive(true)}><SearchIcon /></button>
                                 <button onClick={onMessagesClick}><BellIcon hasNotification={hasNewMessages} /></button>

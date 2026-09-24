@@ -22,27 +22,27 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ providers }) => {
     return (
         <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-               <div className="bg-white rounded-lg shadow-sm p-4">
+               <div className="bg-white rounded-Nonecontrol shadow-sm p-4">
                    <h3 className="font-bold text-lg mb-3">Users by Location</h3>
                    <div className="space-y-2">
                        {usersByLocation.map(([loc, count]) => (
-                           <div key={loc} className="flex justify-between items-center text-sm">
+                           <div key={loc} className="flex justify-between items-center text-body">
                                <span className="text-ink">{loc}</span>
                                <span className="font-semibold bg-surface-sunken px-2 py-0.5 rounded">{count}</span>
                            </div>
                        ))}
                    </div>
                </div>
-                <div className="bg-white rounded-lg shadow-sm p-4">
+                <div className="bg-white rounded-Nonecontrol shadow-sm p-4">
                    <h3 className="font-bold text-lg mb-3">Most Viewed Profiles</h3>
                     <div className="space-y-3">
                        {mostViewedUsers.map(p => (
-                           <div key={p.id} className="flex justify-between items-center text-sm">
+                           <div key={p.id} className="flex justify-between items-center text-body">
                                <div className="flex items-center gap-2">
                                    <img src={p.avatarUrl} className="w-8 h-8 rounded-full object-cover" />
                                    <div>
                                        <p className="font-semibold">{p.name}</p>
-                                       <p className="text-xs text-ink-soft">{p.service}</p>
+                                       <p className="text-caption text-ink-soft">{p.service}</p>
                                    </div>
                                </div>
                                <span className="font-semibold">{p.views} views</span>

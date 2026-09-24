@@ -24,14 +24,14 @@ const AppearancePage: React.FC<AppearancePageProps> = ({ categories, specialBann
         setNewBanner({ imageUrl: '' });
     };
 
-    const inputClass = "w-full p-2 border rounded-md text-sm";
-    const selectClass = "w-full p-2 border rounded-md bg-white text-sm";
+    const inputClass = "w-full p-2 border rounded-Nonecontrol text-body";
+    const selectClass = "w-full p-2 border rounded-Nonecontrol bg-white text-body";
     
     return (
         <div className="space-y-6">
-            <div className="bg-white rounded-lg shadow-sm p-4">
+            <div className="bg-white rounded-Nonecontrol shadow-sm p-4">
                  <h2 className="text-xl font-bold text-ink mb-4">Manage Special Banners</h2>
-                 <form onSubmit={handleAddBanner} className="space-y-4 p-4 border rounded-lg bg-surface-muted">
+                 <form onSubmit={handleAddBanner} className="space-y-4 p-4 border rounded-Nonecontrol bg-surface-muted">
                      <h3 className="font-semibold">Add New Banner</h3>
                      <input type="url" placeholder="Image URL*" value={newBanner.imageUrl} onChange={e => setNewBanner(p => ({...p, imageUrl: e.target.value}))} className={inputClass} required />
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -63,22 +63,22 @@ const AppearancePage: React.FC<AppearancePageProps> = ({ categories, specialBann
                         <span>to</span>
                         <input type="date" value={newBanner.endDate || ''} onChange={e => setNewBanner(p => ({...p, endDate: e.target.value}))} className={inputClass} title="End Date"/>
                       </div>
-                     <button type="submit" className="w-full bg-brand-primary text-white font-bold py-2 rounded-lg">Add Banner</button>
+                     <button type="submit" className="w-full bg-brand-primary text-white font-bold py-2 rounded-Nonecontrol">Add Banner</button>
                  </form>
                  <div className="mt-6">
                      <h3 className="font-semibold mb-2">Active Banners</h3>
                      <div className="space-y-3">
                          {specialBanners.map(banner => (
-                             <div key={banner.id} className="flex items-center justify-between p-3 bg-surface-muted rounded-lg">
+                             <div key={banner.id} className="flex items-center justify-between p-3 bg-surface-muted rounded-Nonecontrol">
                                  <div className="flex items-center gap-3">
                                     <img src={banner.imageUrl} className="w-16 h-10 rounded object-cover" />
-                                    <div className="text-xs">
+                                    <div className="text-caption">
                                         {Object.entries(banner).filter(([key]) => key !== 'id' && key !== 'imageUrl').map(([key, value]) => (
                                             <p key={key}><span className="font-semibold capitalize">{key.replace('target', '')}:</span> {String(value)}</p>
                                         ))}
                                     </div>
                                  </div>
-                                 <button onClick={() => onDeleteBanner(banner.id)} className="text-xs bg-danger-soft text-danger-strong px-2 py-1 rounded">Delete</button>
+                                 <button onClick={() => onDeleteBanner(banner.id)} className="text-caption bg-danger-soft text-danger-strong px-2 py-1 rounded">Delete</button>
                              </div>
                          ))}
                          {specialBanners.length === 0 && <p className="text-center text-ink-soft py-4">No special banners configured.</p>}

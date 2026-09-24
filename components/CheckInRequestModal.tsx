@@ -69,14 +69,14 @@ const CheckInRequestModal: React.FC<CheckInRequestModalProps> = ({ premise, tena
     return (
         <div className="fixed inset-0 bg-black/70 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fade-in">
             <div 
-                className="bg-white w-full max-w-md h-[90vh] sm:h-auto sm:max-h-[85vh] rounded-t-2xl sm:rounded-2xl flex flex-col shadow-2xl overflow-hidden"
+                className="bg-white w-full max-w-md h-[90vh] sm:h-auto sm:max-h-[85vh] rounded-t-sheet sm:rounded-Nonecard flex flex-col shadow-2xl overflow-hidden"
                 onClick={e => e.stopPropagation()}
             >
                 {/* Header */}
                 <div className="p-4 border-b flex justify-between items-center bg-surface-muted">
                     <div>
                         <h2 className="text-lg font-bold text-ink">Check In Request</h2>
-                        <p className="text-xs text-ink-soft">{premise.name}</p>
+                        <p className="text-caption text-ink-soft">{premise.name}</p>
                     </div>
                     <button onClick={onClose} className="p-2 bg-surface-sunken rounded-full hover:bg-gray-300 text-ink-soft transition">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
@@ -91,27 +91,27 @@ const CheckInRequestModal: React.FC<CheckInRequestModalProps> = ({ premise, tena
                             <h3 className="text-center font-semibold text-ink mb-4">Where are you visiting?</h3>
                             <button 
                                 onClick={() => { setPremiseType('Commercial'); setStep('commercial-select'); }}
-                                className="w-full p-4 bg-white rounded-xl shadow-sm border border-line flex items-center gap-4 hover:border-brand-gold transition active:scale-95"
+                                className="w-full p-4 bg-white rounded-Nonecard shadow-sm border border-line flex items-center gap-4 hover:border-brand-gold transition active:scale-95"
                             >
                                 <div className="w-12 h-12 bg-info-soft text-info rounded-full flex items-center justify-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
                                 </div>
                                 <div className="text-left">
                                     <p className="font-bold text-ink">Commercial / Office</p>
-                                    <p className="text-xs text-ink-soft">Select a business from the directory</p>
+                                    <p className="text-caption text-ink-soft">Select a business from the directory</p>
                                 </div>
                             </button>
 
                             <button 
                                 onClick={() => { setPremiseType('Residence'); setStep('residence-input'); }}
-                                className="w-full p-4 bg-white rounded-xl shadow-sm border border-line flex items-center gap-4 hover:border-brand-gold transition active:scale-95"
+                                className="w-full p-4 bg-white rounded-Nonecard shadow-sm border border-line flex items-center gap-4 hover:border-brand-gold transition active:scale-95"
                             >
                                 <div className="w-12 h-12 bg-success-soft text-success rounded-full flex items-center justify-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
                                 </div>
                                 <div className="text-left">
                                     <p className="font-bold text-ink">Residence</p>
-                                    <p className="text-xs text-ink-soft">Enter door/unit number manually</p>
+                                    <p className="text-caption text-ink-soft">Enter door/unit number manually</p>
                                 </div>
                             </button>
                         </div>
@@ -119,31 +119,31 @@ const CheckInRequestModal: React.FC<CheckInRequestModalProps> = ({ premise, tena
 
                     {step === 'commercial-select' && (
                         <div className="space-y-4">
-                            <button onClick={() => setStep('type-selection')} className="text-xs font-bold text-ink-soft mb-2">&larr; Back</button>
-                            <div className="bg-white p-4 rounded-xl shadow-sm border">
+                            <button onClick={() => setStep('type-selection')} className="text-caption font-bold text-ink-soft mb-2">&larr; Back</button>
+                            <div className="bg-white p-4 rounded-Nonecard shadow-sm border">
                                 <h3 className="font-semibold text-ink mb-3">Select Host</h3>
                                 <input 
                                     type="text" 
                                     placeholder="Search business..." 
                                     value={searchQuery}
                                     onChange={e => setSearchQuery(e.target.value)}
-                                    className="w-full p-3 border rounded-lg bg-surface-muted focus:outline-none focus:ring-2 focus:ring-brand-gold mb-3"
+                                    className="w-full p-3 border rounded-Nonecontrol bg-surface-muted focus:outline-none focus:ring-2 focus:ring-brand-gold mb-3"
                                 />
                                 <div className="max-h-48 overflow-y-auto space-y-2">
                                     {filteredTenants.map(tenant => (
                                         <button 
                                             key={tenant.id} 
                                             onClick={() => handleTenantSelect(tenant)}
-                                            className="w-full flex items-center gap-3 p-2 hover:bg-surface-muted rounded-lg transition text-left border border-transparent hover:border-line"
+                                            className="w-full flex items-center gap-3 p-2 hover:bg-surface-muted rounded-Nonecontrol transition text-left border border-transparent hover:border-line"
                                         >
                                             <img src={tenant.avatarUrl} alt={tenant.name} className="w-10 h-10 rounded-full object-cover bg-surface-sunken" />
                                             <div>
-                                                <p className="font-bold text-sm text-ink">{tenant.name}</p>
-                                                <p className="text-xs text-ink-soft">{tenant.service}</p>
+                                                <p className="font-bold text-body text-ink">{tenant.name}</p>
+                                                <p className="text-caption text-ink-soft">{tenant.service}</p>
                                             </div>
                                         </button>
                                     ))}
-                                    {filteredTenants.length === 0 && <p className="text-xs text-ink-faint text-center py-2">No tenants found.</p>}
+                                    {filteredTenants.length === 0 && <p className="text-caption text-ink-faint text-center py-2">No tenants found.</p>}
                                 </div>
                             </div>
                         </div>
@@ -151,23 +151,23 @@ const CheckInRequestModal: React.FC<CheckInRequestModalProps> = ({ premise, tena
 
                     {step === 'residence-input' && (
                         <div className="space-y-4">
-                            <button onClick={() => setStep('type-selection')} className="text-xs font-bold text-ink-soft mb-2">&larr; Back</button>
-                            <div className="bg-white p-4 rounded-xl shadow-sm border">
+                            <button onClick={() => setStep('type-selection')} className="text-caption font-bold text-ink-soft mb-2">&larr; Back</button>
+                            <div className="bg-white p-4 rounded-Nonecard shadow-sm border">
                                 <h3 className="font-semibold text-ink mb-3">Residence Details</h3>
                                 <div className="space-y-3">
                                     <div>
-                                        <label className="block text-xs font-medium text-ink-soft mb-1">Unit / Door Number</label>
+                                        <label className="block text-caption font-medium text-ink-soft mb-1">Unit / Door Number</label>
                                         <input 
                                             type="text" 
                                             placeholder="e.g. 4B or 102" 
                                             value={manualUnit}
                                             onChange={e => setManualUnit(e.target.value)}
-                                            className="w-full p-3 border rounded-lg bg-surface-muted focus:outline-none focus:ring-2 focus:ring-brand-gold"
+                                            className="w-full p-3 border rounded-Nonecontrol bg-surface-muted focus:outline-none focus:ring-2 focus:ring-brand-gold"
                                         />
                                     </div>
                                     <button 
                                         onClick={handleManualUnitSubmit}
-                                        className="w-full bg-brand-navy text-white font-bold py-3 rounded-lg mt-2 hover:opacity-90"
+                                        className="w-full bg-brand-navy text-white font-bold py-3 rounded-Nonecontrol mt-2 hover:opacity-90"
                                     >
                                         Next
                                     </button>
@@ -178,21 +178,21 @@ const CheckInRequestModal: React.FC<CheckInRequestModalProps> = ({ premise, tena
 
                     {step === 'visitor-details' && (
                         <div className="space-y-4">
-                            <button onClick={() => setStep(premiseType === 'Commercial' ? 'commercial-select' : 'residence-input')} className="text-xs font-bold text-ink-soft mb-2">&larr; Back</button>
+                            <button onClick={() => setStep(premiseType === 'Commercial' ? 'commercial-select' : 'residence-input')} className="text-caption font-bold text-ink-soft mb-2">&larr; Back</button>
                             
-                            <div className="bg-info-soft border border-info-soft p-3 rounded-xl mb-4">
-                                <p className="text-xs text-info-strong">
+                            <div className="bg-info-soft border border-info-soft p-3 rounded-Nonecontrol mb-4">
+                                <p className="text-caption text-info-strong">
                                     Visiting: <span className="font-bold">{selectedTenant ? selectedTenant.name : `Unit ${manualUnit}`}</span>
                                 </p>
                             </div>
 
-                            <div className="bg-white p-4 rounded-xl shadow-sm border space-y-4">
+                            <div className="bg-white p-4 rounded-Nonecard shadow-sm border space-y-4">
                                 <div>
-                                    <label className="block text-xs font-medium text-ink-soft mb-1">Purpose of Visit</label>
+                                    <label className="block text-caption font-medium text-ink-soft mb-1">Purpose of Visit</label>
                                     <select 
                                         value={purpose} 
                                         onChange={e => setPurpose(e.target.value)}
-                                        className="w-full p-3 border rounded-lg bg-surface-muted focus:outline-none focus:ring-2 focus:ring-brand-gold"
+                                        className="w-full p-3 border rounded-Nonecontrol bg-surface-muted focus:outline-none focus:ring-2 focus:ring-brand-gold"
                                     >
                                         <option value="">Select Purpose</option>
                                         <option value="Meeting">Meeting / Official</option>
@@ -203,13 +203,13 @@ const CheckInRequestModal: React.FC<CheckInRequestModalProps> = ({ premise, tena
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-medium text-ink-soft mb-1">Vehicle Reg. (Optional)</label>
+                                    <label className="block text-caption font-medium text-ink-soft mb-1">Vehicle Reg. (Optional)</label>
                                     <input 
                                         type="text" 
                                         placeholder="e.g. KDA 123X" 
                                         value={vehicleReg}
                                         onChange={e => setVehicleReg(e.target.value.toUpperCase())}
-                                        className="w-full p-3 border rounded-lg bg-surface-muted focus:outline-none focus:ring-2 focus:ring-brand-gold"
+                                        className="w-full p-3 border rounded-Nonecontrol bg-surface-muted focus:outline-none focus:ring-2 focus:ring-brand-gold"
                                     />
                                 </div>
                             </div>
@@ -217,7 +217,7 @@ const CheckInRequestModal: React.FC<CheckInRequestModalProps> = ({ premise, tena
                             <button 
                                 onClick={handleFinalSubmit}
                                 disabled={!purpose}
-                                className="w-full bg-success text-white font-bold py-4 rounded-xl shadow-lg hover:bg-success-strong transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+                                className="w-full bg-success text-white font-bold py-4 rounded-Nonecard shadow-lg hover:bg-success-strong transition disabled:bg-gray-400 disabled:cursor-not-allowed"
                             >
                                 Send Request
                             </button>

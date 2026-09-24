@@ -18,18 +18,18 @@ const GigCard: React.FC<GigCardProps> = ({ gig, provider, onClick, layout = 'hor
 
     if (layout === 'vertical') {
          return (
-            <div onClick={onClick} className="bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer w-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex items-center gap-4 group">
+            <div onClick={onClick} className="bg-white rounded-Nonecard shadow-sm overflow-hidden cursor-pointer w-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex items-center gap-4 group">
                 <div className="w-24 h-24 flex-shrink-0 overflow-hidden">
                     <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src={gig.imageUrl} alt={gig.title} />
                 </div>
                 <div className="p-2 flex-grow overflow-hidden">
                     <p className="font-bold text-md text-ink truncate">{gig.title}</p>
-                    <p className="text-sm text-ink-soft truncate">{gig.location}</p>
-                    <p className="font-bold text-brand-dark mt-1">{gig.currency} {gig.budget.toLocaleString()} <span className="text-xs font-normal text-ink-soft">{budgetTypeSuffix[gig.budgetType]}</span></p>
+                    <p className="text-body text-ink-soft truncate">{gig.location}</p>
+                    <p className="font-bold text-brand-dark mt-1">{gig.currency} {gig.budget.toLocaleString()} <span className="text-caption font-normal text-ink-soft">{budgetTypeSuffix[gig.budgetType]}</span></p>
                     {provider && (
                         <div className="flex items-center gap-2 mt-2 pt-2 border-t border-line">
                             <img src={provider.avatarUrl} alt={provider.name} className="w-6 h-6 rounded-full object-cover" />
-                            <p className="text-xs text-ink-soft truncate">{provider.name}</p>
+                            <p className="text-caption text-ink-soft truncate">{provider.name}</p>
                         </div>
                     )}
                 </div>
@@ -39,7 +39,7 @@ const GigCard: React.FC<GigCardProps> = ({ gig, provider, onClick, layout = 'hor
 
     // Default horizontal layout
     return (
-        <div onClick={onClick} className="bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer w-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
+        <div onClick={onClick} className="bg-white rounded-Nonecard shadow-sm overflow-hidden cursor-pointer w-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
             <div className="relative h-32 overflow-hidden">
                 <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src={gig.imageUrl} alt={gig.title} />
                  <div className="absolute top-1.5 left-1.5 bg-black bg-opacity-50 text-white text-[10px] px-2 py-0.5 rounded-full font-semibold">
@@ -47,12 +47,12 @@ const GigCard: React.FC<GigCardProps> = ({ gig, provider, onClick, layout = 'hor
                 </div>
             </div>
             <div className="p-3">
-                <p className="font-bold text-sm text-ink truncate h-10">{gig.title}</p>
-                <p className="font-bold text-brand-dark mt-1">{gig.currency} {gig.budget.toLocaleString()} <span className="text-xs font-normal text-ink-soft">{budgetTypeSuffix[gig.budgetType]}</span></p>
+                <p className="font-bold text-body text-ink truncate h-10">{gig.title}</p>
+                <p className="font-bold text-brand-dark mt-1">{gig.currency} {gig.budget.toLocaleString()} <span className="text-caption font-normal text-ink-soft">{budgetTypeSuffix[gig.budgetType]}</span></p>
                  {provider && (
                     <div className="flex items-center gap-2 mt-2 pt-2 border-t border-line">
                         <img src={provider.avatarUrl} alt={provider.name} className="w-6 h-6 rounded-full object-cover" />
-                        <p className="text-xs text-ink-soft truncate">{provider.name}</p>
+                        <p className="text-caption text-ink-soft truncate">{provider.name}</p>
                     </div>
                 )}
             </div>

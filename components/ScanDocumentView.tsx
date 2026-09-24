@@ -2,9 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { GoogleGenAI } from "@google/genai";
 import type { Document, DocumentItem } from '../types';
 import LoadingSpinner from './LoadingSpinner';
+import { CameraIcon as SharedCameraIcon } from './Icons';
 
 // Icons
-const CameraIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>;
+const CameraIcon = () => <SharedCameraIcon className="h-8 w-8" />;
 const SparklesIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5 5a1 1 0 00-1 1v1h1V6zM5 9H4v2h1V9zm2 2H6v2h1v-2zm-2 4H4v1a1 1 0 001 1h1v-2zm4-12a1 1 0 00-1 1v1h2V6a1 1 0 00-1-1zM9 9H7v2h2V9zm2 2h-2v2h2v-2zm-2 4h-2v1a1 1 0 001 1h1v-2zm4-12a1 1 0 00-1 1v1h2V6a1 1 0 00-1-1zM13 9h-2v2h2V9zm2 2h-2v2h2v-2zm-2 4h-2v1a1 1 0 001 1h1v-2zm4-12a1 1 0 00-1 1v1h1a1 1 0 001-1V5a1 1 0 00-1-1zM15 9h-2v2h2V9zm2 2h-2v2h2v-2zm-2 4h-2v2h1a1 1 0 001-1v-1z" clipRule="evenodd" /></svg>;
 
 const cleanJsonString = (str: string) => {
@@ -142,10 +143,10 @@ const ScanDocumentView: React.FC<ScanDocumentViewProps> = ({ onBack, onSave }) =
     if (isStreaming) {
         return (
              <div className="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center p-4">
-                <video ref={videoRef} className="w-full h-auto rounded-lg" playsInline />
+                <video ref={videoRef} className="w-full h-auto rounded-Nonecontrol" playsInline />
                 <canvas ref={canvasRef} className="hidden"></canvas>
                 <div className="absolute bottom-6 left-6 right-6 flex justify-around items-center">
-                    <button onClick={stopCamera} className="bg-white/20 text-white font-semibold py-3 px-6 rounded-lg">Cancel</button>
+                    <button onClick={stopCamera} className="bg-white/20 text-white font-semibold py-3 px-6 rounded-Nonecontrol">Cancel</button>
                     <button onClick={captureImage} className="w-20 h-20 rounded-full bg-white border-4 border-white/50"></button>
                     <div className="w-[88px]"></div> {/* Spacer */}
                 </div>
@@ -157,7 +158,7 @@ const ScanDocumentView: React.FC<ScanDocumentViewProps> = ({ onBack, onSave }) =
         return (
             <div className="p-4 bg-surface-muted min-h-full flex flex-col items-center justify-center">
                 <LoadingSpinner message="Scanning receipt with AI..." />
-                <img src={receiptImageSrc!} alt="receipt" className="w-48 mt-4 rounded-lg shadow-md" />
+                <img src={receiptImageSrc!} alt="receipt" className="w-48 mt-4 rounded-Nonecontrol shadow-md" />
             </div>
         )
     }
@@ -166,15 +167,15 @@ const ScanDocumentView: React.FC<ScanDocumentViewProps> = ({ onBack, onSave }) =
          return (
             <div className="p-4 bg-surface-muted min-h-full space-y-4">
                 <h1 className="text-2xl font-bold text-ink">Confirm Asset Details</h1>
-                {error && <p className="text-danger text-center text-sm p-2 bg-danger-soft rounded-md">{error}</p>}
+                {error && <p className="text-danger text-center text-body p-2 bg-danger-soft rounded-Nonecontrol">{error}</p>}
                 
-                <div className="bg-white p-4 rounded-lg shadow-sm space-y-3">
+                <div className="bg-white p-4 rounded-Nonecontrol shadow-sm space-y-3">
                     <h2 className="font-semibold text-ink">Product Details</h2>
                     <input value={docData.items?.[0]?.description || ''} onChange={e => setDocData(p => ({...p, items: [{...p.items?.[0], description: e.target.value}]}))} type="text" placeholder="Product Name" className="w-full p-2 border rounded"/>
                     <input value={docData.items?.[0]?.serial || ''} onChange={e => setDocData(p => ({...p, items: [{...p.items?.[0], serial: e.target.value}]}))} type="text" placeholder="Serial / IMEI" className="w-full p-2 border rounded"/>
                     <textarea value={docData.specifications || ''} onChange={e => updateField('specifications', e.target.value)} rows={3} placeholder="Specifications (optional, e.g., Color, Size, Model)" className="w-full p-2 border rounded"/>
                     <div>
-                        <label className="text-xs font-medium text-ink mb-1 block">Product Images</label>
+                        <label className="text-caption font-medium text-ink mb-1 block">Product Images</label>
                         <div className="grid grid-cols-4 gap-2">
                             {productImages.map((src, i) => <img key={i} src={src} className="w-full h-16 object-cover rounded"/>)}
                             {productImages.length < 4 && <button onClick={() => productFileInputRef.current?.click()} className="w-full h-16 border-2 border-dashed rounded flex items-center justify-center text-ink-faint">+</button>}
@@ -183,14 +184,14 @@ const ScanDocumentView: React.FC<ScanDocumentViewProps> = ({ onBack, onSave }) =
                     </div>
                 </div>
 
-                <div className="bg-white p-4 rounded-lg shadow-sm space-y-3">
+                <div className="bg-white p-4 rounded-Nonecontrol shadow-sm space-y-3">
                     <h2 className="font-semibold text-ink">Purchase Details</h2>
                     <input value={docData.issuerName || ''} onChange={e => updateField('issuerName', e.target.value)} type="text" placeholder="Seller / Issuer Name" className="w-full p-2 border rounded"/>
                     <input value={docData.date || ''} onChange={e => updateField('date', e.target.value)} type="date" className="w-full p-2 border rounded"/>
                     <input value={docData.amount || ''} onChange={e => updateField('amount', parseFloat(e.target.value))} type="number" placeholder="Total Amount" className="w-full p-2 border rounded"/>
                 </div>
-                 <button onClick={handleSave} className="w-full bg-success text-white font-bold py-3 rounded-lg shadow-md">Save Asset</button>
-                 <button onClick={onBack} className="w-full bg-surface-sunken text-ink font-bold py-3 rounded-lg">Cancel</button>
+                 <button onClick={handleSave} className="w-full bg-success text-white font-bold py-3 rounded-Nonecontrol shadow-md">Save Asset</button>
+                 <button onClick={onBack} className="w-full bg-surface-sunken text-ink font-bold py-3 rounded-Nonecontrol">Cancel</button>
             </div>
         );
     }
@@ -198,20 +199,20 @@ const ScanDocumentView: React.FC<ScanDocumentViewProps> = ({ onBack, onSave }) =
     return (
         <div className="p-4 bg-surface-muted min-h-full space-y-4">
             <h1 className="text-2xl font-bold text-ink">Add New Asset</h1>
-            <div className="bg-white p-4 rounded-lg shadow-sm space-y-3 text-center">
+            <div className="bg-white p-4 rounded-Nonecontrol shadow-sm space-y-3 text-center">
                  <h2 className="font-semibold text-ink">Scan Receipt to Begin</h2>
-                 <p className="text-sm text-ink-soft">Use your camera or upload a photo of the purchase receipt. We'll use AI to fill in the details.</p>
+                 <p className="text-body text-ink-soft">Use your camera or upload a photo of the purchase receipt. We'll use AI to fill in the details.</p>
                  <input type="file" ref={receiptFileInputRef} onChange={(e) => handleFileChange(e, 'receipt')} accept="image/*" className="hidden"/>
                  <div className="flex gap-4 pt-2">
-                    <button onClick={startCamera} className="flex-1 border-2 border-dashed border-line rounded-lg p-6 flex flex-col items-center justify-center text-ink-soft hover:bg-surface-sunken">
-                        <CameraIcon/> <span className="text-sm font-semibold mt-1">Camera</span>
+                    <button onClick={startCamera} className="flex-1 border-2 border-dashed border-line rounded-Nonecontrol p-6 flex flex-col items-center justify-center text-ink-soft hover:bg-surface-sunken">
+                        <CameraIcon/> <span className="text-body font-semibold mt-1">Camera</span>
                     </button>
-                        <button onClick={() => receiptFileInputRef.current?.click()} className="flex-1 border-2 border-dashed border-line rounded-lg p-6 flex flex-col items-center justify-center text-ink-soft hover:bg-surface-sunken">
+                        <button onClick={() => receiptFileInputRef.current?.click()} className="flex-1 border-2 border-dashed border-line rounded-Nonecontrol p-6 flex flex-col items-center justify-center text-ink-soft hover:bg-surface-sunken">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-                        <span className="text-sm font-semibold mt-1">Upload</span>
+                        <span className="text-body font-semibold mt-1">Upload</span>
                     </button>
                 </div>
-                 <button onClick={onBack} className="w-full bg-surface-sunken text-ink font-bold py-3 rounded-lg mt-4">Cancel</button>
+                 <button onClick={onBack} className="w-full bg-surface-sunken text-ink font-bold py-3 rounded-Nonecontrol mt-4">Cancel</button>
             </div>
         </div>
     );

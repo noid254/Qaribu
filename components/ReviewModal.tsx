@@ -47,13 +47,13 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ pendingProviders, isForced, o
 
     return (
         <div className="fixed inset-0 bg-black/80 z-[70] flex items-center justify-center p-4 backdrop-blur-sm animate-fade-in">
-            <div className="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden transform transition-all">
+            <div className="bg-white w-full max-w-sm rounded-Nonecard shadow-2xl overflow-hidden transform transition-all">
                 {/* Header */}
                 <div className="bg-brand-navy p-6 text-white text-center relative">
                     {!isForced && (
                         <button 
                             onClick={onClose} 
-                            className="absolute top-4 right-4 text-white/70 hover:text-white text-sm font-semibold"
+                            className="absolute top-4 right-4 text-white/70 hover:text-white text-body font-semibold"
                         >
                             Postpone
                         </button>
@@ -62,7 +62,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ pendingProviders, isForced, o
                         {isForced ? "Rating Required" : "How was your experience?"}
                     </h2>
                     {isForced && (
-                        <p className="text-xs text-brand-gold mt-2 font-medium bg-white/10 py-1 px-3 rounded-full inline-block">
+                        <p className="text-caption text-brand-gold mt-2 font-medium bg-white/10 py-1 px-3 rounded-full inline-block">
                             {pendingProviders.length} pending review{pendingProviders.length > 1 ? 's' : ''} to continue
                         </p>
                     )}
@@ -77,36 +77,36 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ pendingProviders, isForced, o
                             className="w-20 h-20 rounded-full border-4 border-line shadow-md object-cover mb-3"
                         />
                         <h3 className="font-bold text-ink text-lg">{currentProvider.name}</h3>
-                        <p className="text-sm text-ink-soft">{currentProvider.service}</p>
+                        <p className="text-body text-ink-soft">{currentProvider.service}</p>
                     </div>
 
                     <div className="text-center">
-                        <p className="text-sm text-ink-soft mb-3">Tap to rate</p>
+                        <p className="text-body text-ink-soft mb-3">Tap to rate</p>
                         <StarInput rating={rating} setRating={setRating} />
                         
                         <textarea
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                             placeholder="Write a brief review (optional)..."
-                            className="w-full p-3 bg-surface-muted border border-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold mb-4 resize-none"
+                            className="w-full p-3 bg-surface-muted border border-line rounded-Nonecontrol text-body focus:outline-none focus:ring-2 focus:ring-brand-gold mb-4 resize-none"
                             rows={3}
                         />
 
                         <button 
                             onClick={handleSubmit}
                             disabled={rating === 0}
-                            className="w-full bg-brand-navy text-white font-bold py-3.5 rounded-xl shadow-lg hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all active:scale-95"
+                            className="w-full bg-brand-navy text-white font-bold py-3.5 rounded-Nonecard shadow-lg hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all active:scale-95"
                         >
                             Submit Review
                         </button>
                         
                         {isForced && pendingProviders.length > 1 && (
-                            <p className="text-xs text-ink-faint mt-4">
+                            <p className="text-caption text-ink-faint mt-4">
                                 You must review all pending providers to access new contacts.
                             </p>
                         )}
                         {!isForced && (
-                            <button onClick={onClose} className="mt-3 text-xs text-ink-soft font-semibold hover:text-ink underline">
+                            <button onClick={onClose} className="mt-3 text-caption text-ink-soft font-semibold hover:text-ink underline">
                                 Ask me later
                             </button>
                         )}

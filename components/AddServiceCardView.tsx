@@ -27,7 +27,7 @@ const FormInput: React.FC<{
 }> = ({ label, value, onChange, isTextarea = false, readOnly = false }) => {
     return (
         <div className="relative border-b border-line py-3">
-            <label className="block text-xs text-ink-faint font-medium mb-1">{label}</label>
+            <label className="block text-caption text-ink-faint font-medium mb-1">{label}</label>
             {isTextarea ? (
                  <textarea
                     value={value}
@@ -143,7 +143,7 @@ const SignUpView: React.FC<SignUpViewProps> = ({ onBack, onSave, categories, cur
     return (
         <div className="bg-surface-muted min-h-screen font-sans pb-24 pt-16">
             <header className="fixed top-0 left-0 right-0 max-w-sm mx-auto p-4 bg-surface-muted z-10 flex justify-end">
-                <button onClick={onBack} className="text-sm font-semibold text-ink-soft bg-surface-sunken px-3 py-1 rounded-lg">Skip for now</button>
+                <button onClick={onBack} className="text-body font-semibold text-ink-soft bg-surface-sunken px-3 py-1 rounded-Nonecontrol">Skip for now</button>
             </header>
             <main className="p-4 space-y-6">
                 <div className="flex flex-col items-center justify-center">
@@ -163,15 +163,15 @@ const SignUpView: React.FC<SignUpViewProps> = ({ onBack, onSave, categories, cur
                         ) : (
                              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                         )}
-                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 flex items-center justify-center text-white text-xs font-semibold transition-opacity">
+                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 flex items-center justify-center text-white text-caption font-semibold transition-opacity">
                             Change
                         </div>
                     </div>
-                    <p className="text-sm text-ink-soft mt-2">Upload Profile Picture</p>
+                    <p className="text-body text-ink-soft mt-2">Upload Profile Picture</p>
                 </div>
 
 
-                <div className="bg-white rounded-lg shadow-sm p-5">
+                <div className="bg-white rounded-Nonecontrol shadow-sm p-5">
                     <h2 className="text-lg font-bold text-ink mb-4">Your Details</h2>
 
                     <div className="space-y-2">
@@ -182,7 +182,7 @@ const SignUpView: React.FC<SignUpViewProps> = ({ onBack, onSave, categories, cur
                         />
                         <FormInput label="Your Profession / Service" value={service} onChange={(e) => setService(e.target.value)} />
                         <div className="relative border-b border-line py-3">
-                            <label className="block text-xs text-ink-faint font-medium mb-1">Category</label>
+                            <label className="block text-caption text-ink-faint font-medium mb-1">Category</label>
                             <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full text-base text-ink bg-transparent focus:outline-none">
                                 {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
                                 <option value="other">Other (Please specify)</option>
@@ -190,7 +190,7 @@ const SignUpView: React.FC<SignUpViewProps> = ({ onBack, onSave, categories, cur
                         </div>
                         {category === 'other' && (
                             <div className="relative border-b border-line py-3">
-                                <label className="block text-xs text-ink-faint font-medium mb-1">Custom Category Name</label>
+                                <label className="block text-caption text-ink-faint font-medium mb-1">Custom Category Name</label>
                                 <input
                                     type="text"
                                     value={customCategory}
@@ -200,7 +200,7 @@ const SignUpView: React.FC<SignUpViewProps> = ({ onBack, onSave, categories, cur
                             </div>
                         )}
                          <div className="border-b border-line py-3">
-                             <label className="block text-xs text-ink-faint font-medium mb-1">Charge</label>
+                             <label className="block text-caption text-ink-faint font-medium mb-1">Charge</label>
                              <div className="flex items-center gap-2">
                                 <span className="text-base text-ink-soft">Ksh</span>
                                 <input type="number" placeholder="1000" value={charge} onChange={(e) => setCharge(e.target.value)} className="text-base text-ink bg-transparent focus:outline-none w-24"/>
@@ -223,8 +223,8 @@ const SignUpView: React.FC<SignUpViewProps> = ({ onBack, onSave, categories, cur
                         {requiresAsset && (
                             <div className="border-t border-line pt-4 mt-4 space-y-2">
                                 <h3 className="font-bold text-ink text-base">Link an Asset</h3>
-                                <p className="text-sm text-ink-soft">This service requires a registered vehicle. Please select one from your garage.</p>
-                                <select value={linkedAssetId} onChange={e => setLinkedAssetId(e.target.value)} className="w-full text-base text-ink bg-surface-muted border border-line p-3 rounded-lg focus:outline-none" required>
+                                <p className="text-body text-ink-soft">This service requires a registered vehicle. Please select one from your garage.</p>
+                                <select value={linkedAssetId} onChange={e => setLinkedAssetId(e.target.value)} className="w-full text-base text-ink bg-surface-muted border border-line p-3 rounded-Nonecontrol focus:outline-none" required>
                                     <option value="">-- Select your vehicle --</option>
                                     {myAssets.map(asset => (
                                         <option key={asset.id} value={asset.id}>
@@ -232,7 +232,7 @@ const SignUpView: React.FC<SignUpViewProps> = ({ onBack, onSave, categories, cur
                                         </option>
                                     ))}
                                 </select>
-                                <p className="text-xs text-center text-ink-soft pt-1">
+                                <p className="text-caption text-center text-ink-soft pt-1">
                                     Don't see your vehicle? 
                                     <button type="button" onClick={() => onNavigate('assetRegistry')} className="text-info underline ml-1 font-semibold">
                                         Go to Asset Registry
@@ -243,10 +243,10 @@ const SignUpView: React.FC<SignUpViewProps> = ({ onBack, onSave, categories, cur
 
 
                          <div className="py-3">
-                            <label className="block text-xs text-ink-faint font-medium mb-2">Call to Action Buttons (Select up to 2)</label>
+                            <label className="block text-caption text-ink-faint font-medium mb-2">Call to Action Buttons (Select up to 2)</label>
                             <div className="grid grid-cols-2 gap-2">
                                 {ctaOptions.map(option => (
-                                     <label key={option.value} className="flex items-center p-2 border rounded-md">
+                                     <label key={option.value} className="flex items-center p-2 border rounded-Nonecontrol">
                                         <input 
                                             type="checkbox" 
                                             value={option.value} 
@@ -255,7 +255,7 @@ const SignUpView: React.FC<SignUpViewProps> = ({ onBack, onSave, categories, cur
                                             disabled={!ctas.includes(option.value) && ctas.length >= 2}
                                             className="text-brand-navy focus:ring-brand-gold"
                                         />
-                                        <span className="ml-2 text-sm">{option.label}</span>
+                                        <span className="ml-2 text-body">{option.label}</span>
                                     </label>
                                 ))}
                             </div>
@@ -267,7 +267,7 @@ const SignUpView: React.FC<SignUpViewProps> = ({ onBack, onSave, categories, cur
             </main>
 
             <footer className="fixed bottom-0 left-0 right-0 max-w-sm mx-auto p-4 bg-surface-muted border-t border-line">
-                 <button onClick={handleSubmit} className="w-full bg-brand-navy text-white font-bold py-4 px-4 rounded-2xl hover:opacity-90 transition-colors shadow-lg">
+                 <button onClick={handleSubmit} className="w-full bg-brand-navy text-white font-bold py-4 px-4 rounded-Nonecard hover:opacity-90 transition-colors shadow-lg">
                     Create Profile
                 </button>
             </footer>

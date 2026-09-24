@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { ToolboxIcon } from './Icons';
 
 // Added 'scanDocument' to HubView to allow direct navigation to the scanning interface.
 type HubView = 'myDocuments' | 'quoteGenerator' | 'invoiceGenerator' | 'brandKit' | 'receiptGenerator' | 'scanDocument';
@@ -15,18 +16,16 @@ const QuoteIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w
 const ReceiptIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>;
 const ScanIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v1m6 11h2m-6.5 6.5v-1m-6.5-13L5.5 1m-4 4.5h1m13.5 6.5l-1-1M5.5 12.5v1m13.5-6.5L18 5m-1 6.5v-1m-6.5 6.5L5.5 18m13.5-6.5h-1M10 14v-4m-2 4h4" /></svg>;
 const FolderIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" /></svg>;
-const ToolboxIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>;
-
 
 const Stat: React.FC<{ value: string; label: string }> = ({ value, label }) => (
     <div className="text-center">
         <p className="text-2xl font-bold font-mono text-ink">{value}</p>
-        <p className="text-xs text-ink-soft uppercase tracking-wider">{label}</p>
+        <p className="text-caption text-ink-soft uppercase tracking-wider">{label}</p>
     </div>
 );
 
 const ActionCard: React.FC<{ title: string; icon: React.ReactNode; onClick: () => void }> = ({ title, icon, onClick }) => (
-    <button onClick={onClick} className="bg-info-strong text-white p-4 rounded-xl shadow-lg text-left w-full h-32 flex flex-col justify-between hover:bg-info-strong hover:-translate-y-1 transition-all duration-200">
+    <button onClick={onClick} className="bg-info-strong text-white p-4 rounded-Nonecard shadow-lg text-left w-full h-32 flex flex-col justify-between hover:bg-info-strong hover:-translate-y-1 transition-all duration-200">
         <div className="text-amber-400">
             {icon}
         </div>
@@ -35,7 +34,7 @@ const ActionCard: React.FC<{ title: string; icon: React.ReactNode; onClick: () =
 );
 
 const FileLink: React.FC<{ title: string, onClick: () => void, icon: React.ReactNode, stat: string }> = ({ title, onClick, icon, stat }) => (
-     <button onClick={onClick} className="bg-white p-4 rounded-xl shadow-sm text-left w-full hover:shadow-md hover:bg-surface-muted transition-all duration-200 border border-line flex justify-between items-center">
+     <button onClick={onClick} className="bg-white p-4 rounded-Nonecard shadow-sm text-left w-full hover:shadow-md hover:bg-surface-muted transition-all duration-200 border border-line flex justify-between items-center">
         <div className="flex items-center gap-4">
              <div className="text-ink-soft">
                 {icon}
@@ -43,12 +42,11 @@ const FileLink: React.FC<{ title: string, onClick: () => void, icon: React.React
             <h3 className="font-semibold text-ink">{title}</h3>
         </div>
         <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-ink-soft">{stat}</span>
+            <span className="text-body font-semibold text-ink-soft">{stat}</span>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-ink-faint" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
         </div>
     </button>
 );
-
 
 const InvoiceHub: React.FC<InvoiceHubProps> = ({ onNavigate, onBack }) => {
     return (
@@ -61,7 +59,7 @@ const InvoiceHub: React.FC<InvoiceHubProps> = ({ onNavigate, onBack }) => {
                  <button onClick={onBack} className="text-2xl text-ink-soft hover:text-ink">&times;</button>
             </header>
 
-            <div className="bg-white p-4 rounded-xl shadow-sm border border-line mb-6 flex justify-around">
+            <div className="bg-white p-4 rounded-Nonecard shadow-sm border border-line mb-6 flex justify-around">
                 <Stat value="3" label="Invoices" />
                 <Stat value="1" label="Quotes" />
                 <Stat value="5" label="Assets" />

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useMemo } from 'react';
 import type { CatalogueItem, CatalogueCategory, ServiceProvider } from '../types';
 import CatalogueItemDetailModal from './CatalogueItemDetailModal';
+import { BackIcon, ShareIcon } from './Icons';
 
 interface CatalogueViewProps {
     items: CatalogueItem[];
@@ -14,16 +15,14 @@ interface CatalogueViewProps {
 }
 
 // --- Icons ---
-const BackIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>;
-const ShareIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6.002l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.368a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" /></svg>;
 
 const CatalogueCard: React.FC<{item: CatalogueItem, onClick: () => void}> = ({ item, onClick }) => (
-    <div onClick={onClick} className="bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer group">
+    <div onClick={onClick} className="bg-white rounded-Nonecontrol shadow-sm overflow-hidden cursor-pointer group">
         <img src={item.imageUrls[0] || 'https://picsum.photos/seed/placeholder/400/300'} alt={item.title} className="w-full h-32 object-cover" />
         <div className="p-3">
-            <p className="text-xs font-bold text-brand-primary group-hover:underline">{item.category}</p>
+            <p className="text-caption font-bold text-brand-primary group-hover:underline">{item.category}</p>
             <h3 className="font-bold text-ink mt-1 truncate">{item.title}</h3>
-            <p className="text-sm font-semibold text-ink-soft mt-2">{item.price}</p>
+            <p className="text-body font-semibold text-ink-soft mt-2">{item.price}</p>
         </div>
     </div>
 );
@@ -75,7 +74,7 @@ const CatalogueFormModal: React.FC<{ onSave: (item: Omit<CatalogueItem, 'id' | '
     
     return (
         <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 p-4" onClick={onCancel}>
-            <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-sm" onClick={e => e.stopPropagation()}>
+            <div className="bg-white p-6 rounded-Nonecontrol shadow-xl w-full max-w-sm" onClick={e => e.stopPropagation()}>
                 <h2 className="text-xl font-bold text-ink mb-4">Add to Catalogue</h2>
                 <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-2">
                     <input value={title} onChange={e => setTitle(e.target.value)} type="text" placeholder="Item Title" className="w-full p-2 border rounded"/>
@@ -93,16 +92,16 @@ const CatalogueFormModal: React.FC<{ onSave: (item: Omit<CatalogueItem, 'id' | '
                     )}
 
                     <div>
-                        <label className="text-xs font-medium text-ink mb-1 block">Images (up to {maxImages})</label>
+                        <label className="text-caption font-medium text-ink mb-1 block">Images (up to {maxImages})</label>
                         <div className="grid grid-cols-3 gap-2">
                             {imagePreviews.map((src, index) => (
                                 <div key={index} className="relative aspect-square">
-                                    <img src={src} className="w-full h-full object-cover rounded-md" alt={`preview ${index}`}/>
-                                    <button onClick={() => removeImage(index)} className="absolute top-1 right-1 bg-black/50 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-mono leading-none">&times;</button>
+                                    <img src={src} className="w-full h-full object-cover rounded-Nonecontrol" alt={`preview ${index}`}/>
+                                    <button onClick={() => removeImage(index)} className="absolute top-1 right-1 bg-black/50 text-white rounded-full w-5 h-5 flex items-center justify-center text-caption font-mono leading-none">&times;</button>
                                 </div>
                             ))}
                             {imagePreviews.length < maxImages && (
-                                <button onClick={() => fileInputRef.current?.click()} className="aspect-square border-2 border-dashed rounded-md flex items-center justify-center text-ink-faint hover:bg-surface-muted transition-colors">
+                                <button onClick={() => fileInputRef.current?.click()} className="aspect-square border-2 border-dashed rounded-Nonecontrol flex items-center justify-center text-ink-faint hover:bg-surface-muted transition-colors">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                                 </button>
                             )}
@@ -111,8 +110,8 @@ const CatalogueFormModal: React.FC<{ onSave: (item: Omit<CatalogueItem, 'id' | '
                     </div>
                 </div>
                 <div className="flex gap-2 pt-4 mt-4 border-t">
-                    <button onClick={onCancel} className="flex-1 bg-surface-sunken font-bold py-2 px-4 rounded-lg">Cancel</button>
-                    <button onClick={handleSave} className="flex-1 bg-brand-primary text-white font-bold py-2 px-4 rounded-lg">Save Item</button>
+                    <button onClick={onCancel} className="flex-1 bg-surface-sunken font-bold py-2 px-4 rounded-Nonecontrol">Cancel</button>
+                    <button onClick={handleSave} className="flex-1 bg-brand-primary text-white font-bold py-2 px-4 rounded-Nonecontrol">Save Item</button>
                 </div>
             </div>
         </div>
@@ -121,13 +120,13 @@ const CatalogueFormModal: React.FC<{ onSave: (item: Omit<CatalogueItem, 'id' | '
 
 const ShareCatalogueModal: React.FC<{ catalogueUrl: string; onClose: () => void }> = ({ catalogueUrl, onClose }) => (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4" onClick={onClose}>
-        <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-xs" onClick={e => e.stopPropagation()}>
+        <div className="bg-white rounded-Nonecontrol shadow-xl p-6 w-full max-w-xs" onClick={e => e.stopPropagation()}>
             <h2 className="text-xl font-bold text-center mb-4">Share Your Catalogue</h2>
             <div className="flex justify-center">
-                <img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(catalogueUrl)}`} alt="Catalogue QR Code" className="w-48 h-48 rounded-lg"/>
+                <img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(catalogueUrl)}`} alt="Catalogue QR Code" className="w-48 h-48 rounded-Nonecontrol"/>
             </div>
-            <p className="text-xs text-ink-soft text-center mt-3">Scan this code to view and share your public catalogue page.</p>
-            <button onClick={onClose} className="mt-4 w-full bg-brand-dark text-white font-bold py-2 rounded-lg">Done</button>
+            <p className="text-caption text-ink-soft text-center mt-3">Scan this code to view and share your public catalogue page.</p>
+            <button onClick={onClose} className="mt-4 w-full bg-brand-dark text-white font-bold py-2 rounded-Nonecontrol">Done</button>
         </div>
     </div>
 );
@@ -179,13 +178,13 @@ const CatalogueView: React.FC<CatalogueViewProps> = ({ items, onUpdateItems, cur
                 />
                 <button 
                     onClick={() => bannerInputRef.current?.click()}
-                    className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-sm font-semibold transition-opacity"
+                    className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-body font-semibold transition-opacity"
                 >
                     Change Banner
                 </button>
                 <header className="absolute top-0 left-0 right-0 pt-4 px-4 flex justify-between items-center text-white z-10">
                     <button onClick={onBack} className="p-2 -ml-2"><BackIcon /></button>
-                    <span className="font-bold tracking-widest text-sm">{currentUser?.accountType === 'organization' ? 'MY COURSES' : 'MY CATALOGUE'}</span>
+                    <span className="font-bold tracking-widest text-body">{currentUser?.accountType === 'organization' ? 'MY COURSES' : 'MY CATALOGUE'}</span>
                     {items.length > 0 && <button onClick={() => setIsShareModalOpen(true)} className="p-2 -mr-2"><ShareIcon /></button>}
                 </header>
                 <div className="relative h-full flex flex-col items-center justify-center text-center text-white p-4">
@@ -201,7 +200,7 @@ const CatalogueView: React.FC<CatalogueViewProps> = ({ items, onUpdateItems, cur
                         <button 
                             key={filter}
                             onClick={() => setActiveFilter(filter)}
-                            className={`flex-shrink-0 px-5 py-2.5 text-sm font-bold rounded-full transition-all duration-200 shadow-md ${activeFilter === filter ? 'bg-slate-900 text-white' : 'bg-white text-ink'}`}
+                            className={`flex-shrink-0 px-5 py-2.5 text-body font-bold rounded-full transition-all duration-200 shadow-md ${activeFilter === filter ? 'bg-slate-900 text-white' : 'bg-white text-ink'}`}
                         >
                             {filter}
                         </button>
@@ -218,8 +217,8 @@ const CatalogueView: React.FC<CatalogueViewProps> = ({ items, onUpdateItems, cur
                 ) : (
                     <div className="text-center py-16 text-ink-soft">
                         <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto h-12 w-12 text-ink-faint" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4M4 7s0 4 8 4 8-4 8-4" /></svg>
-                        <h3 className="mt-2 text-sm font-medium text-ink">Your catalogue is empty</h3>
-                        <p className="mt-1 text-sm text-ink-soft">Tap the '+' button to add your first item.</p>
+                        <h3 className="mt-2 text-body font-medium text-ink">Your catalogue is empty</h3>
+                        <p className="mt-1 text-body text-ink-soft">Tap the '+' button to add your first item.</p>
                     </div>
                 )}
             </main>

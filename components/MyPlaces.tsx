@@ -100,7 +100,7 @@ const MyPlaces: React.FC<MyPlacesProps> = ({ providers, onSelectProvider, onNavi
                                 <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 ${isActive ? 'bg-brand-navy text-white shadow-md scale-110' : 'bg-surface-sunken text-ink-soft group-hover:bg-surface-sunken'}`}>
                                     {cat.icon}
                                 </div>
-                                <span className={`text-xs transition-colors ${isActive ? 'font-bold text-brand-navy' : 'font-medium text-ink-soft'}`}>
+                                <span className={`text-caption transition-colors ${isActive ? 'font-bold text-brand-navy' : 'font-medium text-ink-soft'}`}>
                                     {cat.label}
                                 </span>
                             </button>
@@ -114,7 +114,7 @@ const MyPlaces: React.FC<MyPlacesProps> = ({ providers, onSelectProvider, onNavi
                      <h2 className="text-lg font-bold text-ink">
                          {activeCategory === 'all' ? 'All Places Nearby' : `${CATEGORIES.find(c => c.id === activeCategory)?.label} Nearby`}
                      </h2>
-                     <span className="text-xs font-semibold text-ink-soft bg-surface-sunken px-2 py-1 rounded-full">{filteredProviders.length} results</span>
+                     <span className="text-caption font-semibold text-ink-soft bg-surface-sunken px-2 py-1 rounded-full">{filteredProviders.length} results</span>
                  </div>
 
                 {filteredProviders.length > 0 ? (
@@ -126,8 +126,8 @@ const MyPlaces: React.FC<MyPlacesProps> = ({ providers, onSelectProvider, onNavi
                 ) : (
                     <div className="flex flex-col items-center justify-center py-16 text-ink-faint">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mb-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
-                        <p className="text-sm font-medium">No places found in this category.</p>
-                        <button onClick={() => setActiveCategory('all')} className="mt-3 text-brand-gold font-bold text-sm hover:underline">View All Places</button>
+                        <p className="text-body font-medium">No places found in this category.</p>
+                        <button onClick={() => setActiveCategory('all')} className="mt-3 text-brand-gold font-bold text-body hover:underline">View All Places</button>
                     </div>
                 )}
             </main>

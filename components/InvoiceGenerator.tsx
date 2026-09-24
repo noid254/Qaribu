@@ -159,12 +159,12 @@ const InvoiceGenerator: React.FC<InvoiceGeneratorProps> = ({ assets, onSave, onB
   );
 };
 
-const formInputClass = "mt-1 w-full p-3 border border-line rounded-xl bg-surface-muted focus:bg-white focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none transition-all";
-const labelClass = "block text-xs font-bold text-ink-soft uppercase tracking-wide ml-1";
+const formInputClass = "mt-1 w-full p-3 border border-line rounded-Nonecontrol bg-surface-muted focus:bg-white focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none transition-all";
+const labelClass = "block text-caption font-bold text-ink-soft uppercase tracking-wide ml-1";
 
 const AddressStep: React.FC<any> = ({ fromName, setFromName, fromDetails, setFromDetails, toName, setToName, toDetails, setToDetails, invoiceNumber, setInvoiceNumber, date, setDate, dueDate, setDueDate, onNext }) => {
     return (
-        <div className="bg-white p-6 rounded-2xl shadow-sm space-y-6">
+        <div className="bg-white p-6 rounded-Nonecard shadow-sm space-y-6">
             <h2 className="text-xl font-bold text-brand-navy border-b pb-2">Invoice Details</h2>
             
             <div className="space-y-4">
@@ -197,7 +197,7 @@ const AddressStep: React.FC<any> = ({ fromName, setFromName, fromDetails, setFro
                     </div>
                 </div>
                 
-                <button onClick={onNext} className="w-full bg-brand-navy text-white font-bold py-4 rounded-xl shadow-lg mt-4 active:scale-95 transition-transform">
+                <button onClick={onNext} className="w-full bg-brand-navy text-white font-bold py-4 rounded-Nonecard shadow-lg mt-4 active:scale-95 transition-transform">
                     Next: Add Items
                 </button>
             </div>
@@ -236,12 +236,12 @@ const ItemsStep: React.FC<{lineItems: LineItem[], setLineItems: React.Dispatch<R
     };
 
     return (
-        <div className="bg-white p-6 rounded-2xl shadow-sm space-y-6">
+        <div className="bg-white p-6 rounded-Nonecard shadow-sm space-y-6">
             <h2 className="text-xl font-bold text-brand-navy border-b pb-2">Items & Calculations</h2>
             
             <div className="space-y-4">
-                <form onSubmit={handleFormSubmit} className="space-y-3 p-4 border border-brand-gold/30 bg-brand-gold/5 rounded-xl">
-                     <h3 className="font-bold text-sm text-brand-navy mb-2">Add New Item</h3>
+                <form onSubmit={handleFormSubmit} className="space-y-3 p-4 border border-brand-gold/30 bg-brand-gold/5 rounded-Nonecontrol">
+                     <h3 className="font-bold text-body text-brand-navy mb-2">Add New Item</h3>
                      <div>
                         <label className="text-[10px] uppercase font-bold text-ink-soft">Description</label>
                         <input id="item-description-input" value={desc} onChange={e => setDesc(e.target.value)} type="text" placeholder="Product or Service Name" className={formInputClass} required autoFocus/>
@@ -258,15 +258,15 @@ const ItemsStep: React.FC<{lineItems: LineItem[], setLineItems: React.Dispatch<R
                         </div>
                      </div>
                      
-                     <button type="submit" className="w-full bg-brand-navy text-white font-bold py-3 rounded-lg text-sm shadow-md mt-2">+ Add to List</button>
+                     <button type="submit" className="w-full bg-brand-navy text-white font-bold py-3 rounded-Nonecontrol text-body shadow-md mt-2">+ Add to List</button>
                 </form>
 
                 <div className="space-y-2 max-h-60 overflow-y-auto">
                     {lineItems.map(item => (
-                        <div key={item.id} className="flex justify-between items-center p-3 bg-surface-muted border border-line rounded-xl">
+                        <div key={item.id} className="flex justify-between items-center p-3 bg-surface-muted border border-line rounded-Nonecontrol">
                             <div>
                                 <p className="font-bold text-ink">{item.description}</p>
-                                <p className="text-xs text-ink-soft">{item.quantity} x {currencyFormatter.format(item.unitPrice)}</p>
+                                <p className="text-caption text-ink-soft">{item.quantity} x {currencyFormatter.format(item.unitPrice)}</p>
                             </div>
                             <div className="flex items-center gap-3">
                                 <p className="font-bold text-brand-navy">{currencyFormatter.format(item.quantity * item.unitPrice)}</p>
@@ -274,11 +274,11 @@ const ItemsStep: React.FC<{lineItems: LineItem[], setLineItems: React.Dispatch<R
                             </div>
                         </div>
                     ))}
-                    {lineItems.length === 0 && <p className="text-center text-sm text-ink-faint py-4">No items added yet.</p>}
+                    {lineItems.length === 0 && <p className="text-center text-body text-ink-faint py-4">No items added yet.</p>}
                 </div>
 
                 <div className="pt-4 border-t space-y-3">
-                    <h3 className="font-bold text-sm text-ink-soft">Adjustments</h3>
+                    <h3 className="font-bold text-body text-ink-soft">Adjustments</h3>
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="text-[10px] font-bold text-ink-soft">Discount</label>
@@ -300,8 +300,8 @@ const ItemsStep: React.FC<{lineItems: LineItem[], setLineItems: React.Dispatch<R
                 </div>
 
                 <div className="flex gap-3 pt-4">
-                    <button onClick={onBack} className="flex-1 bg-surface-sunken text-ink font-bold py-3 rounded-xl">Back</button>
-                    <button onClick={onNext} className="flex-1 bg-brand-navy text-white font-bold py-3 rounded-xl shadow-lg">Preview Invoice</button>
+                    <button onClick={onBack} className="flex-1 bg-surface-sunken text-ink font-bold py-3 rounded-Nonecontrol">Back</button>
+                    <button onClick={onNext} className="flex-1 bg-brand-navy text-white font-bold py-3 rounded-Nonecard shadow-lg">Preview Invoice</button>
                 </div>
             </div>
         </div>
@@ -312,10 +312,10 @@ const InvoicePreview = React.forwardRef<HTMLDivElement, any>(({ assets, fromName
     return (
         <div className="flex flex-col h-full">
             {/* Scale Wrapper for Fit-to-Page Effect on Mobile */}
-            <div className="flex-1 overflow-auto bg-surface-sunken p-2 md:p-4 rounded-xl border border-line flex justify-center mb-4 relative">
+            <div className="flex-1 overflow-auto bg-surface-sunken p-2 md:p-4 rounded-Nonecontrol border border-line flex justify-center mb-4 relative">
                  {/* The visual scaling container */}
                  <div className="transform scale-[0.45] origin-top md:scale-100 md:origin-top w-[210mm] h-[297mm] bg-white shadow-2xl">
-                    <div ref={ref} className="bg-white p-12 h-full w-full font-sans text-sm relative text-ink" style={{ width: '210mm', height: '297mm' }}>
+                    <div ref={ref} className="bg-white p-12 h-full w-full font-sans text-body relative text-ink" style={{ width: '210mm', height: '297mm' }}>
                         {/* Brand Header */}
                         <div className="flex justify-between items-start pb-8 border-b-2 border-gray-800 mb-8">
                             <div className="flex items-center gap-6">
@@ -327,24 +327,24 @@ const InvoicePreview = React.forwardRef<HTMLDivElement, any>(({ assets, fromName
                             </div>
                             <div className="text-right">
                                 <h3 className="font-bold text-lg">{fromName}</h3>
-                                <p className="whitespace-pre-line text-ink-soft text-xs mt-1">{fromDetails}</p>
+                                <p className="whitespace-pre-line text-ink-soft text-caption mt-1">{fromDetails}</p>
                             </div>
                         </div>
 
                         {/* Bill To & Dates */}
                         <div className="flex justify-between mb-12">
                             <div>
-                                <h3 className="text-xs font-bold text-ink-faint uppercase tracking-widest mb-2">Bill To</h3>
+                                <h3 className="text-caption font-bold text-ink-faint uppercase tracking-widest mb-2">Bill To</h3>
                                 <p className="font-bold text-lg text-ink">{toName}</p>
                                 <p className="whitespace-pre-line text-ink-soft">{toDetails}</p>
                             </div>
                             <div className="text-right space-y-2">
                                 <div>
-                                    <span className="text-xs font-bold text-ink-faint uppercase tracking-widest block">Date</span>
+                                    <span className="text-caption font-bold text-ink-faint uppercase tracking-widest block">Date</span>
                                     <span className="font-bold">{new Date(date).toLocaleDateString()}</span>
                                 </div>
                                 <div>
-                                    <span className="text-xs font-bold text-ink-faint uppercase tracking-widest block">Due Date</span>
+                                    <span className="text-caption font-bold text-ink-faint uppercase tracking-widest block">Due Date</span>
                                     <span className="font-bold text-danger">{new Date(dueDate).toLocaleDateString()}</span>
                                 </div>
                             </div>
@@ -354,10 +354,10 @@ const InvoicePreview = React.forwardRef<HTMLDivElement, any>(({ assets, fromName
                         <table className="w-full mb-8">
                             <thead>
                                 <tr className="border-b-2 border-gray-800 text-left">
-                                    <th className="py-3 font-bold uppercase text-xs tracking-wider">Description</th>
-                                    <th className="py-3 text-center font-bold uppercase text-xs tracking-wider w-20">Qty</th>
-                                    <th className="py-3 text-right font-bold uppercase text-xs tracking-wider w-32">Price</th>
-                                    <th className="py-3 text-right font-bold uppercase text-xs tracking-wider w-32">Total</th>
+                                    <th className="py-3 font-bold uppercase text-caption tracking-wider">Description</th>
+                                    <th className="py-3 text-center font-bold uppercase text-caption tracking-wider w-20">Qty</th>
+                                    <th className="py-3 text-right font-bold uppercase text-caption tracking-wider w-32">Price</th>
+                                    <th className="py-3 text-right font-bold uppercase text-caption tracking-wider w-32">Total</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -412,8 +412,8 @@ const InvoicePreview = React.forwardRef<HTMLDivElement, any>(({ assets, fromName
                         <div className="absolute bottom-12 left-12 right-12">
                             <div className="grid grid-cols-2 gap-8">
                                 <div>
-                                    <h3 className="text-xs font-bold text-ink-faint uppercase tracking-widest mb-2">Payment Details</h3>
-                                    <p className="text-xs text-ink-soft whitespace-pre-line leading-relaxed">{paymentInstructions}</p>
+                                    <h3 className="text-caption font-bold text-ink-faint uppercase tracking-widest mb-2">Payment Details</h3>
+                                    <p className="text-caption text-ink-soft whitespace-pre-line leading-relaxed">{paymentInstructions}</p>
                                 </div>
                                 <div className="flex justify-end items-end">
                                      <div className="text-center">
@@ -425,7 +425,7 @@ const InvoicePreview = React.forwardRef<HTMLDivElement, any>(({ assets, fromName
                                     </div>
                                 </div>
                             </div>
-                            <div className="mt-8 border-t pt-4 text-center text-ink-faint text-xs">
+                            <div className="mt-8 border-t pt-4 text-center text-ink-faint text-caption">
                                 <p>{notes}</p>
                                 <p className="mt-1">Generated by Niko Soko App</p>
                             </div>
@@ -435,8 +435,8 @@ const InvoicePreview = React.forwardRef<HTMLDivElement, any>(({ assets, fromName
             </div>
 
             <div className="flex gap-3 pt-2">
-                <button onClick={onBack} className="flex-1 bg-surface-sunken text-ink font-bold py-4 rounded-xl">Back to Edit</button>
-                <button onClick={onShare} className="flex-1 bg-success text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-2">
+                <button onClick={onBack} className="flex-1 bg-surface-sunken text-ink font-bold py-4 rounded-Nonecontrol">Back to Edit</button>
+                <button onClick={onShare} className="flex-1 bg-success text-white font-bold py-4 rounded-Nonecard shadow-lg flex items-center justify-center gap-2">
                     <span>Save & Share</span>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" /></svg>
                 </button>
@@ -469,10 +469,10 @@ const ShareInvoiceModal: React.FC<{clientPhone: string, onClose: () => void, inv
     
     return (
         <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 p-4" onClick={onClose}>
-            <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-sm" onClick={e => e.stopPropagation()}>
+            <div className="bg-white p-6 rounded-Nonecard shadow-xl w-full max-w-sm" onClick={e => e.stopPropagation()}>
                 <h2 className="text-xl font-bold mb-4 text-brand-navy">Share Invoice</h2>
-                <p className="text-sm text-ink-soft mb-4">Enter client's phone number to send the invoice link.</p>
-                <div className="flex items-center border rounded-xl bg-surface-muted mb-6 focus-within:ring-2 focus-within:ring-brand-gold">
+                <p className="text-body text-ink-soft mb-4">Enter client's phone number to send the invoice link.</p>
+                <div className="flex items-center border rounded-Nonecontrol bg-surface-muted mb-6 focus-within:ring-2 focus-within:ring-brand-gold">
                     <span className="pl-4 text-ink-soft font-bold">+254</span>
                     <input 
                         type="tel" 
@@ -483,16 +483,16 @@ const ShareInvoiceModal: React.FC<{clientPhone: string, onClose: () => void, inv
                     />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
-                    <button onClick={handleSendSMS} className="bg-surface-sunken hover:bg-surface-sunken text-ink font-bold py-3 rounded-xl transition">
+                    <button onClick={handleSendSMS} className="bg-surface-sunken hover:bg-surface-sunken text-ink font-bold py-3 rounded-Nonecontrol transition">
                         SMS
                     </button>
-                    <button onClick={handleSendWhatsApp} className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
+                    <button onClick={handleSendWhatsApp} className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3 rounded-Nonecontrol transition flex items-center justify-center gap-2">
                         WhatsApp
                     </button>
                 </div>
                 <div className="flex gap-2 mt-4">
-                    <button onClick={onClose} className="flex-1 bg-surface-sunken text-ink-soft text-sm font-semibold py-2 rounded-lg">Cancel</button>
-                    <button onClick={onDone} className="flex-1 bg-brand-navy text-white text-sm font-semibold py-2 rounded-lg">Done</button>
+                    <button onClick={onClose} className="flex-1 bg-surface-sunken text-ink-soft text-body font-semibold py-2 rounded-Nonecontrol">Cancel</button>
+                    <button onClick={onDone} className="flex-1 bg-brand-navy text-white text-body font-semibold py-2 rounded-Nonecontrol">Done</button>
                 </div>
             </div>
         </div>

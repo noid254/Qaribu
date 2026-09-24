@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { BackIcon } from './Icons';
 
-const BackIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>;
 const SendIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>;
 
 interface Message {
@@ -99,9 +99,9 @@ const MessageCenterView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 {messages.map(msg => (
                     <div key={msg.id} className={`flex items-end gap-2 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                        <div className={`max-w-[80%] p-3 rounded-2xl ${msg.sender === 'user' ? 'bg-brand-navy text-white rounded-br-none' : 'bg-white text-ink rounded-bl-none shadow-sm'}`}>
-                            <p className="text-sm" style={{ wordBreak: 'break-word' }}>{msg.text}</p>
-                            <p className={`text-xs mt-1 ${msg.sender === 'user' ? 'text-gray-300' : 'text-ink-faint'} text-right`}>{msg.timestamp}</p>
+                        <div className={`max-w-[80%] p-3 rounded-Nonecard ${msg.sender === 'user' ? 'bg-brand-navy text-white rounded-br-none' : 'bg-white text-ink rounded-bl-none shadow-sm'}`}>
+                            <p className="text-body" style={{ wordBreak: 'break-word' }}>{msg.text}</p>
+                            <p className={`text-caption mt-1 ${msg.sender === 'user' ? 'text-gray-300' : 'text-ink-faint'} text-right`}>{msg.timestamp}</p>
                         </div>
                     </div>
                 ))}
@@ -115,7 +115,7 @@ const MessageCenterView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                         placeholder="Type a message..."
-                        className="w-full p-3 bg-surface-sunken rounded-full focus:outline-none focus:ring-2 focus:ring-brand-gold text-sm"
+                        className="w-full p-3 bg-surface-sunken rounded-full focus:outline-none focus:ring-2 focus:ring-brand-gold text-body"
                     />
                     <button type="submit" className="p-3 bg-brand-navy text-white rounded-full flex-shrink-0 active-scale">
                         <SendIcon />

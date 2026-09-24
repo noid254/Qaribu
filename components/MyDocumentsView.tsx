@@ -17,20 +17,20 @@ const documentIcons: Record<DocumentType, React.ReactNode> = {
 
 const DocumentListItem: React.FC<{ doc: Document; onClick: () => void }> = ({ doc, onClick }) => {
     return (
-        <button onClick={onClick} className="w-full text-left bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-line">
+        <button onClick={onClick} className="w-full text-left bg-white p-3 rounded-Nonecontrol shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-line">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="bg-surface-sunken p-2 rounded-lg">{documentIcons[doc.type]}</div>
+                    <div className="bg-surface-sunken p-2 rounded-Nonecontrol">{documentIcons[doc.type]}</div>
                     <div>
-                        <p className="font-bold text-ink">{doc.type} <span className="text-ink-soft font-medium text-sm">#{doc.number}</span></p>
-                        <p className="text-xs text-ink-soft">
+                        <p className="font-bold text-ink">{doc.type} <span className="text-ink-soft font-medium text-body">#{doc.number}</span></p>
+                        <p className="text-caption text-ink-soft">
                             {doc.clientName ? `To: ${doc.clientName}` : `From: ${doc.issuerName}`}
                         </p>
                     </div>
                 </div>
                 <div className="text-right">
                     <p className="text-base font-bold text-ink">{doc.currency} {doc.amount.toLocaleString()}</p>
-                    <span className={`mt-1 inline-block text-xs font-semibold px-2 py-0.5 rounded-full ${statusStyles[doc.paymentStatus]}`}>{doc.paymentStatus}</span>
+                    <span className={`mt-1 inline-block text-caption font-semibold px-2 py-0.5 rounded-full ${statusStyles[doc.paymentStatus]}`}>{doc.paymentStatus}</span>
                 </div>
             </div>
         </button>
@@ -84,7 +84,7 @@ const MyDocumentsView: React.FC<MyDocumentsViewProps> = ({ documents, onScan, on
 
             <div className="p-4 space-y-4 flex-1 overflow-y-auto">
                 
-                <button onClick={onScan} className="w-full bg-brand-dark text-white font-bold py-3 px-4 rounded-xl shadow-md hover:bg-black transition-transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                <button onClick={onScan} className="w-full bg-brand-dark text-white font-bold py-3 px-4 rounded-Nonecard shadow-md hover:bg-black transition-transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                     Scan New Receipt
                 </button>
@@ -94,7 +94,7 @@ const MyDocumentsView: React.FC<MyDocumentsViewProps> = ({ documents, onScan, on
                         <button 
                             key={f}
                             onClick={() => setFilter(f)}
-                            className={`px-4 py-1.5 text-sm font-semibold rounded-full flex-shrink-0 border transition-colors ${filter === f ? 'bg-brand-dark text-white border-brand-dark' : 'bg-white text-ink border-line'}`}
+                            className={`px-4 py-1.5 text-body font-semibold rounded-full flex-shrink-0 border transition-colors ${filter === f ? 'bg-brand-dark text-white border-brand-dark' : 'bg-white text-ink border-line'}`}
                         >
                             {f}
                         </button>
@@ -108,8 +108,8 @@ const MyDocumentsView: React.FC<MyDocumentsViewProps> = ({ documents, onScan, on
                 ) : (
                     <div className="text-center py-16 text-ink-soft">
                         <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto h-12 w-12 text-ink-faint" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" /></svg>
-                        <h3 className="mt-2 text-sm font-medium text-ink">No documents found</h3>
-                        <p className="mt-1 text-sm text-ink-soft">Your documents in this category will appear here.</p>
+                        <h3 className="mt-2 text-body font-medium text-ink">No documents found</h3>
+                        <p className="mt-1 text-body text-ink-soft">Your documents in this category will appear here.</p>
                     </div>
                 )}
             </div>

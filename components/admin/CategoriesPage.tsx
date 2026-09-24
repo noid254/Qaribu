@@ -18,16 +18,16 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ categories, onAddCatego
     };
 
     return (
-        <div className="bg-white rounded-lg shadow-sm p-4 max-w-md mx-auto">
+        <div className="bg-white rounded-Nonecontrol shadow-sm p-4 max-w-md mx-auto">
             <h2 className="text-lg font-bold text-ink mb-4">Manage Categories</h2>
                 <form onSubmit={handleAddCategory} className="flex mb-4">
-                <input type="text" value={newCategory} onChange={(e) => setNewCategory(e.target.value)} placeholder="New category name..." className="flex-grow border rounded-l px-2 py-2 text-sm border-line focus:ring-brand-primary focus:border-brand-primary"/>
-                <button type="submit" className="bg-brand-primary text-white px-4 rounded-r text-sm font-semibold">Add</button>
+                <input type="text" value={newCategory} onChange={(e) => setNewCategory(e.target.value)} placeholder="New category name..." className="flex-grow border rounded-l px-2 py-2 text-body border-line focus:ring-brand-primary focus:border-brand-primary"/>
+                <button type="submit" className="bg-brand-primary text-white px-4 rounded-r text-body font-semibold">Add</button>
             </form>
             <div className="space-y-2 max-h-60 overflow-y-auto">
                 {categories.sort().map(cat => (
                     <div key={cat} className="flex justify-between items-center bg-surface-sunken p-2 rounded">
-                        <span className="text-sm">{cat}</span>
+                        <span className="text-body">{cat}</span>
                         <button onClick={() => onDeleteCategory(cat)} className="text-danger hover:text-danger-strong font-bold text-lg leading-none">&times;</button>
                     </div>
                 ))}

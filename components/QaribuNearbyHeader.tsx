@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { BackIcon, SearchIcon as SharedSearchIcon, QRIcon as SharedQRIcon } from './Icons';
 
 // Icons
-const BackIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>;
-const SearchIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>;
-const QRIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6.5 6.5v-1m-6.5-13L5.5 1m-4 4.5h1m13.5 6.5l-1-1M5.5 12.5v1m13.5-6.5L18 5m-1 6.5v-1m-6.5 6.5L5.5 18m13.5-6.5h-1M10 14v-4m-2 4h4" /></svg>;
+
+const SearchIcon = () => <SharedSearchIcon className="h-5 w-5" />;
+const QRIcon = () => <SharedQRIcon className="h-5 w-5" />;
 const BellIcon: React.FC<{ hasNotification: boolean }> = ({ hasNotification }) => (
     <div className="relative">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
@@ -11,14 +12,12 @@ const BellIcon: React.FC<{ hasNotification: boolean }> = ({ hasNotification }) =
     </div>
 );
 
-
 const qaribuFilters = {
     PLACES: ['all', 'restaurants', 'hotels', 'shops', 'offices'],
     PEOPLE: ['all', 'electricians', 'plumbers', 'cleaners', 'tutors'],
     SERVICES: ['all', 'delivery', 'repair', 'consulting', 'events'],
 };
 type ParentCategory = keyof typeof qaribuFilters;
-
 
 interface QaribuNearbyHeaderProps {
     onBack: () => void;
@@ -67,9 +66,9 @@ const QaribuNearbyHeader: React.FC<QaribuNearbyHeaderProps> = ({ onBack, searchT
                         placeholder="Search nearby..."
                         value={searchTerm}
                         onChange={handleSearchChange}
-                        className="w-full bg-surface-sunken rounded-full pl-10 pr-24 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold"
+                        className="w-full bg-surface-sunken rounded-full pl-10 pr-24 py-2 text-body focus:outline-none focus:ring-2 focus:ring-brand-gold"
                     />
-                    <button onClick={onScan} className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5 text-brand-navy font-semibold bg-surface-sunken hover:bg-gray-300 rounded-full px-3 py-1 text-xs">
+                    <button onClick={onScan} className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5 text-brand-navy font-semibold bg-surface-sunken hover:bg-gray-300 rounded-full px-3 py-1 text-caption">
                         <QRIcon />
                         <span>Scan</span>
                     </button>
@@ -85,7 +84,7 @@ const QaribuNearbyHeader: React.FC<QaribuNearbyHeaderProps> = ({ onBack, searchT
                     <React.Fragment key={parent}>
                         <button
                             onClick={() => handleParentClick(parent)}
-                            className={`flex-shrink-0 font-bold uppercase text-sm transition-colors py-1 ${activeParent === parent ? 'text-brand-navy' : 'text-ink-soft'}`}
+                            className={`flex-shrink-0 font-bold uppercase text-body transition-colors py-1 ${activeParent === parent ? 'text-brand-navy' : 'text-ink-soft'}`}
                         >
                             {parent}
                         </button>
@@ -93,7 +92,7 @@ const QaribuNearbyHeader: React.FC<QaribuNearbyHeaderProps> = ({ onBack, searchT
                              <button
                                 key={child}
                                 onClick={() => handleChildClick(child)}
-                                className={`flex-shrink-0 lowercase text-sm transition-colors py-1 ${activeChild === child ? 'text-brand-navy font-semibold' : 'text-ink-soft'}`}
+                                className={`flex-shrink-0 lowercase text-body transition-colors py-1 ${activeChild === child ? 'text-brand-navy font-semibold' : 'text-ink-soft'}`}
                             >
                                 {child}
                             </button>

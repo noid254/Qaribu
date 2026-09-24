@@ -1,12 +1,11 @@
 import React, { useState, useRef } from 'react';
 import type { CatalogueItem } from '../types';
+import { BackIcon } from './Icons';
 
 interface CreateProductPostViewProps {
     onBack: () => void;
     onSave: (item: Omit<CatalogueItem, 'id' | 'providerId'>) => void;
 }
-
-const BackIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>;
 
 const CreateProductPostView: React.FC<CreateProductPostViewProps> = ({ onBack, onSave }) => {
     const [title, setTitle] = useState('');
@@ -51,7 +50,7 @@ const CreateProductPostView: React.FC<CreateProductPostViewProps> = ({ onBack, o
         });
     };
     
-    const inputClass = "w-full p-3 border rounded-lg bg-surface-sunken focus:bg-white focus:ring-2 focus:ring-brand-gold focus:outline-none transition";
+    const inputClass = "w-full p-3 border rounded-Nonecontrol bg-surface-sunken focus:bg-white focus:ring-2 focus:ring-brand-gold focus:outline-none transition";
 
     return (
         <div className="w-full max-w-sm mx-auto h-screen bg-surface-muted flex flex-col font-sans">
@@ -64,16 +63,16 @@ const CreateProductPostView: React.FC<CreateProductPostViewProps> = ({ onBack, o
 
             <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 space-y-4">
                 <div>
-                    <label className="text-sm font-semibold text-ink mb-1 block">Product Images (up to {maxImages})</label>
+                    <label className="text-body font-semibold text-ink mb-1 block">Product Images (up to {maxImages})</label>
                     <div className="grid grid-cols-3 gap-2">
                         {imagePreviews.map((src, index) => (
                             <div key={index} className="relative aspect-square">
-                                <img src={src} className="w-full h-full object-cover rounded-md" alt={`preview ${index}`}/>
-                                <button type="button" onClick={() => removeImage(index)} className="absolute top-1 right-1 bg-black/50 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-mono leading-none">&times;</button>
+                                <img src={src} className="w-full h-full object-cover rounded-Nonecontrol" alt={`preview ${index}`}/>
+                                <button type="button" onClick={() => removeImage(index)} className="absolute top-1 right-1 bg-black/50 text-white rounded-full w-5 h-5 flex items-center justify-center text-caption font-mono leading-none">&times;</button>
                             </div>
                         ))}
                         {imagePreviews.length < maxImages && (
-                            <button type="button" onClick={() => fileInputRef.current?.click()} className="aspect-square border-2 border-dashed rounded-md flex items-center justify-center text-ink-faint hover:bg-surface-sunken transition-colors">
+                            <button type="button" onClick={() => fileInputRef.current?.click()} className="aspect-square border-2 border-dashed rounded-Nonecontrol flex items-center justify-center text-ink-faint hover:bg-surface-sunken transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                             </button>
                         )}
@@ -90,18 +89,18 @@ const CreateProductPostView: React.FC<CreateProductPostViewProps> = ({ onBack, o
                 
                 <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Product Description" rows={5} className={inputClass} required/>
 
-                <div className="p-3 bg-surface-sunken rounded-lg">
-                    <h3 className="font-semibold text-ink text-sm mb-2">Item Verification</h3>
+                <div className="p-3 bg-surface-sunken rounded-Nonecontrol">
+                    <h3 className="font-semibold text-ink text-body mb-2">Item Verification</h3>
                     <input value={serialNumber} onChange={e => setSerialNumber(e.target.value)} type="text" placeholder="Serial Number / IMEI (Optional)" className={`${inputClass} bg-white`} />
                     <label className="flex items-center gap-3 mt-3 cursor-pointer">
                         <input type="checkbox" checked={hasReceipt} onChange={e => setHasReceipt(e.target.checked)} className="h-5 w-5 rounded text-brand-gold focus:ring-brand-gold" />
-                        <span className="text-sm text-ink">I have the original receipt for this item.</span>
+                        <span className="text-body text-ink">I have the original receipt for this item.</span>
                     </label>
                 </div>
             </form>
             
             <footer className="p-4 bg-white border-t">
-                <button onClick={handleSubmit} className="w-full bg-brand-navy text-white font-bold py-4 px-4 rounded-xl hover:opacity-90 transition-colors shadow-lg active-scale">
+                <button onClick={handleSubmit} className="w-full bg-brand-navy text-white font-bold py-4 px-4 rounded-Nonecard hover:opacity-90 transition-colors shadow-lg active-scale">
                     Save Product
                 </button>
             </footer>

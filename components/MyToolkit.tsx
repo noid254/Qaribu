@@ -67,10 +67,10 @@ const MyToolkit: React.FC<MyToolkitProps> = ({ allTools, selectedTools, onSave, 
                             <div key={tool.page} className="relative">
                                 <button 
                                     onClick={() => onNavigate(tool.page)}
-                                    className={`bg-white p-4 rounded-2xl shadow-sm text-center active-scale transition-all flex flex-col items-center justify-center aspect-square w-full border-2 ${isSelected ? 'border-brand-gold' : 'border-transparent'}`}
+                                    className={`bg-white p-4 rounded-Nonecard shadow-sm text-center active-scale transition-all flex flex-col items-center justify-center aspect-square w-full border-2 ${isSelected ? 'border-brand-gold' : 'border-transparent'}`}
                                 >
                                     {tool.icon}
-                                    <span className="text-sm font-semibold text-ink mt-2">{tool.label}</span>
+                                    <span className="text-body font-semibold text-ink mt-2">{tool.label}</span>
                                 </button>
                                 <button 
                                     onClick={() => handleToggle(tool.page)}
@@ -85,7 +85,7 @@ const MyToolkit: React.FC<MyToolkitProps> = ({ allTools, selectedTools, onSave, 
             </main>
 
             <footer className="fixed bottom-0 left-0 right-0 max-w-sm mx-auto p-4 bg-white/80 backdrop-blur-sm border-t border-line">
-                 <button onClick={handleSave} className="w-full bg-brand-navy text-white font-bold py-4 px-4 rounded-2xl hover:opacity-90 transition-colors shadow-lg">
+                 <button onClick={handleSave} className="w-full bg-brand-navy text-white font-bold py-4 px-4 rounded-Nonecard hover:opacity-90 transition-colors shadow-lg">
                     Save Changes ({currentSelection.length}/6)
                 </button>
             </footer>

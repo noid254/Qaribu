@@ -2,6 +2,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import type { ServiceProvider, SpecialBanner, CurrentPage } from '../types';
 import ServiceCard from './ServiceCard';
+import { SearchIcon, QRIcon } from './Icons';
 
 // --- Icons ---
 const MenuIcon = ({ className = "h-7 w-7" }: { className?: string }) => <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" /></svg>;
@@ -11,8 +12,6 @@ const BellIcon = ({ hasNotification, className = "h-7 w-7" }: { hasNotification:
         {hasNotification && <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-danger rounded-full border-2 border-white"></div>}
     </div>
 );
-const SearchIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-ink-faint" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>;
-const QRIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6.5 6.5v-1m-6.5-13L5.5 1m-4 4.5h1m13.5 6.5l-1-1M5.5 12.5v1m13.5-6.5L18 5m-1 6.5v-1m-6.5 6.5L5.5 18m13.5-6.5h-1M10 14v-4m-2 4h4" /></svg>;
 
 // Toolkit Icons
 const GatePassIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11.536 9.636a6 6 0 111.414-1.414l1.236 2.236A6 6 0 0119 9a2 2 0 01-2-2zM7.53 12.53l.223.223A2 2 0 009.5 13h2a2 2 0 002-2V9a2 2 0 00-1.767.77l-.223.223 1.768 1.768z" /></svg>;
@@ -125,7 +124,7 @@ const NikoSoko: React.FC<NikoSokoProps> = ({ providers, onSelectProvider, search
             <div className="flex-1 flex items-center px-3 gap-2">
                 <SearchIcon />
                 <input 
-                    className="w-full outline-none text-sm text-ink placeholder-gray-400 bg-transparent" 
+                    className="w-full outline-none text-body text-ink placeholder-gray-400 bg-transparent" 
                     placeholder={compact ? "Search..." : "What are you looking for?"}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -187,7 +186,7 @@ const NikoSoko: React.FC<NikoSokoProps> = ({ providers, onSelectProvider, search
                         <h1 className="text-3xl font-bold text-white font-serif mb-1 drop-shadow-lg text-center uppercase tracking-wide">
                             Qaribu <span className="text-brand-gold">Nairobi</span>
                         </h1>
-                        <p className="text-gray-200 text-xs drop-shadow-md font-medium tracking-wider opacity-90">Your Borderless Currency</p>
+                        <p className="text-gray-200 text-caption drop-shadow-md font-medium tracking-wider opacity-90">Your Borderless Currency</p>
                     </div>
 
                     {/* Floating Search Bar (Inside Card at bottom) */}
@@ -218,7 +217,7 @@ const NikoSoko: React.FC<NikoSokoProps> = ({ providers, onSelectProvider, search
                         {nearbyFilter !== 'all' ? nearbyFilter : 'Nearby Highlights'}
                     </h3>
                     {nearbyFilter !== 'all' && (
-                         <button onClick={() => {setSearchTerm(''); setNearbyFilter('all');}} className="text-brand-gold text-xs font-bold">
+                         <button onClick={() => {setSearchTerm(''); setNearbyFilter('all');}} className="text-brand-gold text-caption font-bold">
                             Clear Filter
                         </button>
                     )}
@@ -237,7 +236,7 @@ const NikoSoko: React.FC<NikoSokoProps> = ({ providers, onSelectProvider, search
                 ) : (
                     <div className="card text-center py-12">
                         <p className="text-ink-faint text-body">No results found nearby.</p>
-                        <button onClick={() => {setSearchTerm(''); setNearbyFilter('all');}} className="mt-2 text-brand-gold font-bold text-sm">Clear Filters</button>
+                        <button onClick={() => {setSearchTerm(''); setNearbyFilter('all');}} className="mt-2 text-brand-gold font-bold text-body">Clear Filters</button>
                     </div>
                 )}
             </div>

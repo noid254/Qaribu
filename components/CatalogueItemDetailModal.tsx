@@ -1,5 +1,6 @@
 import React from 'react';
 import type { CatalogueItem, ServiceProvider } from '../types';
+import { CallIcon, WhatsAppIcon, ClockIcon } from './Icons';
 
 interface CatalogueItemDetailModalProps {
   item: CatalogueItem;
@@ -9,10 +10,6 @@ interface CatalogueItemDetailModalProps {
   onAuthClick: () => void;
   onInitiateContact: (provider: ServiceProvider) => boolean;
 }
-
-const CallIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>;
-const WhatsAppIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99 0-3.903-.52-5.586-1.456l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 4.315 1.731 6.086l.474 1.039-1.04 3.833 3.855-1.017z" /></svg>;
-const ClockIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
 
 const CatalogueItemDetailModal: React.FC<CatalogueItemDetailModalProps> = ({ item, onClose, provider, isAuthenticated, onAuthClick, onInitiateContact }) => {
   const handleCall = () => {
@@ -40,7 +37,7 @@ const CatalogueItemDetailModal: React.FC<CatalogueItemDetailModalProps> = ({ ite
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-end z-50 animate-fade-in" onClick={onClose}>
       <div 
-        className="bg-surface-muted rounded-t-3xl shadow-2xl w-full max-w-sm h-[95vh] flex flex-col animate-slide-in-up" 
+        className="bg-surface-muted rounded-t-sheet shadow-2xl w-full max-w-sm h-[95vh] flex flex-col animate-slide-in-up" 
         onClick={e => e.stopPropagation()}
       >
         <div className="p-4 flex-shrink-0 text-center relative cursor-grab" onTouchStart={onClose}>
@@ -61,15 +58,15 @@ const CatalogueItemDetailModal: React.FC<CatalogueItemDetailModalProps> = ({ ite
             </div>
 
             <div className="p-5 space-y-4">
-              <p className="text-sm font-bold text-brand-gold uppercase tracking-wider">{item.category}</p>
+              <p className="text-body font-bold text-brand-gold uppercase tracking-wider">{item.category}</p>
               <h1 className="text-3xl font-bold text-ink leading-tight">{item.title}</h1>
               <p className="text-3xl font-bold text-brand-navy">{item.price}</p>
 
               {item.serialNumber && (
-                <p className="text-sm text-ink-soft font-mono">SN: {item.serialNumber}</p>
+                <p className="text-body text-ink-soft font-mono">SN: {item.serialNumber}</p>
               )}
 
-              <div className={`p-3 rounded-lg text-sm ${item.isVerified ? 'bg-info-soft border border-info-soft text-info-strong' : 'bg-warning-soft border border-warning-soft text-warning-strong'}`}>
+              <div className={`p-3 rounded-Nonecontrol text-body ${item.isVerified ? 'bg-info-soft border border-info-soft text-info-strong' : 'bg-warning-soft border border-warning-soft text-warning-strong'}`}>
                 <p className="font-semibold">
                     {item.isVerified
                         ? "Seller has confirmed they have proof of purchase."
@@ -81,24 +78,24 @@ const CatalogueItemDetailModal: React.FC<CatalogueItemDetailModalProps> = ({ ite
               {item.duration && (
                 <div className="flex items-center gap-2 text-ink-soft">
                     <ClockIcon />
-                    <p className="text-sm font-semibold">{item.duration}</p>
+                    <p className="text-body font-semibold">{item.duration}</p>
                 </div>
               )}
               
               {item.discountInfo && (
-                <div className="mt-4 p-3 bg-success-soft border border-success-soft rounded-lg text-center">
+                <div className="mt-4 p-3 bg-success-soft border border-success-soft rounded-Nonecontrol text-center">
                   <p className="font-bold text-success-strong">{item.discountInfo}</p>
                 </div>
               )}
 
               <div className="pt-4 border-t border-line">
                   <h2 className="text-md font-semibold text-ink mb-2">Description</h2>
-                  <p className="text-sm text-ink leading-relaxed">{item.description}</p>
+                  <p className="text-body text-ink leading-relaxed">{item.description}</p>
               </div>
 
               {item.externalLink && (
                     <div className="pt-4">
-                        <a href={item.externalLink} target="_blank" rel="noopener noreferrer" className="block w-full bg-success text-white font-bold py-3 px-4 rounded-xl text-center transition-colors hover:bg-success-strong active-scale">
+                        <a href={item.externalLink} target="_blank" rel="noopener noreferrer" className="block w-full bg-success text-white font-bold py-3 px-4 rounded-Nonecontrol text-center transition-colors hover:bg-success-strong active-scale">
                             Visit Course Page
                         </a>
                     </div>
@@ -108,12 +105,12 @@ const CatalogueItemDetailModal: React.FC<CatalogueItemDetailModalProps> = ({ ite
 
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-line shadow-[0_-2px_10px_rgba(0,0,0,0.05)] flex items-center gap-3">
           {provider?.phone && (
-              <button onClick={handleCall} className="flex-1 bg-surface-sunken text-ink font-bold py-4 px-4 rounded-xl hover:bg-gray-300 transition-colors flex items-center justify-center gap-2 active-scale">
+              <button onClick={handleCall} className="flex-1 bg-surface-sunken text-ink font-bold py-4 px-4 rounded-Nonecontrol hover:bg-gray-300 transition-colors flex items-center justify-center gap-2 active-scale">
                   <CallIcon /> Call
               </button>
           )}
           {provider?.whatsapp && (
-              <button onClick={handleWhatsApp} className="flex-1 bg-brand-navy text-white font-bold py-4 px-4 rounded-xl hover:opacity-90 transition-colors flex items-center justify-center gap-2 active-scale">
+              <button onClick={handleWhatsApp} className="flex-1 bg-brand-navy text-white font-bold py-4 px-4 rounded-Nonecontrol hover:opacity-90 transition-colors flex items-center justify-center gap-2 active-scale">
                   <WhatsAppIcon /> WhatsApp
               </button>
           )}
