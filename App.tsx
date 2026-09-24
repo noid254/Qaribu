@@ -8,7 +8,7 @@ import {
 
 import AuthModal from './components/AuthModal';
 import SideMenu from './components/SideMenu';
-import NikoSoko from './components/NikoSoko';
+import HomeDoor from './components/HomeDoor';
 import ServiceMarketplace from './components/ServiceMarketplace';
 import MyPlaces from './components/MyPlaces';
 import GatePass from './components/GatePass';
@@ -370,15 +370,20 @@ function App() {
     switch (currentPage) {
       case 'home':
         return (
-          <NikoSoko
+          <HomeDoor
             providers={providers}
-            onSelectProvider={handleSelectProvider}
+            catalogueItems={catalogueItems}
+            documents={documents}
+            premises={premises}
+            currentUser={currentUser}
+            isAuthenticated={isAuthenticated}
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
-            onBack={() => setIsSideMenuOpen(true)}
-            onMessagesClick={() => setCurrentPage('messages')}
             hasNewMessages={inboxMessages.length > 0}
-            specialBanners={specialBanners}
+            onOpenMenu={() => setIsSideMenuOpen(true)}
+            onMessagesClick={() => setCurrentPage('messages')}
+            onAuthClick={() => setIsAuthModalOpen(true)}
+            onSelectProvider={handleSelectProvider}
             onNavigate={setCurrentPage}
           />
         );

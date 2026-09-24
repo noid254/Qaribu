@@ -49,6 +49,12 @@
               'brand-navy-light': '#2B4270',
               'brand-gold-dark': '#D97706',
               'brand-gold-soft': '#FEF3C7',
+              // "Threshold" theme: night sky + doorway light + on-chain teal
+              'night': '#0A1120',
+              'night-raised': '#131F38',
+              'night-line': '#22324F',
+              'glow': '#FFC24B',
+              'chain': { DEFAULT: '#2DD4BF', soft: '#CCFBF1', strong: '#0F766E' },
               // Surfaces & text
               'surface': '#FFFFFF',
               'surface-muted': '#F9FAFB',
@@ -166,6 +172,16 @@
       button:active, .active-scale:active {
         transform: scale(0.96);
       }
+      /* Threshold theme motion */
+      @keyframes door-breathe { 0%,100% { opacity: .75; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
+      @keyframes ray-drift { 0%,100% { opacity: .35; } 50% { opacity: .6; } }
+      @keyframes rise-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+      .door-breathe { animation: door-breathe 5s ease-in-out infinite; }
+      .ray-drift { animation: ray-drift 6s ease-in-out infinite; }
+      .rise-in { animation: rise-in .6s ease-out both; }
+      .rise-in-2 { animation: rise-in .6s .1s ease-out both; }
+      .rise-in-3 { animation: rise-in .6s .2s ease-out both; }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
       body { -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
       :focus-visible { outline: 2px solid #F59E0B; outline-offset: 2px; }
       @media (prefers-reduced-motion: reduce) {
