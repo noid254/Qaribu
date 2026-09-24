@@ -42,17 +42,86 @@
               serif: ['Playfair Display', 'serif'],
             },
             colors: {
+              // Brand
               'brand-navy': '#1A2B48',
               'brand-gold': '#F59E0B',
+              'brand-navy-dark': '#111D33',
+              'brand-navy-light': '#2B4270',
+              'brand-gold-dark': '#D97706',
+              'brand-gold-soft': '#FEF3C7',
+              // Surfaces & text
+              'surface': '#FFFFFF',
+              'surface-muted': '#F9FAFB',
+              'surface-sunken': '#F3F4F6',
+              'line': '#E5E7EB',
+              'ink': '#1A2B48',
+              'ink-soft': '#4B5563',
+              'ink-faint': '#9CA3AF',
+              // Semantic status (use these instead of ad-hoc blue/green/red shades)
+              'success': { DEFAULT: '#16A34A', soft: '#DCFCE7', strong: '#166534' },
+              'danger':  { DEFAULT: '#DC2626', soft: '#FEE2E2', strong: '#991B1B' },
+              'info':    { DEFAULT: '#2563EB', soft: '#DBEAFE', strong: '#1E40AF' },
+              'warning': { DEFAULT: '#D97706', soft: '#FEF3C7', strong: '#92400E' },
+              // Legacy icon accents
               'icon-orange': '#D97706',
               'icon-lime': '#65A30D',
               'icon-blue': '#2563EB',
               'icon-purple': '#7C3AED',
             },
+            // Radius scale: control = inputs/buttons, card = cards, sheet = modals/hero
+            borderRadius: {
+              'control': '0.75rem',
+              'card': '1rem',
+              'sheet': '1.5rem',
+              'hero': '2rem',
+            },
+            boxShadow: {
+              'card': '0 1px 3px rgba(26,43,72,0.06), 0 1px 2px rgba(26,43,72,0.04)',
+              'raised': '0 6px 16px -4px rgba(26,43,72,0.12), 0 2px 6px -2px rgba(26,43,72,0.06)',
+              'float': '0 16px 40px -8px rgba(26,43,72,0.22)',
+            },
+            // Type scale: caption / body / title / display
+            fontSize: {
+              'caption': ['0.75rem', { lineHeight: '1.1rem' }],
+              'body': ['0.875rem', { lineHeight: '1.35rem' }],
+              'title': ['1.125rem', { lineHeight: '1.6rem', fontWeight: '700' }],
+              'headline': ['1.5rem', { lineHeight: '2rem', fontWeight: '700' }],
+              'display': ['2rem', { lineHeight: '2.4rem', fontWeight: '800' }],
+            },
           },
         },
       }
     </script>
+    <!-- Reusable component classes built on the tokens above -->
+    <style type="text/tailwindcss">
+      @layer components {
+        /* Buttons */
+        .btn { @apply inline-flex items-center justify-center gap-2 rounded-control px-4 py-2.5 text-body font-semibold transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2; }
+        .btn-primary { @apply btn bg-brand-navy text-white shadow-card hover:bg-brand-navy-light; }
+        .btn-accent { @apply btn bg-brand-gold text-brand-navy shadow-card hover:bg-brand-gold-dark hover:text-white; }
+        .btn-secondary { @apply btn bg-surface text-brand-navy border border-line hover:border-brand-navy; }
+        .btn-ghost { @apply btn text-brand-navy hover:bg-surface-sunken; }
+        .btn-danger { @apply btn bg-danger text-white hover:bg-danger-strong; }
+        .btn-sm { @apply px-3 py-1.5 text-caption; }
+        /* Surfaces */
+        .card { @apply bg-surface rounded-card border border-line shadow-card; }
+        .card-interactive { @apply card transition-all hover:shadow-raised hover:-translate-y-0.5 cursor-pointer; }
+        .sheet { @apply bg-surface rounded-t-sheet shadow-float; }
+        /* Form controls */
+        .input { @apply w-full rounded-control border border-line bg-surface px-3.5 py-2.5 text-body text-ink placeholder-ink-faint focus:outline-none focus:border-brand-gold focus:ring-2 focus:ring-brand-gold/30; }
+        .label { @apply block mb-1 text-caption font-semibold text-ink-soft; }
+        /* Status badges */
+        .badge { @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-caption font-semibold; }
+        .badge-success { @apply badge bg-success-soft text-success-strong; }
+        .badge-danger { @apply badge bg-danger-soft text-danger-strong; }
+        .badge-info { @apply badge bg-info-soft text-info-strong; }
+        .badge-warning { @apply badge bg-warning-soft text-warning-strong; }
+        .badge-brand { @apply badge bg-brand-gold-soft text-brand-navy; }
+        /* Typography helpers */
+        .section-title { @apply text-body font-bold text-brand-navy uppercase tracking-wide; }
+        .page-title { @apply font-serif text-headline text-brand-navy; }
+      }
+    </style>
     <style>
       html, body {
         overflow-x: hidden;
@@ -96,6 +165,11 @@
       }
       button:active, .active-scale:active {
         transform: scale(0.96);
+      }
+      body { -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
+      :focus-visible { outline: 2px solid #F59E0B; outline-offset: 2px; }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
       }
     </style>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>

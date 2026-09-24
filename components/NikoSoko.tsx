@@ -98,11 +98,11 @@ const NikoSoko: React.FC<NikoSokoProps> = ({ providers, onSelectProvider, search
     }, [heroImages]);
 
     const ToolkitItem: React.FC<{ label: string, icon: React.ReactNode, onClick: () => void }> = ({ label, icon, onClick }) => (
-        <button onClick={onClick} className="flex flex-col items-center gap-1.5 p-1 rounded-xl hover:bg-gray-50 active:bg-gray-100 transition-colors group">
-            <div className="w-10 h-10 bg-white rounded-full shadow-sm flex items-center justify-center text-brand-navy border border-gray-100 group-hover:border-brand-gold transition-colors">
+        <button onClick={onClick} className="flex flex-col items-center gap-1.5 p-1 rounded-control hover:bg-surface-muted active:bg-surface-sunken transition-colors group">
+            <div className="w-10 h-10 bg-surface rounded-full shadow-card flex items-center justify-center text-brand-navy border border-line group-hover:border-brand-gold transition-colors">
                 {icon}
             </div>
-            <span className="text-[10px] font-bold text-gray-600 text-center leading-tight group-hover:text-brand-navy">{label}</span>
+            <span className="text-[11px] font-bold text-ink-soft text-center leading-tight group-hover:text-brand-navy">{label}</span>
         </button>
     );
 
@@ -112,7 +112,7 @@ const NikoSoko: React.FC<NikoSokoProps> = ({ providers, onSelectProvider, search
                 <button 
                     key={filter}
                     onClick={() => setNearbyFilter(filter as any)}
-                    className={`px-4 py-1.5 rounded-full text-xs font-bold capitalize whitespace-nowrap transition-all ${nearbyFilter === filter ? 'bg-brand-navy text-white' : 'bg-white text-gray-600 border border-gray-200 hover:border-brand-navy'}`}
+                    className={`px-4 py-1.5 rounded-full text-caption font-bold capitalize whitespace-nowrap transition-all ${nearbyFilter === filter ? 'bg-brand-navy text-white' : 'bg-surface text-ink-soft border border-line hover:border-brand-navy'}`}
                 >
                     {filter}
                 </button>
@@ -131,7 +131,7 @@ const NikoSoko: React.FC<NikoSokoProps> = ({ providers, onSelectProvider, search
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
             </div>
-            <button onClick={() => onNavigate('qrScan')} className="bg-brand-gold px-4 py-2 rounded-full flex items-center gap-1 text-xs font-bold text-brand-navy hover:bg-amber-500 transition-colors shadow-sm">
+            <button onClick={() => onNavigate('qrScan')} className="bg-brand-gold px-4 py-2 rounded-full flex items-center gap-1 text-caption font-bold text-brand-navy hover:bg-brand-gold-dark hover:text-white transition-colors shadow-card">
                 <QRIcon /> Scan
             </button>
         </div>
@@ -160,7 +160,7 @@ const NikoSoko: React.FC<NikoSokoProps> = ({ providers, onSelectProvider, search
 
             {/* --- Themed Hero Section --- */}
             <div className="pt-0">
-                <div ref={heroRef} className="relative w-full h-64 rounded-b-[2rem] shadow-xl overflow-hidden bg-brand-navy">
+                <div ref={heroRef} className="relative w-full h-64 rounded-b-hero shadow-float overflow-hidden bg-brand-navy">
                     {heroImages.map((img, index) => (
                         <img 
                             key={index}
@@ -199,7 +199,7 @@ const NikoSoko: React.FC<NikoSokoProps> = ({ providers, onSelectProvider, search
 
             {/* --- Compact Toolkit --- */}
             <div className="px-4 -mt-4 relative z-10">
-                <div className="bg-white rounded-2xl py-4 px-2 shadow-lg border border-gray-100">
+                <div className="card py-4 px-2 shadow-raised">
                     <div className="grid grid-cols-3 gap-y-3">
                         <ToolkitItem label="Qaribu" icon={<GatePassIcon />} onClick={() => onNavigate('qaribu')} />
                         <ToolkitItem label="Invoices" icon={<InvoiceIcon />} onClick={() => onNavigate('invoices')} />
@@ -214,7 +214,7 @@ const NikoSoko: React.FC<NikoSokoProps> = ({ providers, onSelectProvider, search
             {/* --- Content Grid --- */}
             <div className="px-4 mt-6">
                 <div className="flex justify-between items-center mb-4">
-                    <h3 className="font-bold text-brand-navy text-sm uppercase tracking-wide">
+                    <h3 className="section-title">
                         {nearbyFilter !== 'all' ? nearbyFilter : 'Nearby Highlights'}
                     </h3>
                     {nearbyFilter !== 'all' && (
@@ -235,8 +235,8 @@ const NikoSoko: React.FC<NikoSokoProps> = ({ providers, onSelectProvider, search
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center py-12 bg-white rounded-xl border border-gray-100 shadow-sm">
-                        <p className="text-gray-400 text-sm">No results found nearby.</p>
+                    <div className="card text-center py-12">
+                        <p className="text-ink-faint text-body">No results found nearby.</p>
                         <button onClick={() => {setSearchTerm(''); setNearbyFilter('all');}} className="mt-2 text-brand-gold font-bold text-sm">Clear Filters</button>
                     </div>
                 )}
