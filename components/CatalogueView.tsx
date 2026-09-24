@@ -22,8 +22,8 @@ const CatalogueCard: React.FC<{item: CatalogueItem, onClick: () => void}> = ({ i
         <img src={item.imageUrls[0] || 'https://picsum.photos/seed/placeholder/400/300'} alt={item.title} className="w-full h-32 object-cover" />
         <div className="p-3">
             <p className="text-xs font-bold text-brand-primary group-hover:underline">{item.category}</p>
-            <h3 className="font-bold text-gray-800 mt-1 truncate">{item.title}</h3>
-            <p className="text-sm font-semibold text-gray-600 mt-2">{item.price}</p>
+            <h3 className="font-bold text-ink mt-1 truncate">{item.title}</h3>
+            <p className="text-sm font-semibold text-ink-soft mt-2">{item.price}</p>
         </div>
     </div>
 );
@@ -76,7 +76,7 @@ const CatalogueFormModal: React.FC<{ onSave: (item: Omit<CatalogueItem, 'id' | '
     return (
         <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 p-4" onClick={onCancel}>
             <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-sm" onClick={e => e.stopPropagation()}>
-                <h2 className="text-xl font-bold text-gray-800 mb-4">Add to Catalogue</h2>
+                <h2 className="text-xl font-bold text-ink mb-4">Add to Catalogue</h2>
                 <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-2">
                     <input value={title} onChange={e => setTitle(e.target.value)} type="text" placeholder="Item Title" className="w-full p-2 border rounded"/>
                     <select value={category} onChange={e => setCategory(e.target.value as CatalogueCategory)} className="w-full p-2 border rounded bg-white">
@@ -93,7 +93,7 @@ const CatalogueFormModal: React.FC<{ onSave: (item: Omit<CatalogueItem, 'id' | '
                     )}
 
                     <div>
-                        <label className="text-xs font-medium text-gray-700 mb-1 block">Images (up to {maxImages})</label>
+                        <label className="text-xs font-medium text-ink mb-1 block">Images (up to {maxImages})</label>
                         <div className="grid grid-cols-3 gap-2">
                             {imagePreviews.map((src, index) => (
                                 <div key={index} className="relative aspect-square">
@@ -102,7 +102,7 @@ const CatalogueFormModal: React.FC<{ onSave: (item: Omit<CatalogueItem, 'id' | '
                                 </div>
                             ))}
                             {imagePreviews.length < maxImages && (
-                                <button onClick={() => fileInputRef.current?.click()} className="aspect-square border-2 border-dashed rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-50 transition-colors">
+                                <button onClick={() => fileInputRef.current?.click()} className="aspect-square border-2 border-dashed rounded-md flex items-center justify-center text-ink-faint hover:bg-surface-muted transition-colors">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                                 </button>
                             )}
@@ -111,7 +111,7 @@ const CatalogueFormModal: React.FC<{ onSave: (item: Omit<CatalogueItem, 'id' | '
                     </div>
                 </div>
                 <div className="flex gap-2 pt-4 mt-4 border-t">
-                    <button onClick={onCancel} className="flex-1 bg-gray-200 font-bold py-2 px-4 rounded-lg">Cancel</button>
+                    <button onClick={onCancel} className="flex-1 bg-surface-sunken font-bold py-2 px-4 rounded-lg">Cancel</button>
                     <button onClick={handleSave} className="flex-1 bg-brand-primary text-white font-bold py-2 px-4 rounded-lg">Save Item</button>
                 </div>
             </div>
@@ -126,7 +126,7 @@ const ShareCatalogueModal: React.FC<{ catalogueUrl: string; onClose: () => void 
             <div className="flex justify-center">
                 <img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(catalogueUrl)}`} alt="Catalogue QR Code" className="w-48 h-48 rounded-lg"/>
             </div>
-            <p className="text-xs text-gray-500 text-center mt-3">Scan this code to view and share your public catalogue page.</p>
+            <p className="text-xs text-ink-soft text-center mt-3">Scan this code to view and share your public catalogue page.</p>
             <button onClick={onClose} className="mt-4 w-full bg-brand-dark text-white font-bold py-2 rounded-lg">Done</button>
         </div>
     </div>
@@ -166,7 +166,7 @@ const CatalogueView: React.FC<CatalogueViewProps> = ({ items, onUpdateItems, cur
     const filterOptions: (CatalogueCategory | 'All')[] = ['All', 'Product', 'Service', 'Professional Service', 'For Rent', 'For Sale'];
 
     return (
-        <div className="bg-slate-50 min-h-screen font-sans">
+        <div className="bg-surface-muted min-h-screen font-sans">
             <style>{`.animate-fade-in { animation: fade-in 0.6s ease-in-out; } @keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }`}</style>
             <input type="file" ref={bannerInputRef} onChange={handleBannerChange} accept="image/*" className="hidden" />
 
@@ -201,7 +201,7 @@ const CatalogueView: React.FC<CatalogueViewProps> = ({ items, onUpdateItems, cur
                         <button 
                             key={filter}
                             onClick={() => setActiveFilter(filter)}
-                            className={`flex-shrink-0 px-5 py-2.5 text-sm font-bold rounded-full transition-all duration-200 shadow-md ${activeFilter === filter ? 'bg-slate-900 text-white' : 'bg-white text-slate-800'}`}
+                            className={`flex-shrink-0 px-5 py-2.5 text-sm font-bold rounded-full transition-all duration-200 shadow-md ${activeFilter === filter ? 'bg-slate-900 text-white' : 'bg-white text-ink'}`}
                         >
                             {filter}
                         </button>
@@ -216,10 +216,10 @@ const CatalogueView: React.FC<CatalogueViewProps> = ({ items, onUpdateItems, cur
                         {filteredItems.map(item => <CatalogueCard key={item.id} item={item} onClick={() => setSelectedItem(item)} />)}
                     </div>
                 ) : (
-                    <div className="text-center py-16 text-slate-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto h-12 w-12 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4M4 7s0 4 8 4 8-4 8-4" /></svg>
-                        <h3 className="mt-2 text-sm font-medium text-slate-900">Your catalogue is empty</h3>
-                        <p className="mt-1 text-sm text-slate-500">Tap the '+' button to add your first item.</p>
+                    <div className="text-center py-16 text-ink-soft">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto h-12 w-12 text-ink-faint" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4M4 7s0 4 8 4 8-4 8-4" /></svg>
+                        <h3 className="mt-2 text-sm font-medium text-ink">Your catalogue is empty</h3>
+                        <p className="mt-1 text-sm text-ink-soft">Tap the '+' button to add your first item.</p>
                     </div>
                 )}
             </main>

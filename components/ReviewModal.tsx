@@ -74,21 +74,21 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ pendingProviders, isForced, o
                         <img 
                             src={currentProvider.avatarUrl} 
                             alt={currentProvider.name} 
-                            className="w-20 h-20 rounded-full border-4 border-gray-100 shadow-md object-cover mb-3"
+                            className="w-20 h-20 rounded-full border-4 border-line shadow-md object-cover mb-3"
                         />
-                        <h3 className="font-bold text-gray-800 text-lg">{currentProvider.name}</h3>
-                        <p className="text-sm text-gray-500">{currentProvider.service}</p>
+                        <h3 className="font-bold text-ink text-lg">{currentProvider.name}</h3>
+                        <p className="text-sm text-ink-soft">{currentProvider.service}</p>
                     </div>
 
                     <div className="text-center">
-                        <p className="text-sm text-gray-600 mb-3">Tap to rate</p>
+                        <p className="text-sm text-ink-soft mb-3">Tap to rate</p>
                         <StarInput rating={rating} setRating={setRating} />
                         
                         <textarea
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                             placeholder="Write a brief review (optional)..."
-                            className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold mb-4 resize-none"
+                            className="w-full p-3 bg-surface-muted border border-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold mb-4 resize-none"
                             rows={3}
                         />
 
@@ -101,12 +101,12 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ pendingProviders, isForced, o
                         </button>
                         
                         {isForced && pendingProviders.length > 1 && (
-                            <p className="text-xs text-gray-400 mt-4">
+                            <p className="text-xs text-ink-faint mt-4">
                                 You must review all pending providers to access new contacts.
                             </p>
                         )}
                         {!isForced && (
-                            <button onClick={onClose} className="mt-3 text-xs text-gray-500 font-semibold hover:text-gray-800 underline">
+                            <button onClick={onClose} className="mt-3 text-xs text-ink-soft font-semibold hover:text-ink underline">
                                 Ask me later
                             </button>
                         )}

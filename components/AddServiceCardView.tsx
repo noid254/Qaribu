@@ -26,14 +26,14 @@ const FormInput: React.FC<{
     readOnly?: boolean;
 }> = ({ label, value, onChange, isTextarea = false, readOnly = false }) => {
     return (
-        <div className="relative border-b border-gray-200 py-3">
-            <label className="block text-xs text-gray-400 font-medium mb-1">{label}</label>
+        <div className="relative border-b border-line py-3">
+            <label className="block text-xs text-ink-faint font-medium mb-1">{label}</label>
             {isTextarea ? (
                  <textarea
                     value={value}
                     onChange={onChange}
                     readOnly={readOnly}
-                    className="w-full text-base text-gray-800 bg-transparent focus:outline-none resize-none"
+                    className="w-full text-base text-ink bg-transparent focus:outline-none resize-none"
                     rows={4}
                 />
             ) : (
@@ -42,7 +42,7 @@ const FormInput: React.FC<{
                     value={value}
                     onChange={onChange}
                     readOnly={readOnly}
-                    className="w-full text-base text-gray-800 bg-transparent focus:outline-none"
+                    className="w-full text-base text-ink bg-transparent focus:outline-none"
                 />
             )}
         </div>
@@ -141,15 +141,15 @@ const SignUpView: React.FC<SignUpViewProps> = ({ onBack, onSave, categories, cur
     ];
 
     return (
-        <div className="bg-gray-50 min-h-screen font-sans pb-24 pt-16">
-            <header className="fixed top-0 left-0 right-0 max-w-sm mx-auto p-4 bg-gray-50 z-10 flex justify-end">
-                <button onClick={onBack} className="text-sm font-semibold text-gray-600 bg-gray-200 px-3 py-1 rounded-lg">Skip for now</button>
+        <div className="bg-surface-muted min-h-screen font-sans pb-24 pt-16">
+            <header className="fixed top-0 left-0 right-0 max-w-sm mx-auto p-4 bg-surface-muted z-10 flex justify-end">
+                <button onClick={onBack} className="text-sm font-semibold text-ink-soft bg-surface-sunken px-3 py-1 rounded-lg">Skip for now</button>
             </header>
             <main className="p-4 space-y-6">
                 <div className="flex flex-col items-center justify-center">
                      <div
                         onClick={handleImageUploadClick}
-                        className="relative w-32 h-32 rounded-full flex items-center justify-center bg-gray-200 text-gray-500 cursor-pointer overflow-hidden shadow-lg group"
+                        className="relative w-32 h-32 rounded-full flex items-center justify-center bg-surface-sunken text-ink-soft cursor-pointer overflow-hidden shadow-lg group"
                     >
                          <input
                             type="file"
@@ -167,12 +167,12 @@ const SignUpView: React.FC<SignUpViewProps> = ({ onBack, onSave, categories, cur
                             Change
                         </div>
                     </div>
-                    <p className="text-sm text-gray-500 mt-2">Upload Profile Picture</p>
+                    <p className="text-sm text-ink-soft mt-2">Upload Profile Picture</p>
                 </div>
 
 
                 <div className="bg-white rounded-lg shadow-sm p-5">
-                    <h2 className="text-lg font-bold text-gray-800 mb-4">Your Details</h2>
+                    <h2 className="text-lg font-bold text-ink mb-4">Your Details</h2>
 
                     <div className="space-y-2">
                         <FormInput 
@@ -181,30 +181,30 @@ const SignUpView: React.FC<SignUpViewProps> = ({ onBack, onSave, categories, cur
                             onChange={(e) => setName(e.target.value)} 
                         />
                         <FormInput label="Your Profession / Service" value={service} onChange={(e) => setService(e.target.value)} />
-                        <div className="relative border-b border-gray-200 py-3">
-                            <label className="block text-xs text-gray-400 font-medium mb-1">Category</label>
-                            <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full text-base text-gray-800 bg-transparent focus:outline-none">
+                        <div className="relative border-b border-line py-3">
+                            <label className="block text-xs text-ink-faint font-medium mb-1">Category</label>
+                            <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full text-base text-ink bg-transparent focus:outline-none">
                                 {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
                                 <option value="other">Other (Please specify)</option>
                             </select>
                         </div>
                         {category === 'other' && (
-                            <div className="relative border-b border-gray-200 py-3">
-                                <label className="block text-xs text-gray-400 font-medium mb-1">Custom Category Name</label>
+                            <div className="relative border-b border-line py-3">
+                                <label className="block text-xs text-ink-faint font-medium mb-1">Custom Category Name</label>
                                 <input
                                     type="text"
                                     value={customCategory}
                                     onChange={(e) => setCustomCategory(e.target.value)}
-                                    className="w-full text-base text-gray-800 bg-transparent focus:outline-none"
+                                    className="w-full text-base text-ink bg-transparent focus:outline-none"
                                 />
                             </div>
                         )}
-                         <div className="border-b border-gray-200 py-3">
-                             <label className="block text-xs text-gray-400 font-medium mb-1">Charge</label>
+                         <div className="border-b border-line py-3">
+                             <label className="block text-xs text-ink-faint font-medium mb-1">Charge</label>
                              <div className="flex items-center gap-2">
-                                <span className="text-base text-gray-500">Ksh</span>
-                                <input type="number" placeholder="1000" value={charge} onChange={(e) => setCharge(e.target.value)} className="text-base text-gray-800 bg-transparent focus:outline-none w-24"/>
-                                <select value={rateType} onChange={(e) => setRateType(e.target.value as ServiceProvider['rateType'])} className="text-base text-gray-800 bg-transparent focus:outline-none border-l pl-2">
+                                <span className="text-base text-ink-soft">Ksh</span>
+                                <input type="number" placeholder="1000" value={charge} onChange={(e) => setCharge(e.target.value)} className="text-base text-ink bg-transparent focus:outline-none w-24"/>
+                                <select value={rateType} onChange={(e) => setRateType(e.target.value as ServiceProvider['rateType'])} className="text-base text-ink bg-transparent focus:outline-none border-l pl-2">
                                     <option value="per hour">per hour</option>
                                     <option value="per day">per day</option>
                                     <option value="per task">per task</option>
@@ -221,10 +221,10 @@ const SignUpView: React.FC<SignUpViewProps> = ({ onBack, onSave, categories, cur
                         <FormInput label="About Me" value={about} onChange={(e) => setAbout(e.target.value)} isTextarea/>
                         
                         {requiresAsset && (
-                            <div className="border-t border-gray-200 pt-4 mt-4 space-y-2">
-                                <h3 className="font-bold text-gray-800 text-base">Link an Asset</h3>
-                                <p className="text-sm text-gray-600">This service requires a registered vehicle. Please select one from your garage.</p>
-                                <select value={linkedAssetId} onChange={e => setLinkedAssetId(e.target.value)} className="w-full text-base text-gray-800 bg-gray-50 border border-gray-200 p-3 rounded-lg focus:outline-none" required>
+                            <div className="border-t border-line pt-4 mt-4 space-y-2">
+                                <h3 className="font-bold text-ink text-base">Link an Asset</h3>
+                                <p className="text-sm text-ink-soft">This service requires a registered vehicle. Please select one from your garage.</p>
+                                <select value={linkedAssetId} onChange={e => setLinkedAssetId(e.target.value)} className="w-full text-base text-ink bg-surface-muted border border-line p-3 rounded-lg focus:outline-none" required>
                                     <option value="">-- Select your vehicle --</option>
                                     {myAssets.map(asset => (
                                         <option key={asset.id} value={asset.id}>
@@ -232,9 +232,9 @@ const SignUpView: React.FC<SignUpViewProps> = ({ onBack, onSave, categories, cur
                                         </option>
                                     ))}
                                 </select>
-                                <p className="text-xs text-center text-gray-500 pt-1">
+                                <p className="text-xs text-center text-ink-soft pt-1">
                                     Don't see your vehicle? 
-                                    <button type="button" onClick={() => onNavigate('assetRegistry')} className="text-blue-600 underline ml-1 font-semibold">
+                                    <button type="button" onClick={() => onNavigate('assetRegistry')} className="text-info underline ml-1 font-semibold">
                                         Go to Asset Registry
                                     </button>
                                 </p>
@@ -243,7 +243,7 @@ const SignUpView: React.FC<SignUpViewProps> = ({ onBack, onSave, categories, cur
 
 
                          <div className="py-3">
-                            <label className="block text-xs text-gray-400 font-medium mb-2">Call to Action Buttons (Select up to 2)</label>
+                            <label className="block text-xs text-ink-faint font-medium mb-2">Call to Action Buttons (Select up to 2)</label>
                             <div className="grid grid-cols-2 gap-2">
                                 {ctaOptions.map(option => (
                                      <label key={option.value} className="flex items-center p-2 border rounded-md">
@@ -266,7 +266,7 @@ const SignUpView: React.FC<SignUpViewProps> = ({ onBack, onSave, categories, cur
                 </div>
             </main>
 
-            <footer className="fixed bottom-0 left-0 right-0 max-w-sm mx-auto p-4 bg-gray-50 border-t border-gray-200">
+            <footer className="fixed bottom-0 left-0 right-0 max-w-sm mx-auto p-4 bg-surface-muted border-t border-line">
                  <button onClick={handleSubmit} className="w-full bg-brand-navy text-white font-bold py-4 px-4 rounded-2xl hover:opacity-90 transition-colors shadow-lg">
                     Create Profile
                 </button>

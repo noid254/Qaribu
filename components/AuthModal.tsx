@@ -79,18 +79,18 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose, onLogin }) => {
       <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-xs mx-4">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Sign In / Sign Up</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-800">&times;</button>
+          <button onClick={onClose} className="text-ink-soft hover:text-ink">&times;</button>
         </div>
 
-        {error && <p className="text-red-500 text-sm text-center mb-3">{error}</p>}
+        {error && <p className="text-danger text-sm text-center mb-3">{error}</p>}
         
         {step === 1 && (
           <form onSubmit={handleContinue}>
-            <p className="text-gray-600 mb-4">Enter your phone number to continue.</p>
+            <p className="text-ink-soft mb-4">Enter your phone number to continue.</p>
             <div className="mb-6">
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number</label>
-              <div className="flex items-center mt-1 bg-gray-100 rounded-lg shadow-inner focus-within:ring-2 focus-within:ring-brand-gold">
-                  <span className="px-3 text-gray-500 border-r border-gray-300">+254</span>
+              <label htmlFor="phone" className="block text-sm font-medium text-ink">Phone Number</label>
+              <div className="flex items-center mt-1 bg-surface-sunken rounded-lg shadow-inner focus-within:ring-2 focus-within:ring-brand-gold">
+                  <span className="px-3 text-ink-soft border-r border-line">+254</span>
                   <input 
                       type="tel" 
                       id="phone" 
@@ -107,8 +107,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose, onLogin }) => {
               {isLoading ? 'Sending...' : 'Continue'}
             </button>
             
-            <div className="mt-4 pt-4 border-t border-gray-100">
-                <button type="button" onClick={handleDemoGatemanLogin} className="w-full text-xs text-blue-600 font-semibold hover:underline">
+            <div className="mt-4 pt-4 border-t border-line">
+                <button type="button" onClick={handleDemoGatemanLogin} className="w-full text-xs text-info font-semibold hover:underline">
                     Demo: Login as Security Guard
                 </button>
             </div>
@@ -117,10 +117,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose, onLogin }) => {
 
         {step === 2 && (
           <form onSubmit={handleConfirm}>
-            <p className="text-gray-600 mb-2">Enter the 4-digit OTP sent to <span className="font-semibold">+254{phone}</span>.</p>
-            <button type="button" onClick={() => { setStep(1); setError(''); }} className="text-sm text-blue-600 hover:underline mb-4">Change number</button>
+            <p className="text-ink-soft mb-2">Enter the 4-digit OTP sent to <span className="font-semibold">+254{phone}</span>.</p>
+            <button type="button" onClick={() => { setStep(1); setError(''); }} className="text-sm text-info hover:underline mb-4">Change number</button>
             <div className="mb-6">
-              <label htmlFor="otp" className="block text-sm font-medium text-gray-700">OTP Code</label>
+              <label htmlFor="otp" className="block text-sm font-medium text-ink">OTP Code</label>
               <input 
                 type="tel" 
                 id="otp" 
@@ -129,9 +129,9 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose, onLogin }) => {
                 onChange={handleOtpChange} 
                 required 
                 autoFocus 
-                className="mt-1 block w-full text-center tracking-[1em] text-lg px-3 py-3 border-0 bg-gray-100 rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-brand-gold sm:text-sm"
+                className="mt-1 block w-full text-center tracking-[1em] text-lg px-3 py-3 border-0 bg-surface-sunken rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-brand-gold sm:text-sm"
               />
-              <p className="text-xs text-center text-gray-500 mt-2">(Superadmin OTP: 3232)</p>
+              <p className="text-xs text-center text-ink-soft mt-2">(Superadmin OTP: 3232)</p>
             </div>
             <button type="submit" disabled={isLoading} className="w-full bg-brand-gold text-brand-navy font-bold py-2 px-4 rounded-lg hover:opacity-90 transition-colors disabled:bg-gray-400 active-scale">
                 {isLoading ? 'Verifying...' : 'Confirm & Sign In'}

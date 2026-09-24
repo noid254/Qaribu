@@ -51,7 +51,7 @@ const DoorProfile: React.FC<DoorProfileProps> = ({ unit, premise, tenant, viewSo
                 <>
                     <button 
                         onClick={() => onContactHost('call')}
-                        className="flex-1 bg-white text-brand-navy border-2 border-brand-navy font-bold py-3 rounded-xl hover:bg-gray-50 transition flex items-center justify-center gap-2"
+                        className="flex-1 bg-white text-brand-navy border-2 border-brand-navy font-bold py-3 rounded-xl hover:bg-surface-muted transition flex items-center justify-center gap-2"
                     >
                         <PhoneIcon /> Call
                     </button>
@@ -74,7 +74,7 @@ const DoorProfile: React.FC<DoorProfileProps> = ({ unit, premise, tenant, viewSo
             const isPrimary = index === activeCtas.length - 1; // Last button is primary
             const baseClass = isPrimary 
                 ? "flex-[2] bg-brand-navy text-white font-bold py-3 rounded-xl shadow-lg hover:bg-black transition active:scale-95 flex items-center justify-center gap-2"
-                : "flex-1 bg-white text-brand-navy border-2 border-brand-navy font-bold py-3 rounded-xl hover:bg-gray-50 transition flex items-center justify-center gap-2";
+                : "flex-1 bg-white text-brand-navy border-2 border-brand-navy font-bold py-3 rounded-xl hover:bg-surface-muted transition flex items-center justify-center gap-2";
 
             switch (cta) {
                 case 'call':
@@ -96,7 +96,7 @@ const DoorProfile: React.FC<DoorProfileProps> = ({ unit, premise, tenant, viewSo
     };
 
     return (
-        <div className="bg-gray-50 min-h-screen font-sans flex flex-col relative">
+        <div className="bg-surface-muted min-h-screen font-sans flex flex-col relative">
             {/* Header Image */}
             <div className="relative h-80 bg-gray-900">
                 <img 
@@ -143,22 +143,22 @@ const DoorProfile: React.FC<DoorProfileProps> = ({ unit, premise, tenant, viewSo
                 
                 {/* Real Estate Features (if vacant or relevant) */}
                 {(isVacant || unit.bedrooms) && (
-                    <div className="flex justify-between items-center mb-6 py-4 border-b border-gray-100">
+                    <div className="flex justify-between items-center mb-6 py-4 border-b border-line">
                         <div className="flex gap-6">
                             {unit.bedrooms && (
-                                <div className="flex items-center gap-2 text-gray-600">
+                                <div className="flex items-center gap-2 text-ink-soft">
                                     <BedIcon />
                                     <span className="text-sm font-bold">{unit.bedrooms} <span className="font-normal text-xs">Bed</span></span>
                                 </div>
                             )}
                             {unit.bathrooms && (
-                                <div className="flex items-center gap-2 text-gray-600">
+                                <div className="flex items-center gap-2 text-ink-soft">
                                     <BathIcon />
                                     <span className="text-sm font-bold">{unit.bathrooms} <span className="font-normal text-xs">Bath</span></span>
                                 </div>
                             )}
                             {unit.size && (
-                                <div className="flex items-center gap-2 text-gray-600">
+                                <div className="flex items-center gap-2 text-ink-soft">
                                     <ExpandIcon />
                                     <span className="text-sm font-bold">{unit.size}</span>
                                 </div>
@@ -167,7 +167,7 @@ const DoorProfile: React.FC<DoorProfileProps> = ({ unit, premise, tenant, viewSo
                         {isVacant && (
                             <div className="text-right">
                                 <span className="block text-xl font-bold text-brand-navy">{priceDisplay}</span>
-                                <span className="text-xs text-gray-500 font-medium">{periodDisplay}</span>
+                                <span className="text-xs text-ink-soft font-medium">{periodDisplay}</span>
                             </div>
                         )}
                     </div>
@@ -175,8 +175,8 @@ const DoorProfile: React.FC<DoorProfileProps> = ({ unit, premise, tenant, viewSo
 
                 {/* Description */}
                 <div className="mb-6">
-                    <h3 className="font-bold text-gray-800 text-lg mb-2">About this space</h3>
-                    <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
+                    <h3 className="font-bold text-ink text-lg mb-2">About this space</h3>
+                    <p className="text-ink-soft text-sm leading-relaxed whitespace-pre-line">
                         {unit.description || tenant?.about || "Welcome to our space. Please check in if you are visiting, or contact us for more details."}
                     </p>
                 </div>
@@ -184,10 +184,10 @@ const DoorProfile: React.FC<DoorProfileProps> = ({ unit, premise, tenant, viewSo
                 {/* Amenities */}
                 {unit.amenities && unit.amenities.length > 0 && (
                     <div className="mb-6">
-                        <h3 className="font-bold text-gray-800 text-lg mb-3">Amenities & Features</h3>
+                        <h3 className="font-bold text-ink text-lg mb-3">Amenities & Features</h3>
                         <div className="flex flex-wrap gap-2">
                             {unit.amenities.map((am, i) => (
-                                <span key={i} className="bg-gray-50 text-gray-700 px-3 py-2 rounded-lg text-xs font-semibold border border-gray-200">
+                                <span key={i} className="bg-surface-muted text-ink px-3 py-2 rounded-lg text-xs font-semibold border border-line">
                                     {am}
                                 </span>
                             ))}
@@ -197,23 +197,23 @@ const DoorProfile: React.FC<DoorProfileProps> = ({ unit, premise, tenant, viewSo
 
                 {/* Host Info (if occupied) */}
                 {isOccupied && tenant && (
-                    <div className="bg-blue-50 p-4 rounded-xl flex items-center gap-4 mb-6 border border-blue-100">
+                    <div className="bg-info-soft p-4 rounded-xl flex items-center gap-4 mb-6 border border-info-soft">
                         <img src={tenant.avatarUrl} alt={tenant.name} className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm" />
                         <div>
-                            <p className="text-xs text-blue-600 font-bold uppercase tracking-wide">Hosted By</p>
-                            <p className="font-bold text-gray-800">{tenant.name}</p>
+                            <p className="text-xs text-info font-bold uppercase tracking-wide">Hosted By</p>
+                            <p className="font-bold text-ink">{tenant.name}</p>
                         </div>
                     </div>
                 )}
             </div>
 
             {/* Bottom Action Bar */}
-            <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200 shadow-[0_-5px_20px_rgba(0,0,0,0.05)] z-20 max-w-md mx-auto">
+            <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-line shadow-[0_-5px_20px_rgba(0,0,0,0.05)] z-20 max-w-md mx-auto">
                 <div className="flex gap-3">
                     {viewSource === 'scan' && isOccupied ? (
                         <button 
                             onClick={handleCheckInAction}
-                            className="flex-1 bg-green-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-green-700 active:scale-95 transition-all flex items-center justify-center gap-2 text-lg"
+                            className="flex-1 bg-success text-white font-bold py-4 rounded-xl shadow-lg hover:bg-success-strong active:scale-95 transition-all flex items-center justify-center gap-2 text-lg"
                         >
                             <CheckIcon /> Check In Now
                         </button>

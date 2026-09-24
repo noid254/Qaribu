@@ -19,15 +19,15 @@ const TukosokoItemCard: React.FC<{
                 <img src={item.imageUrls[0]} alt={item.title} className="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300" />
             </div>
             <div className="p-3">
-                <h3 className="font-bold text-gray-800 text-sm mt-1 truncate group-hover:underline">{item.title}</h3>
-                <p className="text-sm font-semibold text-gray-600 mt-2">{item.price}</p>
+                <h3 className="font-bold text-ink text-sm mt-1 truncate group-hover:underline">{item.title}</h3>
+                <p className="text-sm font-semibold text-ink-soft mt-2">{item.price}</p>
                 {!item.isVerified && (
-                    <p className="text-xs font-semibold text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full inline-block mt-1">Unverified</p>
+                    <p className="text-xs font-semibold text-ink-soft bg-surface-sunken px-2 py-0.5 rounded-full inline-block mt-1">Unverified</p>
                 )}
                 {provider && (
-                    <div className="flex items-center gap-2 mt-2 pt-2 border-t border-gray-100">
+                    <div className="flex items-center gap-2 mt-2 pt-2 border-t border-line">
                         <img src={provider.avatarUrl} alt={provider.name} className="w-6 h-6 rounded-full object-cover" />
-                        <p className="text-xs text-gray-500 truncate">{provider.name}</p>
+                        <p className="text-xs text-ink-soft truncate">{provider.name}</p>
                     </div>
                 )}
             </div>
@@ -98,7 +98,7 @@ const Tukosoko: React.FC<TukosokoProps> = ({ items, providers, specialBanners, o
     const BellIcon: React.FC<{ hasNotification: boolean }> = ({ hasNotification }) => (
         <div className="relative">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-            {hasNewMessages && <div className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white"></div>}
+            {hasNewMessages && <div className="absolute top-0 right-0 w-2 h-2 bg-danger rounded-full border border-white"></div>}
         </div>
     );
 
@@ -215,7 +215,7 @@ const Tukosoko: React.FC<TukosokoProps> = ({ items, providers, specialBanners, o
                 <React.Fragment key={parent}>
                     <button 
                         onClick={() => handleParentClick(parent)}
-                        className={`flex-shrink-0 px-5 py-2.5 text-sm font-bold rounded-full transition-all duration-200 shadow-md ${activeParent === parent ? 'bg-slate-900 text-white' : 'bg-white text-slate-800'}`}
+                        className={`flex-shrink-0 px-5 py-2.5 text-sm font-bold rounded-full transition-all duration-200 shadow-md ${activeParent === parent ? 'bg-slate-900 text-white' : 'bg-white text-ink'}`}
                     >
                         {parent.replace('_', ' & ')}
                     </button>
@@ -223,7 +223,7 @@ const Tukosoko: React.FC<TukosokoProps> = ({ items, providers, specialBanners, o
                         <button
                             key={child}
                             onClick={() => setActiveChild(child)}
-                            className={`flex-shrink-0 px-4 py-1.5 text-xs font-semibold rounded-full capitalize transition-colors ${activeChild === child ? 'bg-slate-400 text-white' : 'bg-slate-200 text-slate-600'}`}
+                            className={`flex-shrink-0 px-4 py-1.5 text-xs font-semibold rounded-full capitalize transition-colors ${activeChild === child ? 'bg-slate-400 text-white' : 'bg-surface-sunken text-ink-soft'}`}
                         >
                             {child}
                         </button>
@@ -234,7 +234,7 @@ const Tukosoko: React.FC<TukosokoProps> = ({ items, providers, specialBanners, o
     );
 
     return (
-        <div className="bg-slate-50 min-h-screen font-sans">
+        <div className="bg-surface-muted min-h-screen font-sans">
              <style>{`
               @keyframes fade-in-down { 0% { opacity: 0; transform: translateY(-20px); } 100% { opacity: 1; transform: translateY(0); } }
               .animate-fade-in-down { animation: fade-in-down 0.3s ease-out; }
@@ -244,7 +244,7 @@ const Tukosoko: React.FC<TukosokoProps> = ({ items, providers, specialBanners, o
                 <div className="sticky top-0 z-30 bg-white shadow-md p-4 animate-fade-in-down">
                     <div className="flex items-center gap-2 mb-3">
                         <div className="relative flex-grow">
-                             <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                             <div className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-faint pointer-events-none">
                                 <SearchIcon />
                             </div>
                             <input
@@ -252,11 +252,11 @@ const Tukosoko: React.FC<TukosokoProps> = ({ items, providers, specialBanners, o
                                 placeholder="Search products..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full py-2 pl-10 pr-4 text-sm rounded-full bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400"
+                                className="w-full py-2 pl-10 pr-4 text-sm rounded-full bg-surface-sunken focus:outline-none focus:ring-2 focus:ring-slate-400"
                                 autoFocus
                             />
                         </div>
-                        <button onClick={() => { setIsSearchActive(false); setSearchTerm(''); }} className="text-sm font-semibold text-slate-600 flex-shrink-0">
+                        <button onClick={() => { setIsSearchActive(false); setSearchTerm(''); }} className="text-sm font-semibold text-ink-soft flex-shrink-0">
                             Cancel
                         </button>
                     </div>
@@ -292,7 +292,7 @@ const Tukosoko: React.FC<TukosokoProps> = ({ items, providers, specialBanners, o
             )}
 
             <main className="px-4 pb-24">
-                 <h2 className="text-center font-serif font-bold text-2xl text-slate-800 my-4">
+                 <h2 className="text-center font-serif font-bold text-2xl text-ink my-4">
                     {activeChild === 'All' ? `All ${activeParent.replace('_', ' & ')}` : `Featured ${activeChild}`}
                 </h2>
                 {displayedItems.length > 0 ? (
@@ -312,7 +312,7 @@ const Tukosoko: React.FC<TukosokoProps> = ({ items, providers, specialBanners, o
                         })}
                     </div>
                 ) : (
-                    <div className="text-center py-10 text-slate-500">
+                    <div className="text-center py-10 text-ink-soft">
                         <p>No products found matching your criteria.</p>
                     </div>
                 )}

@@ -87,20 +87,20 @@ const InvoiceGenerator: React.FC<InvoiceGeneratorProps> = ({ assets, onSave, onB
     <div className="flex justify-center items-center mb-4">
       {[1,2,3].map(s => (
         <React.Fragment key={s}>
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${currentStep >= s ? 'bg-brand-navy text-white' : 'bg-gray-200 text-gray-500'}`}>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${currentStep >= s ? 'bg-brand-navy text-white' : 'bg-surface-sunken text-ink-soft'}`}>
             {s}
           </div>
-          {s < 3 && <div className={`h-1 w-8 ${currentStep > s ? 'bg-brand-navy' : 'bg-gray-200'}`}></div>}
+          {s < 3 && <div className={`h-1 w-8 ${currentStep > s ? 'bg-brand-navy' : 'bg-surface-sunken'}`}></div>}
         </React.Fragment>
       ))}
     </div>
   );
 
   return (
-    <div className="bg-gray-100 min-h-screen font-sans">
+    <div className="bg-surface-sunken min-h-screen font-sans">
        <div className="p-4 bg-white sticky top-0 z-10 shadow-sm border-b">
           <div className="flex justify-between items-center">
-            <button onClick={onBack} className="text-gray-500 hover:text-gray-800 font-bold">
+            <button onClick={onBack} className="text-ink-soft hover:text-ink font-bold">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
             </button>
             <h2 className="font-bold text-lg text-brand-navy">New Invoice</h2>
@@ -159,8 +159,8 @@ const InvoiceGenerator: React.FC<InvoiceGeneratorProps> = ({ assets, onSave, onB
   );
 };
 
-const formInputClass = "mt-1 w-full p-3 border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none transition-all";
-const labelClass = "block text-xs font-bold text-gray-500 uppercase tracking-wide ml-1";
+const formInputClass = "mt-1 w-full p-3 border border-line rounded-xl bg-surface-muted focus:bg-white focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none transition-all";
+const labelClass = "block text-xs font-bold text-ink-soft uppercase tracking-wide ml-1";
 
 const AddressStep: React.FC<any> = ({ fromName, setFromName, fromDetails, setFromDetails, toName, setToName, toDetails, setToDetails, invoiceNumber, setInvoiceNumber, date, setDate, dueDate, setDueDate, onNext }) => {
     return (
@@ -243,17 +243,17 @@ const ItemsStep: React.FC<{lineItems: LineItem[], setLineItems: React.Dispatch<R
                 <form onSubmit={handleFormSubmit} className="space-y-3 p-4 border border-brand-gold/30 bg-brand-gold/5 rounded-xl">
                      <h3 className="font-bold text-sm text-brand-navy mb-2">Add New Item</h3>
                      <div>
-                        <label className="text-[10px] uppercase font-bold text-gray-500">Description</label>
+                        <label className="text-[10px] uppercase font-bold text-ink-soft">Description</label>
                         <input id="item-description-input" value={desc} onChange={e => setDesc(e.target.value)} type="text" placeholder="Product or Service Name" className={formInputClass} required autoFocus/>
                      </div>
                      
                      <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="text-[10px] uppercase font-bold text-gray-500">Quantity</label>
+                            <label className="text-[10px] uppercase font-bold text-ink-soft">Quantity</label>
                             <input value={qty} onChange={e => setQty(e.target.value)} type="number" placeholder="1" className={formInputClass} required/>
                         </div>
                         <div>
-                            <label className="text-[10px] uppercase font-bold text-gray-500">Unit Price</label>
+                            <label className="text-[10px] uppercase font-bold text-ink-soft">Unit Price</label>
                             <input value={unitPrice} onChange={e => setUnitPrice(e.target.value)} type="number" step="0.01" placeholder="0.00" className={formInputClass} required onKeyDown={handlePriceKeyDown} />
                         </div>
                      </div>
@@ -263,44 +263,44 @@ const ItemsStep: React.FC<{lineItems: LineItem[], setLineItems: React.Dispatch<R
 
                 <div className="space-y-2 max-h-60 overflow-y-auto">
                     {lineItems.map(item => (
-                        <div key={item.id} className="flex justify-between items-center p-3 bg-gray-50 border border-gray-100 rounded-xl">
+                        <div key={item.id} className="flex justify-between items-center p-3 bg-surface-muted border border-line rounded-xl">
                             <div>
-                                <p className="font-bold text-gray-800">{item.description}</p>
-                                <p className="text-xs text-gray-500">{item.quantity} x {currencyFormatter.format(item.unitPrice)}</p>
+                                <p className="font-bold text-ink">{item.description}</p>
+                                <p className="text-xs text-ink-soft">{item.quantity} x {currencyFormatter.format(item.unitPrice)}</p>
                             </div>
                             <div className="flex items-center gap-3">
                                 <p className="font-bold text-brand-navy">{currencyFormatter.format(item.quantity * item.unitPrice)}</p>
-                                <button onClick={() => removeItem(item.id)} className="bg-red-100 text-red-600 w-8 h-8 rounded-full flex items-center justify-center hover:bg-red-200 transition">&times;</button>
+                                <button onClick={() => removeItem(item.id)} className="bg-danger-soft text-danger w-8 h-8 rounded-full flex items-center justify-center hover:bg-danger-soft transition">&times;</button>
                             </div>
                         </div>
                     ))}
-                    {lineItems.length === 0 && <p className="text-center text-sm text-gray-400 py-4">No items added yet.</p>}
+                    {lineItems.length === 0 && <p className="text-center text-sm text-ink-faint py-4">No items added yet.</p>}
                 </div>
 
                 <div className="pt-4 border-t space-y-3">
-                    <h3 className="font-bold text-sm text-gray-600">Adjustments</h3>
+                    <h3 className="font-bold text-sm text-ink-soft">Adjustments</h3>
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="text-[10px] font-bold text-gray-500">Discount</label>
+                            <label className="text-[10px] font-bold text-ink-soft">Discount</label>
                             <input value={discount} onChange={e => setDiscount(parseFloat(e.target.value) || 0)} type="number" className={formInputClass}/>
                         </div>
                         <div>
-                            <label className="text-[10px] font-bold text-gray-500">Tax Rate (%)</label>
+                            <label className="text-[10px] font-bold text-ink-soft">Tax Rate (%)</label>
                             <input value={taxRate} onChange={e => setTaxRate(parseFloat(e.target.value) || 0)} type="number" className={formInputClass}/>
                         </div>
                         <div>
-                            <label className="text-[10px] font-bold text-gray-500">Shipping</label>
+                            <label className="text-[10px] font-bold text-ink-soft">Shipping</label>
                             <input value={shipping} onChange={e => setShipping(parseFloat(e.target.value) || 0)} type="number" className={formInputClass}/>
                         </div>
                         <div>
-                            <label className="text-[10px] font-bold text-gray-500">Deposit Paid</label>
+                            <label className="text-[10px] font-bold text-ink-soft">Deposit Paid</label>
                             <input value={depositPaid} onChange={e => setDepositPaid(parseFloat(e.target.value) || 0)} type="number" className={formInputClass}/>
                         </div>
                     </div>
                 </div>
 
                 <div className="flex gap-3 pt-4">
-                    <button onClick={onBack} className="flex-1 bg-gray-200 text-gray-800 font-bold py-3 rounded-xl">Back</button>
+                    <button onClick={onBack} className="flex-1 bg-surface-sunken text-ink font-bold py-3 rounded-xl">Back</button>
                     <button onClick={onNext} className="flex-1 bg-brand-navy text-white font-bold py-3 rounded-xl shadow-lg">Preview Invoice</button>
                 </div>
             </div>
@@ -312,40 +312,40 @@ const InvoicePreview = React.forwardRef<HTMLDivElement, any>(({ assets, fromName
     return (
         <div className="flex flex-col h-full">
             {/* Scale Wrapper for Fit-to-Page Effect on Mobile */}
-            <div className="flex-1 overflow-auto bg-gray-200 p-2 md:p-4 rounded-xl border border-gray-300 flex justify-center mb-4 relative">
+            <div className="flex-1 overflow-auto bg-surface-sunken p-2 md:p-4 rounded-xl border border-line flex justify-center mb-4 relative">
                  {/* The visual scaling container */}
                  <div className="transform scale-[0.45] origin-top md:scale-100 md:origin-top w-[210mm] h-[297mm] bg-white shadow-2xl">
-                    <div ref={ref} className="bg-white p-12 h-full w-full font-sans text-sm relative text-gray-800" style={{ width: '210mm', height: '297mm' }}>
+                    <div ref={ref} className="bg-white p-12 h-full w-full font-sans text-sm relative text-ink" style={{ width: '210mm', height: '297mm' }}>
                         {/* Brand Header */}
                         <div className="flex justify-between items-start pb-8 border-b-2 border-gray-800 mb-8">
                             <div className="flex items-center gap-6">
                                 {assets.logo && <img src={assets.logo} alt="logo" className="h-24 w-auto object-contain"/>}
                                 <div>
-                                    <h1 className="text-4xl font-extrabold text-gray-900 tracking-wider">INVOICE</h1>
-                                    <p className="text-gray-500 font-medium mt-1">#{invoiceNumber}</p>
+                                    <h1 className="text-4xl font-extrabold text-ink tracking-wider">INVOICE</h1>
+                                    <p className="text-ink-soft font-medium mt-1">#{invoiceNumber}</p>
                                 </div>
                             </div>
                             <div className="text-right">
                                 <h3 className="font-bold text-lg">{fromName}</h3>
-                                <p className="whitespace-pre-line text-gray-600 text-xs mt-1">{fromDetails}</p>
+                                <p className="whitespace-pre-line text-ink-soft text-xs mt-1">{fromDetails}</p>
                             </div>
                         </div>
 
                         {/* Bill To & Dates */}
                         <div className="flex justify-between mb-12">
                             <div>
-                                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Bill To</h3>
-                                <p className="font-bold text-lg text-gray-900">{toName}</p>
-                                <p className="whitespace-pre-line text-gray-600">{toDetails}</p>
+                                <h3 className="text-xs font-bold text-ink-faint uppercase tracking-widest mb-2">Bill To</h3>
+                                <p className="font-bold text-lg text-ink">{toName}</p>
+                                <p className="whitespace-pre-line text-ink-soft">{toDetails}</p>
                             </div>
                             <div className="text-right space-y-2">
                                 <div>
-                                    <span className="text-xs font-bold text-gray-400 uppercase tracking-widest block">Date</span>
+                                    <span className="text-xs font-bold text-ink-faint uppercase tracking-widest block">Date</span>
                                     <span className="font-bold">{new Date(date).toLocaleDateString()}</span>
                                 </div>
                                 <div>
-                                    <span className="text-xs font-bold text-gray-400 uppercase tracking-widest block">Due Date</span>
-                                    <span className="font-bold text-red-600">{new Date(dueDate).toLocaleDateString()}</span>
+                                    <span className="text-xs font-bold text-ink-faint uppercase tracking-widest block">Due Date</span>
+                                    <span className="font-bold text-danger">{new Date(dueDate).toLocaleDateString()}</span>
                                 </div>
                             </div>
                         </div>
@@ -362,10 +362,10 @@ const InvoicePreview = React.forwardRef<HTMLDivElement, any>(({ assets, fromName
                             </thead>
                             <tbody>
                                 {lineItems.map((item: LineItem) => (
-                                    <tr key={item.id} className="border-b border-gray-200">
+                                    <tr key={item.id} className="border-b border-line">
                                         <td className="py-4 font-medium">{item.description}</td>
-                                        <td className="py-4 text-center text-gray-600">{item.quantity}</td>
-                                        <td className="py-4 text-right text-gray-600">{currencyFormatter.format(item.unitPrice)}</td>
+                                        <td className="py-4 text-center text-ink-soft">{item.quantity}</td>
+                                        <td className="py-4 text-right text-ink-soft">{currencyFormatter.format(item.unitPrice)}</td>
                                         <td className="py-4 text-right font-bold">{currencyFormatter.format(item.quantity * item.unitPrice)}</td>
                                     </tr>
                                 ))}
@@ -375,33 +375,33 @@ const InvoicePreview = React.forwardRef<HTMLDivElement, any>(({ assets, fromName
                         {/* Summary */}
                         <div className="flex justify-end mb-12">
                             <div className="w-1/2 space-y-3">
-                                <div className="flex justify-between text-gray-600">
+                                <div className="flex justify-between text-ink-soft">
                                     <span>Subtotal</span>
                                     <span>{currencyFormatter.format(subtotal)}</span>
                                 </div>
                                 {discount > 0 && (
-                                    <div className="flex justify-between text-gray-600">
+                                    <div className="flex justify-between text-ink-soft">
                                         <span>Discount</span>
                                         <span>- {currencyFormatter.format(discount)}</span>
                                     </div>
                                 )}
-                                <div className="flex justify-between text-gray-600">
+                                <div className="flex justify-between text-ink-soft">
                                     <span>Tax ({taxRate}%)</span>
                                     <span>{currencyFormatter.format(taxAmount)}</span>
                                 </div>
                                 {shipping > 0 && (
-                                    <div className="flex justify-between text-gray-600">
+                                    <div className="flex justify-between text-ink-soft">
                                         <span>Shipping</span>
                                         <span>{currencyFormatter.format(shipping)}</span>
                                     </div>
                                 )}
                                 {depositPaid > 0 && (
-                                    <div className="flex justify-between text-gray-600">
+                                    <div className="flex justify-between text-ink-soft">
                                         <span>Deposit Paid</span>
                                         <span>- {currencyFormatter.format(depositPaid)}</span>
                                     </div>
                                 )}
-                                <div className="flex justify-between font-bold text-xl text-gray-900 border-t-2 border-gray-800 pt-3">
+                                <div className="flex justify-between font-bold text-xl text-ink border-t-2 border-gray-800 pt-3">
                                     <span>Total Due</span>
                                     <span>{currencyFormatter.format(totalDue)}</span>
                                 </div>
@@ -412,8 +412,8 @@ const InvoicePreview = React.forwardRef<HTMLDivElement, any>(({ assets, fromName
                         <div className="absolute bottom-12 left-12 right-12">
                             <div className="grid grid-cols-2 gap-8">
                                 <div>
-                                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Payment Details</h3>
-                                    <p className="text-xs text-gray-600 whitespace-pre-line leading-relaxed">{paymentInstructions}</p>
+                                    <h3 className="text-xs font-bold text-ink-faint uppercase tracking-widest mb-2">Payment Details</h3>
+                                    <p className="text-xs text-ink-soft whitespace-pre-line leading-relaxed">{paymentInstructions}</p>
                                 </div>
                                 <div className="flex justify-end items-end">
                                      <div className="text-center">
@@ -421,11 +421,11 @@ const InvoicePreview = React.forwardRef<HTMLDivElement, any>(({ assets, fromName
                                             src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(`https://tukosoko.com/verify/${invoiceNumber}`)}`} 
                                             alt="QR Code" className="w-16 h-16 opacity-80"
                                         />
-                                        <p className="text-[9px] text-gray-400 mt-1 uppercase tracking-wide">Scan to Verify</p>
+                                        <p className="text-[9px] text-ink-faint mt-1 uppercase tracking-wide">Scan to Verify</p>
                                     </div>
                                 </div>
                             </div>
-                            <div className="mt-8 border-t pt-4 text-center text-gray-400 text-xs">
+                            <div className="mt-8 border-t pt-4 text-center text-ink-faint text-xs">
                                 <p>{notes}</p>
                                 <p className="mt-1">Generated by Niko Soko App</p>
                             </div>
@@ -435,8 +435,8 @@ const InvoicePreview = React.forwardRef<HTMLDivElement, any>(({ assets, fromName
             </div>
 
             <div className="flex gap-3 pt-2">
-                <button onClick={onBack} className="flex-1 bg-gray-200 text-gray-800 font-bold py-4 rounded-xl">Back to Edit</button>
-                <button onClick={onShare} className="flex-1 bg-green-600 text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-2">
+                <button onClick={onBack} className="flex-1 bg-surface-sunken text-ink font-bold py-4 rounded-xl">Back to Edit</button>
+                <button onClick={onShare} className="flex-1 bg-success text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-2">
                     <span>Save & Share</span>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" /></svg>
                 </button>
@@ -471,19 +471,19 @@ const ShareInvoiceModal: React.FC<{clientPhone: string, onClose: () => void, inv
         <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 p-4" onClick={onClose}>
             <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-sm" onClick={e => e.stopPropagation()}>
                 <h2 className="text-xl font-bold mb-4 text-brand-navy">Share Invoice</h2>
-                <p className="text-sm text-gray-600 mb-4">Enter client's phone number to send the invoice link.</p>
-                <div className="flex items-center border rounded-xl bg-gray-50 mb-6 focus-within:ring-2 focus-within:ring-brand-gold">
-                    <span className="pl-4 text-gray-500 font-bold">+254</span>
+                <p className="text-sm text-ink-soft mb-4">Enter client's phone number to send the invoice link.</p>
+                <div className="flex items-center border rounded-xl bg-surface-muted mb-6 focus-within:ring-2 focus-within:ring-brand-gold">
+                    <span className="pl-4 text-ink-soft font-bold">+254</span>
                     <input 
                         type="tel" 
                         value={phone} 
                         onChange={e => setPhone(e.target.value)} 
-                        className="w-full p-3 bg-transparent outline-none font-semibold text-gray-800" 
+                        className="w-full p-3 bg-transparent outline-none font-semibold text-ink" 
                         placeholder="712 345 678" 
                     />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
-                    <button onClick={handleSendSMS} className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 rounded-xl transition">
+                    <button onClick={handleSendSMS} className="bg-surface-sunken hover:bg-surface-sunken text-ink font-bold py-3 rounded-xl transition">
                         SMS
                     </button>
                     <button onClick={handleSendWhatsApp} className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
@@ -491,7 +491,7 @@ const ShareInvoiceModal: React.FC<{clientPhone: string, onClose: () => void, inv
                     </button>
                 </div>
                 <div className="flex gap-2 mt-4">
-                    <button onClick={onClose} className="flex-1 bg-gray-100 text-gray-600 text-sm font-semibold py-2 rounded-lg">Cancel</button>
+                    <button onClick={onClose} className="flex-1 bg-surface-sunken text-ink-soft text-sm font-semibold py-2 rounded-lg">Cancel</button>
                     <button onClick={onDone} className="flex-1 bg-brand-navy text-white text-sm font-semibold py-2 rounded-lg">Done</button>
                 </div>
             </div>

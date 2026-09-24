@@ -27,8 +27,8 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ providers }) => {
                    <div className="space-y-2">
                        {usersByLocation.map(([loc, count]) => (
                            <div key={loc} className="flex justify-between items-center text-sm">
-                               <span className="text-gray-700">{loc}</span>
-                               <span className="font-semibold bg-gray-200 px-2 py-0.5 rounded">{count}</span>
+                               <span className="text-ink">{loc}</span>
+                               <span className="font-semibold bg-surface-sunken px-2 py-0.5 rounded">{count}</span>
                            </div>
                        ))}
                    </div>
@@ -42,7 +42,7 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ providers }) => {
                                    <img src={p.avatarUrl} className="w-8 h-8 rounded-full object-cover" />
                                    <div>
                                        <p className="font-semibold">{p.name}</p>
-                                       <p className="text-xs text-gray-500">{p.service}</p>
+                                       <p className="text-xs text-ink-soft">{p.service}</p>
                                    </div>
                                </div>
                                <span className="font-semibold">{p.views} views</span>

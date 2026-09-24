@@ -14,12 +14,12 @@ const ProductIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-1
 
 const CreatePostView: React.FC<CreatePostViewProps> = ({ onNavigate, onBack }) => {
     return (
-        <div className="w-full max-w-sm mx-auto h-screen bg-gray-50 flex flex-col font-sans">
+        <div className="w-full max-w-sm mx-auto h-screen bg-surface-muted flex flex-col font-sans">
              <header className="p-4 bg-white shadow-sm flex items-center gap-4 sticky top-0 z-10">
-                <button onClick={onBack} className="text-gray-600">
+                <button onClick={onBack} className="text-ink-soft">
                     <BackIcon />
                 </button>
-                <h1 className="text-xl font-bold text-gray-800">Create a New Post</h1>
+                <h1 className="text-xl font-bold text-ink">Create a New Post</h1>
             </header>
 
             <main className="flex-1 flex flex-col justify-center items-center p-6 space-y-6">
@@ -32,7 +32,7 @@ const CreatePostView: React.FC<CreatePostViewProps> = ({ onNavigate, onBack }) =
                     >
                         <ProductIcon />
                         <h3 className="text-xl font-bold text-brand-navy">A Product</h3>
-                        <p className="text-sm text-gray-600 mt-1">Sell a physical item in the marketplace.</p>
+                        <p className="text-sm text-ink-soft mt-1">Sell a physical item in the marketplace.</p>
                     </button>
 
                      <button 
@@ -41,7 +41,7 @@ const CreatePostView: React.FC<CreatePostViewProps> = ({ onNavigate, onBack }) =
                     >
                         <ServiceIcon />
                         <h3 className="text-xl font-bold text-brand-navy">A Service</h3>
-                        <p className="text-sm text-gray-600 mt-1">Offer your skills with a new service card.</p>
+                        <p className="text-sm text-ink-soft mt-1">Offer your skills with a new service card.</p>
                     </button>
                 </div>
             </main>

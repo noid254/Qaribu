@@ -98,7 +98,7 @@ const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = (props) => {
     ];
 
     return (
-        <div className="bg-gray-100 min-h-screen font-sans flex flex-col md:flex-row">
+        <div className="bg-surface-sunken min-h-screen font-sans flex flex-col md:flex-row">
             {/* Sidebar */}
             <aside className="w-full md:w-64 bg-brand-dark text-white flex-shrink-0">
                 <div className="p-4 flex items-center justify-between md:justify-center border-b border-gray-700">
@@ -124,8 +124,8 @@ const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = (props) => {
             {/* Main Content */}
             <div className="flex-1 flex flex-col min-w-0">
                 <header className="bg-white shadow-sm p-4 flex items-center justify-between">
-                     <h2 className="text-2xl font-bold text-gray-800">{activePage}</h2>
-                     <button onClick={onBack} className="hidden md:block text-sm font-medium text-gray-600 hover:text-brand-primary">
+                     <h2 className="text-2xl font-bold text-ink">{activePage}</h2>
+                     <button onClick={onBack} className="hidden md:block text-sm font-medium text-ink-soft hover:text-brand-primary">
                         Exit Dashboard &rarr;
                     </button>
                 </header>

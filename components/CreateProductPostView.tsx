@@ -51,20 +51,20 @@ const CreateProductPostView: React.FC<CreateProductPostViewProps> = ({ onBack, o
         });
     };
     
-    const inputClass = "w-full p-3 border rounded-lg bg-gray-100 focus:bg-white focus:ring-2 focus:ring-brand-gold focus:outline-none transition";
+    const inputClass = "w-full p-3 border rounded-lg bg-surface-sunken focus:bg-white focus:ring-2 focus:ring-brand-gold focus:outline-none transition";
 
     return (
-        <div className="w-full max-w-sm mx-auto h-screen bg-gray-50 flex flex-col font-sans">
+        <div className="w-full max-w-sm mx-auto h-screen bg-surface-muted flex flex-col font-sans">
             <header className="p-4 bg-white shadow-sm flex items-center gap-4 sticky top-0 z-10">
-                <button onClick={onBack} className="text-gray-600">
+                <button onClick={onBack} className="text-ink-soft">
                     <BackIcon />
                 </button>
-                <h1 className="text-xl font-bold text-gray-800">Post a New Product</h1>
+                <h1 className="text-xl font-bold text-ink">Post a New Product</h1>
             </header>
 
             <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 space-y-4">
                 <div>
-                    <label className="text-sm font-semibold text-gray-700 mb-1 block">Product Images (up to {maxImages})</label>
+                    <label className="text-sm font-semibold text-ink mb-1 block">Product Images (up to {maxImages})</label>
                     <div className="grid grid-cols-3 gap-2">
                         {imagePreviews.map((src, index) => (
                             <div key={index} className="relative aspect-square">
@@ -73,7 +73,7 @@ const CreateProductPostView: React.FC<CreateProductPostViewProps> = ({ onBack, o
                             </div>
                         ))}
                         {imagePreviews.length < maxImages && (
-                            <button type="button" onClick={() => fileInputRef.current?.click()} className="aspect-square border-2 border-dashed rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 transition-colors">
+                            <button type="button" onClick={() => fileInputRef.current?.click()} className="aspect-square border-2 border-dashed rounded-md flex items-center justify-center text-ink-faint hover:bg-surface-sunken transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                             </button>
                         )}
@@ -84,18 +84,18 @@ const CreateProductPostView: React.FC<CreateProductPostViewProps> = ({ onBack, o
                 <input value={title} onChange={e => setTitle(e.target.value)} type="text" placeholder="Product Title" className={inputClass} required/>
                 
                 <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">Ksh</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-soft">Ksh</span>
                     <input value={price} onChange={e => setPrice(e.target.value)} type="number" placeholder="Price" className={`${inputClass} pl-10`} required/>
                 </div>
                 
                 <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Product Description" rows={5} className={inputClass} required/>
 
-                <div className="p-3 bg-gray-100 rounded-lg">
-                    <h3 className="font-semibold text-gray-800 text-sm mb-2">Item Verification</h3>
+                <div className="p-3 bg-surface-sunken rounded-lg">
+                    <h3 className="font-semibold text-ink text-sm mb-2">Item Verification</h3>
                     <input value={serialNumber} onChange={e => setSerialNumber(e.target.value)} type="text" placeholder="Serial Number / IMEI (Optional)" className={`${inputClass} bg-white`} />
                     <label className="flex items-center gap-3 mt-3 cursor-pointer">
                         <input type="checkbox" checked={hasReceipt} onChange={e => setHasReceipt(e.target.checked)} className="h-5 w-5 rounded text-brand-gold focus:ring-brand-gold" />
-                        <span className="text-sm text-gray-700">I have the original receipt for this item.</span>
+                        <span className="text-sm text-ink">I have the original receipt for this item.</span>
                     </label>
                 </div>
             </form>

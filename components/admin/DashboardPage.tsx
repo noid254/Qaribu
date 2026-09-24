@@ -11,14 +11,14 @@ const StatCard: React.FC<{ title: string, value: string, icon: React.ReactNode, 
     <div onClick={onClick} className={`bg-white p-6 rounded-lg shadow ${onClick ? 'cursor-pointer hover:shadow-md hover:-translate-y-1 transition-transform' : ''}`}>
         <div className="flex items-start justify-between">
             <div className="flex flex-col space-y-2">
-                <span className="text-gray-500 font-medium">{title}</span>
-                <span className="text-3xl font-bold text-gray-800">{value}</span>
+                <span className="text-ink-soft font-medium">{title}</span>
+                <span className="text-3xl font-bold text-ink">{value}</span>
             </div>
-            <div className="p-3 bg-gray-100 rounded-full text-brand-primary">
+            <div className="p-3 bg-surface-sunken rounded-full text-brand-primary">
                 {icon}
             </div>
         </div>
-        <p className="text-sm text-green-500 mt-2">{change}</p>
+        <p className="text-sm text-success mt-2">{change}</p>
     </div>
 );
 

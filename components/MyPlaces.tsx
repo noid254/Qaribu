@@ -78,13 +78,13 @@ const MyPlaces: React.FC<MyPlacesProps> = ({ providers, onSelectProvider, onNavi
     }, [providers, activeCategory]);
 
     return (
-        <div className="bg-slate-50 min-h-screen font-sans flex flex-col">
+        <div className="bg-surface-muted min-h-screen font-sans flex flex-col">
             <header className="p-4 bg-white sticky top-0 z-10 shadow-sm">
                  <div className="flex items-center gap-4 mb-4">
-                     <button onClick={() => onNavigate('home')} className="text-gray-600 hover:text-gray-900 transition-colors">
+                     <button onClick={() => onNavigate('home')} className="text-ink-soft hover:text-ink transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
                      </button>
-                     <h1 className="text-2xl font-bold text-gray-900">My Places</h1>
+                     <h1 className="text-2xl font-bold text-ink">My Places</h1>
                  </div>
                  
                  {/* Horizontal Scrolling Categories */}
@@ -97,10 +97,10 @@ const MyPlaces: React.FC<MyPlacesProps> = ({ providers, onSelectProvider, onNavi
                                 onClick={() => setActiveCategory(cat.id)}
                                 className="flex flex-col items-center gap-2 flex-shrink-0 snap-start group"
                             >
-                                <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 ${isActive ? 'bg-brand-navy text-white shadow-md scale-110' : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200'}`}>
+                                <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 ${isActive ? 'bg-brand-navy text-white shadow-md scale-110' : 'bg-surface-sunken text-ink-soft group-hover:bg-surface-sunken'}`}>
                                     {cat.icon}
                                 </div>
-                                <span className={`text-xs transition-colors ${isActive ? 'font-bold text-brand-navy' : 'font-medium text-gray-500'}`}>
+                                <span className={`text-xs transition-colors ${isActive ? 'font-bold text-brand-navy' : 'font-medium text-ink-soft'}`}>
                                     {cat.label}
                                 </span>
                             </button>
@@ -111,10 +111,10 @@ const MyPlaces: React.FC<MyPlacesProps> = ({ providers, onSelectProvider, onNavi
 
             <main className="px-4 py-6 flex-1">
                  <div className="flex justify-between items-center mb-4">
-                     <h2 className="text-lg font-bold text-gray-800">
+                     <h2 className="text-lg font-bold text-ink">
                          {activeCategory === 'all' ? 'All Places Nearby' : `${CATEGORIES.find(c => c.id === activeCategory)?.label} Nearby`}
                      </h2>
-                     <span className="text-xs font-semibold text-gray-500 bg-gray-200 px-2 py-1 rounded-full">{filteredProviders.length} results</span>
+                     <span className="text-xs font-semibold text-ink-soft bg-surface-sunken px-2 py-1 rounded-full">{filteredProviders.length} results</span>
                  </div>
 
                 {filteredProviders.length > 0 ? (
@@ -124,7 +124,7 @@ const MyPlaces: React.FC<MyPlacesProps> = ({ providers, onSelectProvider, onNavi
                         ))}
                     </div>
                 ) : (
-                    <div className="flex flex-col items-center justify-center py-16 text-gray-400">
+                    <div className="flex flex-col items-center justify-center py-16 text-ink-faint">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mb-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
                         <p className="text-sm font-medium">No places found in this category.</p>
                         <button onClick={() => setActiveCategory('all')} className="mt-3 text-brand-gold font-bold text-sm hover:underline">View All Places</button>

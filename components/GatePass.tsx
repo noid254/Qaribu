@@ -179,7 +179,7 @@ const WalletCard: React.FC<{
                 </div>
 
                 {/* --- BACK SIDE --- */}
-                <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-[24px] shadow-2xl overflow-hidden bg-white text-gray-800 flex flex-col border border-gray-200">
+                <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-[24px] shadow-2xl overflow-hidden bg-white text-ink flex flex-col border border-line">
                     <div className={`${data.bgClass} h-20 flex items-center justify-between px-6 text-white shadow-md shrink-0`}>
                         <div>
                             <h3 className="font-bold text-lg text-shadow">Details</h3>
@@ -190,12 +190,12 @@ const WalletCard: React.FC<{
                         </button>
                     </div>
 
-                    <div className="flex-1 p-6 overflow-y-auto bg-gray-50">
-                        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 space-y-3">
+                    <div className="flex-1 p-6 overflow-y-auto bg-surface-muted">
+                        <div className="bg-white rounded-xl shadow-sm border border-line p-4 space-y-3">
                             {data.details?.map((detail, i) => (
-                                <div key={i} className="flex justify-between border-b border-gray-50 pb-2 last:border-0 last:pb-0">
-                                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wide">{detail.label}</span>
-                                    <span className="text-sm font-bold text-gray-800 text-right truncate max-w-[65%]">{detail.value}</span>
+                                <div key={i} className="flex justify-between border-b border-line pb-2 last:border-0 last:pb-0">
+                                    <span className="text-xs font-bold text-ink-faint uppercase tracking-wide">{detail.label}</span>
+                                    <span className="text-sm font-bold text-ink text-right truncate max-w-[65%]">{detail.value}</span>
                                 </div>
                             ))}
                         </div>
@@ -211,18 +211,18 @@ const WalletCard: React.FC<{
 
                         {data.type === 'UNIVERSAL_ID' && (
                             <div className="mt-6">
-                                <p className="text-xs font-bold text-gray-400 uppercase mb-2 ml-1">Physical ID</p>
+                                <p className="text-xs font-bold text-ink-faint uppercase mb-2 ml-1">Physical ID</p>
                                 {data.govIdUrl ? (
-                                    <div className="bg-gray-100 rounded-xl overflow-hidden border border-gray-200 aspect-[3/2] relative group shadow-sm">
+                                    <div className="bg-surface-sunken rounded-xl overflow-hidden border border-line aspect-[3/2] relative group shadow-sm">
                                         <img src={data.govIdUrl} className="w-full h-full object-cover" />
                                         <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                             <span className="text-white text-xs font-bold border border-white px-3 py-1 rounded-full">Verified</span>
                                         </div>
                                     </div>
                                 ) : (
-                                    <div onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }} className="border-2 border-dashed border-gray-300 bg-white rounded-xl p-6 text-center cursor-pointer hover:bg-gray-50 transition-colors">
-                                        <span className="text-xs font-bold text-gray-500 block">Upload ID Photo</span>
-                                        <span className="text-[10px] text-gray-400">For security verification</span>
+                                    <div onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }} className="border-2 border-dashed border-line bg-white rounded-xl p-6 text-center cursor-pointer hover:bg-surface-muted transition-colors">
+                                        <span className="text-xs font-bold text-ink-soft block">Upload ID Photo</span>
+                                        <span className="text-[10px] text-ink-faint">For security verification</span>
                                         <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={(e) => { if(e.target.files?.[0] && onUploadId) onUploadId(e.target.files[0]); }} />
                                     </div>
                                 )}
@@ -231,7 +231,7 @@ const WalletCard: React.FC<{
 
                         {data.type === 'CONTACT' && (
                             <div className="mt-6 grid grid-cols-2 gap-3">
-                                <button onClick={handleCall} className="bg-white text-gray-800 font-bold py-3 rounded-xl hover:bg-gray-50 border border-gray-200 shadow-sm text-sm">Call</button>
+                                <button onClick={handleCall} className="bg-white text-ink font-bold py-3 rounded-xl hover:bg-surface-muted border border-line shadow-sm text-sm">Call</button>
                                 <button onClick={handleWhatsApp} className="bg-[#25D366] text-white font-bold py-3 rounded-xl hover:bg-[#128C7E] shadow-md text-sm">WhatsApp</button>
                                 <button 
                                     onClick={(e) => { e.stopPropagation(); if(data.provider && onViewProfile) onViewProfile(data.provider); }} 
@@ -264,7 +264,7 @@ const ScanVerificationModal: React.FC<{
 
     return (
         <div className="fixed inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center p-6 backdrop-blur-sm overflow-y-auto">
-            <div className={`w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl ${allowed ? 'bg-green-600' : 'bg-red-600'} transition-colors duration-500 my-auto`}>
+            <div className={`w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl ${allowed ? 'bg-success' : 'bg-danger'} transition-colors duration-500 my-auto`}>
                 <div className="p-6 text-center text-white pb-12">
                     <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-4 backdrop-blur-sm border-2 border-white/50">
                         {allowed ? (
@@ -278,33 +278,33 @@ const ScanVerificationModal: React.FC<{
                 </div>
 
                 <div className="bg-white rounded-t-3xl p-6 pb-8 -mt-8 relative">
-                    <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 rounded-full border-[6px] border-white shadow-xl overflow-hidden bg-gray-200">
+                    <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 rounded-full border-[6px] border-white shadow-xl overflow-hidden bg-surface-sunken">
                         <img src={visitorImage} alt={visitorName} className="w-full h-full object-cover" />
                     </div>
                     
                     <div className="mt-16 text-center">
-                        <h2 className="text-2xl font-bold text-gray-900">{visitorName}</h2>
+                        <h2 className="text-2xl font-bold text-ink">{visitorName}</h2>
                         
                         {allowed && (
                             <>
                                 <div className="flex justify-center gap-2 mt-3 mb-6">
-                                    <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-bold uppercase">{accessDetails?.role}</span>
-                                    <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-bold uppercase">{accessDetails?.purpose}</span>
+                                    <span className="px-3 py-1 bg-info-soft text-info-strong rounded-full text-xs font-bold uppercase">{accessDetails?.role}</span>
+                                    <span className="px-3 py-1 bg-surface-sunken text-ink rounded-full text-xs font-bold uppercase">{accessDetails?.purpose}</span>
                                 </div>
 
-                                <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 text-left mb-6">
-                                    <h3 className="text-xs font-bold text-gray-500 uppercase mb-3 border-b pb-2">Physical Identity Check</h3>
+                                <div className="bg-surface-muted border border-line rounded-xl p-4 text-left mb-6">
+                                    <h3 className="text-xs font-bold text-ink-soft uppercase mb-3 border-b pb-2">Physical Identity Check</h3>
                                     
                                     {user?.govIdUrl && (
                                         <div className="mb-4">
                                             <button 
                                                 onClick={() => setShowIdImage(!showIdImage)}
-                                                className="w-full text-xs font-bold text-blue-600 border border-blue-200 bg-blue-50 py-2 rounded-lg mb-2"
+                                                className="w-full text-xs font-bold text-info border border-info-soft bg-info-soft py-2 rounded-lg mb-2"
                                             >
                                                 {showIdImage ? 'Hide Digital ID' : 'View Digital ID'}
                                             </button>
                                             {showIdImage && (
-                                                <div className="relative aspect-[3/2] w-full bg-gray-200 rounded-lg overflow-hidden border border-gray-300">
+                                                <div className="relative aspect-[3/2] w-full bg-surface-sunken rounded-lg overflow-hidden border border-line">
                                                     <img src={user.govIdUrl} alt="Digital ID" className="w-full h-full object-cover" />
                                                 </div>
                                             )}
@@ -312,7 +312,7 @@ const ScanVerificationModal: React.FC<{
                                     )}
 
                                     <div>
-                                        <label className="block text-[10px] font-bold text-gray-400 mb-1 uppercase">Confirm ID Number</label>
+                                        <label className="block text-[10px] font-bold text-ink-faint mb-1 uppercase">Confirm ID Number</label>
                                         <input 
                                             type="text" 
                                             value={idNumber}
@@ -449,12 +449,12 @@ const UnitProfileModal: React.FC<{
     return (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
             <div className="bg-white w-full max-w-lg h-[95vh] sm:h-auto sm:max-h-[90vh] rounded-t-2xl sm:rounded-2xl overflow-hidden shadow-2xl flex flex-col">
-                <div className="p-4 border-b flex justify-between items-center bg-gray-50">
-                    <h3 className="font-bold text-gray-800 text-lg">
+                <div className="p-4 border-b flex justify-between items-center bg-surface-muted">
+                    <h3 className="font-bold text-ink text-lg">
                         {isNew ? 'Add New Key' : (mode === 'manager' ? `Manage Key: ${unit.unitNumber}` : 'Edit Unit Profile')}
                     </h3>
-                    <button onClick={onClose} className="p-1 bg-gray-200 rounded-full hover:bg-gray-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-600" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
+                    <button onClick={onClose} className="p-1 bg-surface-sunken rounded-full hover:bg-gray-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-ink-soft" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
                     </button>
                 </div>
                 
@@ -463,14 +463,14 @@ const UnitProfileModal: React.FC<{
                     {isAssigning && (
                         <div className="absolute inset-0 bg-white z-10 p-6 flex flex-col items-center justify-center">
                             <h3 className="text-xl font-bold text-brand-navy mb-2">Assign Digital Key</h3>
-                            <p className="text-sm text-gray-500 mb-6 text-center">Generate a master key for <strong>{unit.unitNumber}</strong>.</p>
+                            <p className="text-sm text-ink-soft mb-6 text-center">Generate a master key for <strong>{unit.unitNumber}</strong>.</p>
                             
                             {!generatedKey ? (
                                 <div className="w-full max-w-xs space-y-4">
                                     <div>
-                                        <label className="block text-xs font-bold text-gray-600 mb-1">Tenant Phone Number</label>
-                                        <div className="flex items-center bg-gray-100 rounded-lg border border-gray-300 px-3">
-                                            <span className="text-gray-500 font-bold">+254</span>
+                                        <label className="block text-xs font-bold text-ink-soft mb-1">Tenant Phone Number</label>
+                                        <div className="flex items-center bg-surface-sunken rounded-lg border border-line px-3">
+                                            <span className="text-ink-soft font-bold">+254</span>
                                             <input 
                                                 type="tel" 
                                                 value={tenantPhone} 
@@ -482,7 +482,7 @@ const UnitProfileModal: React.FC<{
                                         </div>
                                     </div>
                                     <button onClick={handleGenerateKey} className="w-full bg-brand-navy text-white font-bold py-3 rounded-xl shadow-lg">Generate QR Key</button>
-                                    <button onClick={() => setIsAssigning(false)} className="w-full text-gray-500 text-sm font-semibold py-2">Cancel</button>
+                                    <button onClick={() => setIsAssigning(false)} className="w-full text-ink-soft text-sm font-semibold py-2">Cancel</button>
                                 </div>
                             ) : (
                                 <div className="flex flex-col items-center w-full max-w-xs space-y-6">
@@ -493,14 +493,14 @@ const UnitProfileModal: React.FC<{
                                             className="w-48 h-48 mix-blend-multiply"
                                         />
                                     </div>
-                                    <p className="text-xs text-center text-gray-500">
+                                    <p className="text-xs text-center text-ink-soft">
                                         Ask the tenant to scan this code, or share the activation link via WhatsApp.
                                     </p>
                                     <button onClick={handleShareKey} className="w-full bg-[#25D366] text-white font-bold py-3 rounded-xl shadow-lg flex items-center justify-center gap-2 hover:bg-[#128C7E]">
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99 0-3.903-.52-5.586-1.456l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 4.315 1.731 6.086l.474 1.039-1.04 3.833 3.855-1.017z" /></svg>
                                         Share Link
                                     </button>
-                                    <button onClick={() => { setGeneratedKey(null); setIsAssigning(false); }} className="text-gray-500 text-sm font-semibold">Done</button>
+                                    <button onClick={() => { setGeneratedKey(null); setIsAssigning(false); }} className="text-ink-soft text-sm font-semibold">Done</button>
                                 </div>
                             )}
                         </div>
@@ -508,30 +508,30 @@ const UnitProfileModal: React.FC<{
 
                     {mode === 'manager' ? (
                         <>
-                            <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
-                                <h4 className="text-xs font-bold text-blue-800 uppercase mb-3">Mandatory Details</h4>
+                            <div className="bg-info-soft p-4 rounded-xl border border-info-soft">
+                                <h4 className="text-xs font-bold text-info-strong uppercase mb-3">Mandatory Details</h4>
                                 <div className="grid grid-cols-2 gap-4 mb-4">
                                     <div>
-                                        <label className="block text-xs font-bold text-gray-700 mb-1">Door / Unit No. *</label>
-                                        <input value={unitNumber} onChange={e => setUnitNumber(e.target.value)} className="w-full p-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. A4" />
+                                        <label className="block text-xs font-bold text-ink mb-1">Door / Unit No. *</label>
+                                        <input value={unitNumber} onChange={e => setUnitNumber(e.target.value)} className="w-full p-2 border border-info-soft rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. A4" />
                                     </div>
                                     <div>
-                                        <label className="block text-xs font-bold text-gray-700 mb-1">Floor Number *</label>
-                                        <input value={floor} onChange={e => setFloor(e.target.value)} className="w-full p-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. 1st" />
+                                        <label className="block text-xs font-bold text-ink mb-1">Floor Number *</label>
+                                        <input value={floor} onChange={e => setFloor(e.target.value)} className="w-full p-2 border border-info-soft rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. 1st" />
                                     </div>
                                 </div>
                                 <div className="mb-4">
-                                    <label className="block text-xs font-bold text-gray-700 mb-1">Nature of Space (Config) *</label>
+                                    <label className="block text-xs font-bold text-ink mb-1">Nature of Space (Config) *</label>
                                     <input 
                                         value={configuration} 
                                         onChange={e => setConfiguration(e.target.value)} 
-                                        className="w-full p-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                                        className="w-full p-2 border border-info-soft rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
                                         placeholder="e.g. 2 Bedroom, Shop, Office"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-bold text-gray-700 mb-1">Type Category</label>
-                                    <select value={type} onChange={e => setType(e.target.value as any)} className="w-full p-2 border border-blue-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <label className="block text-xs font-bold text-ink mb-1">Type Category</label>
+                                    <select value={type} onChange={e => setType(e.target.value as any)} className="w-full p-2 border border-info-soft rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                                         <option value="Residential">Residential</option>
                                         <option value="Commercial">Commercial</option>
                                         <option value="Shop">Shop</option>
@@ -543,17 +543,17 @@ const UnitProfileModal: React.FC<{
 
                             {/* --- Optional Listing Details --- */}
                             <div>
-                                <h4 className="text-xs font-bold text-gray-500 uppercase mb-3">Listing Details (For Vacancy)</h4>
+                                <h4 className="text-xs font-bold text-ink-soft uppercase mb-3">Listing Details (For Vacancy)</h4>
                                 <div className="grid grid-cols-2 gap-4 mb-4">
                                     <div>
-                                        <label className="block text-xs font-medium text-gray-600 mb-1">Rent Amount</label>
+                                        <label className="block text-xs font-medium text-ink-soft mb-1">Rent Amount</label>
                                         <div className="relative">
-                                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs">Ksh</span>
+                                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-soft text-xs">Ksh</span>
                                             <input type="number" value={rent} onChange={e => setRent(e.target.value)} className="w-full p-2 pl-8 border rounded-lg" placeholder="0.00" />
                                         </div>
                                     </div>
                                     <div>
-                                        <label className="block text-xs font-medium text-gray-600 mb-1">Rent Period</label>
+                                        <label className="block text-xs font-medium text-ink-soft mb-1">Rent Period</label>
                                         <select value={rentPeriod} onChange={e => setRentPeriod(e.target.value as any)} className="w-full p-2 border rounded-lg bg-white">
                                             <option value="Monthly">Monthly</option>
                                             <option value="Quarterly">Quarterly</option>
@@ -562,15 +562,15 @@ const UnitProfileModal: React.FC<{
                                     </div>
                                 </div>
                                 <div className="mb-4">
-                                    <label className="block text-xs font-medium text-gray-600 mb-1">Estimated Size</label>
+                                    <label className="block text-xs font-medium text-ink-soft mb-1">Estimated Size</label>
                                     <input value={size} onChange={e => setSize(e.target.value)} className="w-full p-2 border rounded-lg" placeholder="e.g. 1200 sqft" />
                                 </div>
                                 <div className="mb-4">
-                                    <label className="block text-xs font-medium text-gray-600 mb-1">Description</label>
+                                    <label className="block text-xs font-medium text-ink-soft mb-1">Description</label>
                                     <textarea value={description} onChange={e => setDescription(e.target.value)} rows={3} className="w-full p-2 border rounded-lg" placeholder="Listing description..." />
                                 </div>
                                 <div className="mb-4">
-                                    <label className="block text-xs font-medium text-gray-600 mb-1">Amenities</label>
+                                    <label className="block text-xs font-medium text-ink-soft mb-1">Amenities</label>
                                     <div className="flex gap-2 mb-2">
                                         <input 
                                             value={newAmenity} 
@@ -579,19 +579,19 @@ const UnitProfileModal: React.FC<{
                                             placeholder="e.g. WiFi, Backup Power"
                                             onKeyDown={e => e.key === 'Enter' && handleAddAmenity()}
                                         />
-                                        <button onClick={handleAddAmenity} className="bg-gray-200 px-3 py-1 rounded-lg text-xs font-bold hover:bg-gray-300">Add</button>
+                                        <button onClick={handleAddAmenity} className="bg-surface-sunken px-3 py-1 rounded-lg text-xs font-bold hover:bg-gray-300">Add</button>
                                     </div>
                                     <div className="flex flex-wrap gap-2">
                                         {amenities.map((am, idx) => (
-                                            <span key={idx} className="bg-gray-100 text-gray-700 px-2 py-1 rounded-md text-xs flex items-center gap-1">
-                                                {am} <button onClick={() => handleRemoveAmenity(idx)} className="text-gray-400 hover:text-red-500">&times;</button>
+                                            <span key={idx} className="bg-surface-sunken text-ink px-2 py-1 rounded-md text-xs flex items-center gap-1">
+                                                {am} <button onClick={() => handleRemoveAmenity(idx)} className="text-ink-faint hover:text-danger">&times;</button>
                                             </span>
                                         ))}
                                     </div>
                                 </div>
                                 
                                 <div className="mb-2">
-                                    <label className="block text-xs font-medium text-gray-600 mb-1">Images (Max 12)</label>
+                                    <label className="block text-xs font-medium text-ink-soft mb-1">Images (Max 12)</label>
                                     <div className="grid grid-cols-4 gap-2 mb-2">
                                         {images.map((img, idx) => (
                                             <div key={idx} className="relative aspect-square rounded-lg overflow-hidden border">
@@ -600,7 +600,7 @@ const UnitProfileModal: React.FC<{
                                             </div>
                                         ))}
                                         {images.length < 12 && (
-                                            <button onClick={() => fileInputRef.current?.click()} className="aspect-square rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 hover:bg-gray-50">
+                                            <button onClick={() => fileInputRef.current?.click()} className="aspect-square rounded-lg border-2 border-dashed border-line flex flex-col items-center justify-center text-ink-faint hover:bg-surface-muted">
                                                 <span className="text-xl">+</span>
                                             </button>
                                         )}
@@ -611,17 +611,17 @@ const UnitProfileModal: React.FC<{
                             
                             {!isNew && unit.status === 'Occupied' && (
                                 <div className="pt-4 border-t">
-                                    <p className="text-xs text-gray-500 uppercase font-bold mb-2">Current Tenant</p>
-                                    <div className="flex items-center justify-between bg-gray-50 p-2 rounded-lg mb-3">
+                                    <p className="text-xs text-ink-soft uppercase font-bold mb-2">Current Tenant</p>
+                                    <div className="flex items-center justify-between bg-surface-muted p-2 rounded-lg mb-3">
                                         <div className="flex items-center gap-2">
                                             {tenantProfile && <img src={tenantProfile.avatarUrl} className="w-8 h-8 rounded-full" />}
                                             <span className="text-sm font-semibold">{unit.tenantName || 'Unknown'}</span>
                                         </div>
                                         {tenantProfile && onViewProfile && (
-                                            <button onClick={() => onViewProfile(tenantProfile)} className="text-xs text-blue-600 font-bold">View Profile</button>
+                                            <button onClick={() => onViewProfile(tenantProfile)} className="text-xs text-info font-bold">View Profile</button>
                                         )}
                                     </div>
-                                    <button onClick={handleRevoke} className="w-full py-2 text-red-600 font-bold border border-red-200 bg-red-50 rounded-lg text-sm hover:bg-red-100">
+                                    <button onClick={handleRevoke} className="w-full py-2 text-danger font-bold border border-danger-soft bg-danger-soft rounded-lg text-sm hover:bg-danger-soft">
                                         Revoke Access / Evict
                                     </button>
                                 </div>
@@ -629,7 +629,7 @@ const UnitProfileModal: React.FC<{
 
                             {!isNew && unit.status === 'Vacant' && (
                                 <div className="pt-4 border-t">
-                                    <button onClick={() => setIsAssigning(true)} className="w-full py-3 bg-green-50 text-green-700 font-bold border border-green-200 rounded-xl text-sm hover:bg-green-100 flex items-center justify-center gap-2 shadow-sm">
+                                    <button onClick={() => setIsAssigning(true)} className="w-full py-3 bg-success-soft text-success-strong font-bold border border-success-soft rounded-xl text-sm hover:bg-success-soft flex items-center justify-center gap-2 shadow-sm">
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11.536 9.636a6 6 0 111.414-1.414l1.236 2.236A6 6 0 0119 9a2 2 0 01-2-2zM7.53 12.53l.223.223A2 2 0 009.5 13h2a2 2 0 002-2V9a2 2 0 00-1.767.77l-.223.223 1.768 1.768z" /></svg>
                                         Assign Key to Tenant
                                     </button>
@@ -639,14 +639,14 @@ const UnitProfileModal: React.FC<{
                     ) : (
                         // Host Mode
                         <div>
-                            <label className="block text-xs font-medium text-gray-500 mb-1">Display Name</label>
+                            <label className="block text-xs font-medium text-ink-soft mb-1">Display Name</label>
                             <input value={displayName} onChange={e => setDisplayName(e.target.value)} className="w-full p-2 border rounded-lg" placeholder="e.g. The Smith Family" />
-                            <p className="text-xs text-gray-400 mt-2">This name is visible to visitors and the premise manager.</p>
+                            <p className="text-xs text-ink-faint mt-2">This name is visible to visitors and the premise manager.</p>
                         </div>
                     )}
                 </div>
                 
-                <div className="p-4 border-t bg-gray-50">
+                <div className="p-4 border-t bg-surface-muted">
                     <button onClick={handleSave} className="w-full bg-brand-navy text-white font-bold py-3 rounded-xl shadow-md active:scale-95 transition hover:bg-gray-800">
                         {isNew ? 'Create Key' : 'Save Changes'}
                     </button>
@@ -874,7 +874,7 @@ const GatePass: React.FC<GatePassProps> = ({
         };
 
         return (
-            <div className="bg-gray-50 min-h-screen flex flex-col">
+            <div className="bg-surface-muted min-h-screen flex flex-col">
                 <style>{`.no-scrollbar::-webkit-scrollbar { display: none; } .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }`}</style>
                 {editingUnit && (
                     <UnitProfileModal 
@@ -899,16 +899,16 @@ const GatePass: React.FC<GatePassProps> = ({
                         </div>
                     </div>
                     <div className="flex border-b px-4">
-                        <button onClick={() => setManagerTab('keys')} className={`py-3 px-4 text-sm font-bold border-b-2 ${managerTab === 'keys' ? 'border-brand-navy text-brand-navy' : 'border-transparent text-gray-500'}`}>Manage Keys</button>
+                        <button onClick={() => setManagerTab('keys')} className={`py-3 px-4 text-sm font-bold border-b-2 ${managerTab === 'keys' ? 'border-brand-navy text-brand-navy' : 'border-transparent text-ink-soft'}`}>Manage Keys</button>
                     </div>
                 </div>
                 
                 {/* Body */}
                 <main className="flex-1 p-4 overflow-y-auto no-scrollbar">
                     <div className="flex justify-between items-center mb-4">
-                        <div className="flex bg-gray-200 rounded-lg p-1">
+                        <div className="flex bg-surface-sunken rounded-lg p-1">
                             {['All', 'Occupied', 'Vacant'].map(f => (
-                                <button key={f} onClick={() => setKeyFilter(f as any)} className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${keyFilter === f ? 'bg-white text-brand-navy shadow-sm' : 'text-gray-600'}`}>{f}</button>
+                                <button key={f} onClick={() => setKeyFilter(f as any)} className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${keyFilter === f ? 'bg-white text-brand-navy shadow-sm' : 'text-ink-soft'}`}>{f}</button>
                             ))}
                         </div>
                         <button onClick={() => { setIsCreatingKey(true); setEditingUnit({}); }} className="bg-brand-navy text-white text-xs font-bold px-3 py-2 rounded-lg shadow-md">+ Add Key</button>
@@ -918,14 +918,14 @@ const GatePass: React.FC<GatePassProps> = ({
                             <div key={i} onClick={() => setEditingUnit(u)} className="bg-white p-4 rounded-xl border shadow-sm flex justify-between items-center cursor-pointer hover:shadow-md">
                                 <div>
                                     <div className="flex items-center gap-2">
-                                        <h3 className="font-bold text-gray-800">{u.unitNumber}</h3>
-                                        <span className={`w-2 h-2 rounded-full ${u.status === 'Occupied' ? 'bg-green-500' : 'bg-red-500'}`}></span>
+                                        <h3 className="font-bold text-ink">{u.unitNumber}</h3>
+                                        <span className={`w-2 h-2 rounded-full ${u.status === 'Occupied' ? 'bg-success' : 'bg-danger'}`}></span>
                                     </div>
-                                    <p className="text-xs text-gray-500">{u.configuration}</p>
+                                    <p className="text-xs text-ink-soft">{u.configuration}</p>
                                 </div>
                                 <div className="text-right">
                                     {u.status === 'Vacant' && <span className="text-[10px] bg-brand-gold/20 text-brand-navy px-2 py-1 rounded font-bold uppercase">Listed</span>}
-                                    <span className="text-gray-400 text-xl ml-2">&rsaquo;</span>
+                                    <span className="text-ink-faint text-xl ml-2">&rsaquo;</span>
                                 </div>
                             </div>
                         ))}
@@ -959,7 +959,7 @@ const GatePass: React.FC<GatePassProps> = ({
                             />
                             <div className="flex gap-3">
                                 <button onClick={() => setShowEndShiftModal(false)} className="flex-1 bg-gray-700 hover:bg-gray-600 text-white py-3 rounded-lg font-bold">Cancel</button>
-                                <button onClick={handleEndShiftConfirm} className="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-bold">End Shift</button>
+                                <button onClick={handleEndShiftConfirm} className="flex-1 bg-danger hover:bg-danger-strong text-white py-3 rounded-lg font-bold">End Shift</button>
                             </div>
                         </div>
                     </div>
@@ -971,9 +971,9 @@ const GatePass: React.FC<GatePassProps> = ({
                     </button>
                     <div className="text-center">
                         <h1 className="text-lg font-bold text-brand-gold tracking-wider">SECURITY POST</h1>
-                        <p className="text-[10px] text-gray-400 uppercase">{selectedPremise.name}</p>
+                        <p className="text-[10px] text-ink-faint uppercase">{selectedPremise.name}</p>
                     </div>
-                    <button onClick={() => setShowEndShiftModal(true)} className="bg-red-900/50 hover:bg-red-900 border border-red-700 text-red-100 text-xs font-bold px-3 py-2 rounded transition">
+                    <button onClick={() => setShowEndShiftModal(true)} className="bg-danger-strong/50 hover:bg-danger-strong border border-danger-strong text-red-100 text-xs font-bold px-3 py-2 rounded transition">
                         End Shift
                     </button>
                 </header>
@@ -987,7 +987,7 @@ const GatePass: React.FC<GatePassProps> = ({
 
                     {/* Manual Entry */}
                     <div className="w-full max-w-sm bg-gray-800 p-4 rounded-xl border border-gray-700 shadow-lg">
-                        <label className="block text-xs font-bold text-gray-400 mb-2 uppercase">Manual Code Entry</label>
+                        <label className="block text-xs font-bold text-ink-faint mb-2 uppercase">Manual Code Entry</label>
                         <div className="flex gap-2">
                             <input 
                                 type="text" 
@@ -1004,11 +1004,11 @@ const GatePass: React.FC<GatePassProps> = ({
 
                     {/* Activity Log */}
                     <div className="w-full max-w-sm">
-                        <h3 className="text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Recent Activity</h3>
+                        <h3 className="text-xs font-bold text-ink-soft uppercase mb-2 ml-1">Recent Activity</h3>
                         <div className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
                             {recentActivity.map((log, i) => (
                                 <div key={i} className="p-3 border-b border-gray-700 last:border-0 text-xs text-gray-300 flex items-center gap-2">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                                    <div className="w-1.5 h-1.5 rounded-full bg-success"></div>
                                     {log}
                                 </div>
                             ))}
@@ -1021,7 +1021,7 @@ const GatePass: React.FC<GatePassProps> = ({
 
     // 3. Visitor / Tenant Wallet View
     return (
-        <div className="bg-gray-100 min-h-screen font-sans pb-24 relative overflow-hidden" onClick={handleBackgroundClick}>
+        <div className="bg-surface-sunken min-h-screen font-sans pb-24 relative overflow-hidden" onClick={handleBackgroundClick}>
             {scanResult && (
                 <ScanVerificationModal 
                     scanResult={scanResult} 
@@ -1031,10 +1031,10 @@ const GatePass: React.FC<GatePassProps> = ({
             )}
 
             <header className="p-6 pt-6 flex justify-between items-center z-50 relative pointer-events-none">
-                <h1 className="text-3xl font-bold text-gray-900 tracking-tight pointer-events-auto">My Wallet</h1>
+                <h1 className="text-3xl font-bold text-ink tracking-tight pointer-events-auto">My Wallet</h1>
                 <div className="flex gap-3 pointer-events-auto">
                     {currentUser && <img src={currentUser.avatarUrl} className="w-10 h-10 rounded-full border-2 border-white shadow-sm" />}
-                    <button onClick={onBack} className="bg-white/50 backdrop-blur p-2 rounded-full text-gray-800 hover:bg-white shadow-sm"><svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button>
+                    <button onClick={onBack} className="bg-white/50 backdrop-blur p-2 rounded-full text-ink hover:bg-white shadow-sm"><svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button>
                 </div>
             </header>
 
@@ -1058,7 +1058,7 @@ const GatePass: React.FC<GatePassProps> = ({
                     </div>
                 ) : (
                     <div className="mt-20 text-center py-10">
-                        <p className="text-gray-400 text-sm">No active passes found.</p>
+                        <p className="text-ink-faint text-sm">No active passes found.</p>
                         <button onClick={onScanClick} className="mt-4 text-brand-navy font-bold text-sm bg-white px-4 py-2 rounded-full shadow-md">Scan to Add</button>
                     </div>
                 )}

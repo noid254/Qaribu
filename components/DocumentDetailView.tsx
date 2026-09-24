@@ -3,10 +3,10 @@ import type { Document, ServiceProvider } from '../types';
 import * as api from '../services/api';
 
 const verificationStyles: Record<NonNullable<Document['verificationStatus']>, { classes: string, text: string }> = {
-    Unverified: { classes: 'bg-gray-100 text-gray-800', text: 'Not Verified' },
-    Pending: { classes: 'bg-yellow-100 text-yellow-800', text: 'Verification Pending' },
-    Verified: { classes: 'bg-blue-100 text-blue-800', text: 'Verified' },
-    Rejected: { classes: 'bg-red-100 text-red-800', text: 'Verification Rejected' },
+    Unverified: { classes: 'bg-surface-sunken text-ink', text: 'Not Verified' },
+    Pending: { classes: 'bg-warning-soft text-warning-strong', text: 'Verification Pending' },
+    Verified: { classes: 'bg-info-soft text-info-strong', text: 'Verified' },
+    Rejected: { classes: 'bg-danger-soft text-danger-strong', text: 'Verification Rejected' },
 };
 const formatKsh = (amount: number) => `Ksh ${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
@@ -64,9 +64,9 @@ const DocumentDetailView: React.FC<{ document: Document; onBack: () => void; onU
     };
     
     return (
-        <div className="bg-gray-100 min-h-full pb-6">
+        <div className="bg-surface-sunken min-h-full pb-6">
             <div className="relative">
-                <img src={assetImages[mainImageIndex] || 'https://picsum.photos/seed/placeholder/800/600'} alt="Asset" className="w-full h-64 object-cover bg-gray-200" />
+                <img src={assetImages[mainImageIndex] || 'https://picsum.photos/seed/placeholder/800/600'} alt="Asset" className="w-full h-64 object-cover bg-surface-sunken" />
                 <button onClick={onBack} className="absolute top-4 left-4 bg-black/50 text-white p-2 rounded-full z-10">
                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
                 </button>
@@ -81,22 +81,22 @@ const DocumentDetailView: React.FC<{ document: Document; onBack: () => void; onU
 
             <div className="p-4 space-y-4">
                 <div className="bg-white rounded-xl shadow-sm p-4">
-                    <h1 className="text-2xl font-bold text-gray-900">{document.items?.[0]?.description || document.model || 'Asset Details'}</h1>
+                    <h1 className="text-2xl font-bold text-ink">{document.items?.[0]?.description || document.model || 'Asset Details'}</h1>
                     
                     {document.assetType === 'Vehicle' ? (
-                         <div className="font-mono text-gray-500 mt-1 grid grid-cols-2 gap-x-4">
+                         <div className="font-mono text-ink-soft mt-1 grid grid-cols-2 gap-x-4">
                             <span>{document.registrationNumber}</span>
                             <span>YOM: {document.yearOfManufacture}</span>
                          </div>
                     ) : (
-                        document.items?.[0]?.serial && <p className="text-gray-500 font-mono mt-1">SN: {document.items[0].serial}</p>
+                        document.items?.[0]?.serial && <p className="text-ink-soft font-mono mt-1">SN: {document.items[0].serial}</p>
                     )}
 
-                    {document.specifications && <p className="text-sm text-gray-600 mt-2 whitespace-pre-wrap">{document.specifications}</p>}
+                    {document.specifications && <p className="text-sm text-ink-soft mt-2 whitespace-pre-wrap">{document.specifications}</p>}
                 </div>
 
                  <div className="bg-white rounded-xl shadow-sm p-4">
-                     <h2 className="font-semibold text-gray-800 mb-3">Ownership & Verification</h2>
+                     <h2 className="font-semibold text-ink mb-3">Ownership & Verification</h2>
                      {document.pendingOwnerPhone && (
                         <div className="text-center p-2 rounded-lg font-semibold text-sm mb-3 bg-orange-100 text-orange-800">
                             Transfer pending for {document.pendingOwnerPhone}
@@ -109,16 +109,16 @@ const DocumentDetailView: React.FC<{ document: Document; onBack: () => void; onU
                     )}
                     <div className="text-sm space-y-2">
                         <div className="flex justify-between">
-                            <span className="text-gray-600">Current Owner:</span>
-                            <span className="font-semibold text-gray-800">{document.ownerPhone ? `******${document.ownerPhone.slice(-4)}` : 'You'}</span>
+                            <span className="text-ink-soft">Current Owner:</span>
+                            <span className="font-semibold text-ink">{document.ownerPhone ? `******${document.ownerPhone.slice(-4)}` : 'You'}</span>
                         </div>
                          <div className="flex justify-between">
-                            <span className="text-gray-600">Seller:</span>
-                            <span className="font-semibold text-gray-800">{document.issuerName}</span>
+                            <span className="text-ink-soft">Seller:</span>
+                            <span className="font-semibold text-ink">{document.issuerName}</span>
                         </div>
                         {document.logbookImageUrl && (
                              <div className="pt-2">
-                                <button onClick={() => setIsLogbookModalOpen(true)} className="text-sm text-blue-600 font-semibold hover:underline">
+                                <button onClick={() => setIsLogbookModalOpen(true)} className="text-sm text-info font-semibold hover:underline">
                                     View Logbook
                                 </button>
                             </div>
@@ -127,19 +127,19 @@ const DocumentDetailView: React.FC<{ document: Document; onBack: () => void; onU
                  </div>
 
                  <div className="bg-white rounded-xl shadow-sm p-4">
-                    <h2 className="font-semibold text-gray-800 mb-3">Purchase Details</h2>
+                    <h2 className="font-semibold text-ink mb-3">Purchase Details</h2>
                     <div className="text-sm space-y-2">
                          <div className="flex justify-between">
-                            <span className="text-gray-600">Purchase Date:</span>
-                            <span className="font-semibold text-gray-800">{new Date(document.date).toLocaleDateString()}</span>
+                            <span className="text-ink-soft">Purchase Date:</span>
+                            <span className="font-semibold text-ink">{new Date(document.date).toLocaleDateString()}</span>
                         </div>
                          <div className="flex justify-between">
-                            <span className="text-gray-600">Amount Paid:</span>
-                            <span className="font-semibold text-gray-800">{formatKsh(document.amount)}</span>
+                            <span className="text-ink-soft">Amount Paid:</span>
+                            <span className="font-semibold text-ink">{formatKsh(document.amount)}</span>
                         </div>
                          {document.scannedImageUrl && (
                             <div className="pt-3">
-                                <button onClick={() => setIsReceiptModalOpen(true)} className="flex items-center gap-2 text-sm text-blue-600 font-semibold">
+                                <button onClick={() => setIsReceiptModalOpen(true)} className="flex items-center gap-2 text-sm text-info font-semibold">
                                     <img src={document.scannedImageUrl} alt="Receipt thumbnail" className="w-10 h-10 object-cover rounded-md border"/>
                                     <span>View Original Receipt</span>
                                 </button>
@@ -155,9 +155,9 @@ const DocumentDetailView: React.FC<{ document: Document; onBack: () => void; onU
                         </button>
                     )}
                     {document.type === 'Receipt' && document.verificationStatus === 'Unverified' && (
-                        <button onClick={handleRequestVerification} className="w-full bg-blue-500 text-white font-bold py-3 rounded-xl hover:bg-blue-600 transition">Request Seller Verification</button>
+                        <button onClick={handleRequestVerification} className="w-full bg-info text-white font-bold py-3 rounded-xl hover:bg-info transition">Request Seller Verification</button>
                     )}
-                     <button onClick={() => alert("Coming soon: Sell this verified asset on Tukosoko!")} className="w-full bg-green-600 text-white font-bold py-3 rounded-xl shadow-md hover:bg-green-700 transition">
+                     <button onClick={() => alert("Coming soon: Sell this verified asset on Tukosoko!")} className="w-full bg-success text-white font-bold py-3 rounded-xl shadow-md hover:bg-success-strong transition">
                         Sell This Asset
                     </button>
                 </div>

@@ -20,13 +20,13 @@ const ToolboxIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6
 
 const Stat: React.FC<{ value: string; label: string }> = ({ value, label }) => (
     <div className="text-center">
-        <p className="text-2xl font-bold font-mono text-gray-800">{value}</p>
-        <p className="text-xs text-gray-500 uppercase tracking-wider">{label}</p>
+        <p className="text-2xl font-bold font-mono text-ink">{value}</p>
+        <p className="text-xs text-ink-soft uppercase tracking-wider">{label}</p>
     </div>
 );
 
 const ActionCard: React.FC<{ title: string; icon: React.ReactNode; onClick: () => void }> = ({ title, icon, onClick }) => (
-    <button onClick={onClick} className="bg-blue-800 text-white p-4 rounded-xl shadow-lg text-left w-full h-32 flex flex-col justify-between hover:bg-blue-700 hover:-translate-y-1 transition-all duration-200">
+    <button onClick={onClick} className="bg-info-strong text-white p-4 rounded-xl shadow-lg text-left w-full h-32 flex flex-col justify-between hover:bg-info-strong hover:-translate-y-1 transition-all duration-200">
         <div className="text-amber-400">
             {icon}
         </div>
@@ -35,16 +35,16 @@ const ActionCard: React.FC<{ title: string; icon: React.ReactNode; onClick: () =
 );
 
 const FileLink: React.FC<{ title: string, onClick: () => void, icon: React.ReactNode, stat: string }> = ({ title, onClick, icon, stat }) => (
-     <button onClick={onClick} className="bg-white p-4 rounded-xl shadow-sm text-left w-full hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200 flex justify-between items-center">
+     <button onClick={onClick} className="bg-white p-4 rounded-xl shadow-sm text-left w-full hover:shadow-md hover:bg-surface-muted transition-all duration-200 border border-line flex justify-between items-center">
         <div className="flex items-center gap-4">
-             <div className="text-gray-500">
+             <div className="text-ink-soft">
                 {icon}
             </div>
-            <h3 className="font-semibold text-gray-700">{title}</h3>
+            <h3 className="font-semibold text-ink">{title}</h3>
         </div>
         <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-gray-500">{stat}</span>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+            <span className="text-sm font-semibold text-ink-soft">{stat}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-ink-faint" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
         </div>
     </button>
 );
@@ -52,23 +52,23 @@ const FileLink: React.FC<{ title: string, onClick: () => void, icon: React.React
 
 const InvoiceHub: React.FC<InvoiceHubProps> = ({ onNavigate, onBack }) => {
     return (
-        <div className="p-4 bg-gray-100 min-h-full font-sans">
+        <div className="p-4 bg-surface-sunken min-h-full font-sans">
             <header className="mb-6 flex justify-between items-start">
                  <div>
-                    <h1 className="text-3xl font-bold text-gray-900">My Workshop</h1>
-                    <p className="text-gray-600 mt-1">Your command center for business operations.</p>
+                    <h1 className="text-3xl font-bold text-ink">My Workshop</h1>
+                    <p className="text-ink-soft mt-1">Your command center for business operations.</p>
                  </div>
-                 <button onClick={onBack} className="text-2xl text-gray-500 hover:text-gray-800">&times;</button>
+                 <button onClick={onBack} className="text-2xl text-ink-soft hover:text-ink">&times;</button>
             </header>
 
-            <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 mb-6 flex justify-around">
+            <div className="bg-white p-4 rounded-xl shadow-sm border border-line mb-6 flex justify-around">
                 <Stat value="3" label="Invoices" />
                 <Stat value="1" label="Quotes" />
                 <Stat value="5" label="Assets" />
             </div>
             
             <section className="space-y-4">
-                <h2 className="text-lg font-semibold text-gray-800">Create New...</h2>
+                <h2 className="text-lg font-semibold text-ink">Create New...</h2>
                 <div className="grid grid-cols-2 gap-4">
                     <ActionCard 
                         title="New Invoice" 
@@ -94,7 +94,7 @@ const InvoiceHub: React.FC<InvoiceHubProps> = ({ onNavigate, onBack }) => {
             </section>
             
             <section className="mt-8 space-y-4">
-                <h2 className="text-lg font-semibold text-gray-800">My Files</h2>
+                <h2 className="text-lg font-semibold text-ink">My Files</h2>
                  <div className="space-y-3">
                     <FileLink 
                         title="All Documents" 

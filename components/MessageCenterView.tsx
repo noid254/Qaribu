@@ -88,34 +88,34 @@ const MessageCenterView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     };
 
     return (
-        <div className="w-full max-w-sm mx-auto bg-gray-100 h-screen flex flex-col font-sans">
+        <div className="w-full max-w-sm mx-auto bg-surface-sunken h-screen flex flex-col font-sans">
             <header className="p-4 bg-white shadow-sm flex items-center gap-4 sticky top-0 z-10">
-                <button onClick={onBack} className="text-gray-600">
+                <button onClick={onBack} className="text-ink-soft">
                     <BackIcon />
                 </button>
-                <h1 className="text-xl font-bold text-gray-800">$KILL Support</h1>
+                <h1 className="text-xl font-bold text-ink">$KILL Support</h1>
             </header>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 {messages.map(msg => (
                     <div key={msg.id} className={`flex items-end gap-2 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                        <div className={`max-w-[80%] p-3 rounded-2xl ${msg.sender === 'user' ? 'bg-brand-navy text-white rounded-br-none' : 'bg-white text-gray-800 rounded-bl-none shadow-sm'}`}>
+                        <div className={`max-w-[80%] p-3 rounded-2xl ${msg.sender === 'user' ? 'bg-brand-navy text-white rounded-br-none' : 'bg-white text-ink rounded-bl-none shadow-sm'}`}>
                             <p className="text-sm" style={{ wordBreak: 'break-word' }}>{msg.text}</p>
-                            <p className={`text-xs mt-1 ${msg.sender === 'user' ? 'text-gray-300' : 'text-gray-400'} text-right`}>{msg.timestamp}</p>
+                            <p className={`text-xs mt-1 ${msg.sender === 'user' ? 'text-gray-300' : 'text-ink-faint'} text-right`}>{msg.timestamp}</p>
                         </div>
                     </div>
                 ))}
                 <div ref={messagesEndRef} />
             </div>
 
-            <footer className="p-2 bg-white border-t border-gray-200">
+            <footer className="p-2 bg-white border-t border-line">
                 <form onSubmit={handleSendMessage} className="flex items-center gap-2">
                     <input
                         type="text"
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                         placeholder="Type a message..."
-                        className="w-full p-3 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-brand-gold text-sm"
+                        className="w-full p-3 bg-surface-sunken rounded-full focus:outline-none focus:ring-2 focus:ring-brand-gold text-sm"
                     />
                     <button type="submit" className="p-3 bg-brand-navy text-white rounded-full flex-shrink-0 active-scale">
                         <SendIcon />

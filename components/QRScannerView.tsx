@@ -115,13 +115,13 @@ const QRScannerView: React.FC<QRScannerViewProps> = ({ onScanSuccess, onBack }) 
                                 </button>
                                 <button 
                                     onClick={handleSimulateVisitorPass}
-                                    className="bg-green-600/80 text-white text-[10px] font-bold py-3 rounded-lg hover:bg-green-700 backdrop-blur-md border border-green-400/50"
+                                    className="bg-success/80 text-white text-[10px] font-bold py-3 rounded-lg hover:bg-success-strong backdrop-blur-md border border-green-400/50"
                                 >
                                     Visitor Pass
                                 </button>
                                 <button 
                                     onClick={handleSimulateUniversalID}
-                                    className="bg-blue-600/80 text-white text-[10px] font-bold py-3 rounded-lg hover:bg-blue-700 backdrop-blur-md border border-blue-400/50"
+                                    className="bg-info/80 text-white text-[10px] font-bold py-3 rounded-lg hover:bg-info-strong backdrop-blur-md border border-blue-400/50"
                                 >
                                     Universal ID
                                 </button>

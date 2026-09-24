@@ -40,7 +40,7 @@ const CatalogueItemDetailModal: React.FC<CatalogueItemDetailModalProps> = ({ ite
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-end z-50 animate-fade-in" onClick={onClose}>
       <div 
-        className="bg-gray-50 rounded-t-3xl shadow-2xl w-full max-w-sm h-[95vh] flex flex-col animate-slide-in-up" 
+        className="bg-surface-muted rounded-t-3xl shadow-2xl w-full max-w-sm h-[95vh] flex flex-col animate-slide-in-up" 
         onClick={e => e.stopPropagation()}
       >
         <div className="p-4 flex-shrink-0 text-center relative cursor-grab" onTouchStart={onClose}>
@@ -62,14 +62,14 @@ const CatalogueItemDetailModal: React.FC<CatalogueItemDetailModalProps> = ({ ite
 
             <div className="p-5 space-y-4">
               <p className="text-sm font-bold text-brand-gold uppercase tracking-wider">{item.category}</p>
-              <h1 className="text-3xl font-bold text-gray-900 leading-tight">{item.title}</h1>
+              <h1 className="text-3xl font-bold text-ink leading-tight">{item.title}</h1>
               <p className="text-3xl font-bold text-brand-navy">{item.price}</p>
 
               {item.serialNumber && (
-                <p className="text-sm text-gray-500 font-mono">SN: {item.serialNumber}</p>
+                <p className="text-sm text-ink-soft font-mono">SN: {item.serialNumber}</p>
               )}
 
-              <div className={`p-3 rounded-lg text-sm ${item.isVerified ? 'bg-blue-50 border border-blue-200 text-blue-800' : 'bg-yellow-50 border border-yellow-200 text-yellow-800'}`}>
+              <div className={`p-3 rounded-lg text-sm ${item.isVerified ? 'bg-info-soft border border-info-soft text-info-strong' : 'bg-warning-soft border border-warning-soft text-warning-strong'}`}>
                 <p className="font-semibold">
                     {item.isVerified
                         ? "Seller has confirmed they have proof of purchase."
@@ -79,26 +79,26 @@ const CatalogueItemDetailModal: React.FC<CatalogueItemDetailModalProps> = ({ ite
               </div>
               
               {item.duration && (
-                <div className="flex items-center gap-2 text-gray-600">
+                <div className="flex items-center gap-2 text-ink-soft">
                     <ClockIcon />
                     <p className="text-sm font-semibold">{item.duration}</p>
                 </div>
               )}
               
               {item.discountInfo && (
-                <div className="mt-4 p-3 bg-green-100 border border-green-200 rounded-lg text-center">
-                  <p className="font-bold text-green-800">{item.discountInfo}</p>
+                <div className="mt-4 p-3 bg-success-soft border border-success-soft rounded-lg text-center">
+                  <p className="font-bold text-success-strong">{item.discountInfo}</p>
                 </div>
               )}
 
-              <div className="pt-4 border-t border-gray-200">
-                  <h2 className="text-md font-semibold text-gray-800 mb-2">Description</h2>
-                  <p className="text-sm text-gray-700 leading-relaxed">{item.description}</p>
+              <div className="pt-4 border-t border-line">
+                  <h2 className="text-md font-semibold text-ink mb-2">Description</h2>
+                  <p className="text-sm text-ink leading-relaxed">{item.description}</p>
               </div>
 
               {item.externalLink && (
                     <div className="pt-4">
-                        <a href={item.externalLink} target="_blank" rel="noopener noreferrer" className="block w-full bg-green-600 text-white font-bold py-3 px-4 rounded-xl text-center transition-colors hover:bg-green-700 active-scale">
+                        <a href={item.externalLink} target="_blank" rel="noopener noreferrer" className="block w-full bg-success text-white font-bold py-3 px-4 rounded-xl text-center transition-colors hover:bg-success-strong active-scale">
                             Visit Course Page
                         </a>
                     </div>
@@ -106,9 +106,9 @@ const CatalogueItemDetailModal: React.FC<CatalogueItemDetailModalProps> = ({ ite
             </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] flex items-center gap-3">
+        <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-line shadow-[0_-2px_10px_rgba(0,0,0,0.05)] flex items-center gap-3">
           {provider?.phone && (
-              <button onClick={handleCall} className="flex-1 bg-gray-200 text-gray-800 font-bold py-4 px-4 rounded-xl hover:bg-gray-300 transition-colors flex items-center justify-center gap-2 active-scale">
+              <button onClick={handleCall} className="flex-1 bg-surface-sunken text-ink font-bold py-4 px-4 rounded-xl hover:bg-gray-300 transition-colors flex items-center justify-center gap-2 active-scale">
                   <CallIcon /> Call
               </button>
           )}

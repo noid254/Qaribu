@@ -30,8 +30,8 @@ const AppearancePage: React.FC<AppearancePageProps> = ({ categories, specialBann
     return (
         <div className="space-y-6">
             <div className="bg-white rounded-lg shadow-sm p-4">
-                 <h2 className="text-xl font-bold text-gray-800 mb-4">Manage Special Banners</h2>
-                 <form onSubmit={handleAddBanner} className="space-y-4 p-4 border rounded-lg bg-gray-50">
+                 <h2 className="text-xl font-bold text-ink mb-4">Manage Special Banners</h2>
+                 <form onSubmit={handleAddBanner} className="space-y-4 p-4 border rounded-lg bg-surface-muted">
                      <h3 className="font-semibold">Add New Banner</h3>
                      <input type="url" placeholder="Image URL*" value={newBanner.imageUrl} onChange={e => setNewBanner(p => ({...p, imageUrl: e.target.value}))} className={inputClass} required />
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -69,7 +69,7 @@ const AppearancePage: React.FC<AppearancePageProps> = ({ categories, specialBann
                      <h3 className="font-semibold mb-2">Active Banners</h3>
                      <div className="space-y-3">
                          {specialBanners.map(banner => (
-                             <div key={banner.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                             <div key={banner.id} className="flex items-center justify-between p-3 bg-surface-muted rounded-lg">
                                  <div className="flex items-center gap-3">
                                     <img src={banner.imageUrl} className="w-16 h-10 rounded object-cover" />
                                     <div className="text-xs">
@@ -78,10 +78,10 @@ const AppearancePage: React.FC<AppearancePageProps> = ({ categories, specialBann
                                         ))}
                                     </div>
                                  </div>
-                                 <button onClick={() => onDeleteBanner(banner.id)} className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">Delete</button>
+                                 <button onClick={() => onDeleteBanner(banner.id)} className="text-xs bg-danger-soft text-danger-strong px-2 py-1 rounded">Delete</button>
                              </div>
                          ))}
-                         {specialBanners.length === 0 && <p className="text-center text-gray-500 py-4">No special banners configured.</p>}
+                         {specialBanners.length === 0 && <p className="text-center text-ink-soft py-4">No special banners configured.</p>}
                      </div>
                  </div>
             </div>

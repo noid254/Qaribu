@@ -8,10 +8,10 @@ const MenuIcon = ({ className = "h-7 w-7" }: { className?: string }) => <svg xml
 const BellIcon = ({ hasNotification, className = "h-7 w-7" }: { hasNotification: boolean, className?: string }) => (
     <div className="relative">
         <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
-        {hasNotification && <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></div>}
+        {hasNotification && <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-danger rounded-full border-2 border-white"></div>}
     </div>
 );
-const SearchIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>;
+const SearchIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-ink-faint" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>;
 const QRIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6.5 6.5v-1m-6.5-13L5.5 1m-4 4.5h1m13.5 6.5l-1-1M5.5 12.5v1m13.5-6.5L18 5m-1 6.5v-1m-6.5 6.5L5.5 18m13.5-6.5h-1M10 14v-4m-2 4h4" /></svg>;
 
 // Toolkit Icons
@@ -121,11 +121,11 @@ const NikoSoko: React.FC<NikoSokoProps> = ({ providers, onSelectProvider, search
     );
 
     const SearchBar = ({ compact = false }: { compact?: boolean }) => (
-         <div className={`bg-white rounded-full flex items-center p-1 transition-all ${compact ? 'border border-gray-200' : 'shadow-lg'}`}>
+         <div className={`bg-white rounded-full flex items-center p-1 transition-all ${compact ? 'border border-line' : 'shadow-lg'}`}>
             <div className="flex-1 flex items-center px-3 gap-2">
                 <SearchIcon />
                 <input 
-                    className="w-full outline-none text-sm text-gray-700 placeholder-gray-400 bg-transparent" 
+                    className="w-full outline-none text-sm text-ink placeholder-gray-400 bg-transparent" 
                     placeholder={compact ? "Search..." : "What are you looking for?"}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -138,18 +138,18 @@ const NikoSoko: React.FC<NikoSokoProps> = ({ providers, onSelectProvider, search
     );
 
     return (
-        <div className="bg-gray-50 min-h-screen font-sans relative pb-24">
+        <div className="bg-surface-muted min-h-screen font-sans relative pb-24">
             
             {/* --- Sticky Header (Initially Hidden) --- */}
             <header className={`fixed top-0 left-0 right-0 mx-auto max-w-md z-40 bg-white/95 backdrop-blur shadow-md transition-transform duration-300 transform ${showStickyHeader ? 'translate-y-0' : '-translate-y-full'}`}>
                  <div className="flex items-center justify-between px-4 py-2 gap-4">
-                    <button onClick={onBack} className="p-2 -ml-2 rounded-full hover:bg-gray-100 active:scale-95 transition-transform">
+                    <button onClick={onBack} className="p-2 -ml-2 rounded-full hover:bg-surface-sunken active:scale-95 transition-transform">
                         <MenuIcon className="h-6 w-6 text-brand-navy" />
                     </button>
                     <div className="flex-1">
                         <SearchBar compact={true} />
                     </div>
-                    <button onClick={onMessagesClick} className="p-2 -mr-2 rounded-full hover:bg-gray-100 active:scale-95 transition-transform">
+                    <button onClick={onMessagesClick} className="p-2 -mr-2 rounded-full hover:bg-surface-sunken active:scale-95 transition-transform">
                         <BellIcon hasNotification={hasNewMessages} className="h-6 w-6 text-brand-navy" />
                     </button>
                 </div>

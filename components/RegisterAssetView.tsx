@@ -72,22 +72,22 @@ const RegisterAssetView: React.FC<RegisterAssetViewProps> = ({ onBack, onSave })
         onSave(newDoc);
     };
 
-    const inputClass = "w-full p-3 border rounded-lg bg-white focus:ring-2 focus:ring-brand-primary focus:outline-none transition font-medium text-gray-800";
+    const inputClass = "w-full p-3 border rounded-lg bg-white focus:ring-2 focus:ring-brand-primary focus:outline-none transition font-medium text-ink";
 
     return (
-        <div className="bg-gray-100 min-h-full font-sans">
+        <div className="bg-surface-sunken min-h-full font-sans">
             {/* Header */}
             <header className="p-4 bg-white shadow-sm flex items-center gap-4 sticky top-0 z-10">
-                <button onClick={onBack} className="text-gray-600 hover:text-gray-900">
+                <button onClick={onBack} className="text-ink-soft hover:text-ink">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
                 </button>
-                <h1 className="text-xl font-bold text-gray-800">Add New Asset</h1>
+                <h1 className="text-xl font-bold text-ink">Add New Asset</h1>
             </header>
 
             <form onSubmit={handleSubmit} className="p-4 space-y-6 pb-20">
                 <div className="bg-white p-4 rounded-xl shadow-sm border space-y-4">
-                    <h2 className="font-bold text-lg text-gray-800">Asset Type</h2>
-                    <select value={assetType} onChange={e => setAssetType(e.target.value as Document['assetType'])} className={`${inputClass} font-semibold bg-gray-50`}>
+                    <h2 className="font-bold text-lg text-ink">Asset Type</h2>
+                    <select value={assetType} onChange={e => setAssetType(e.target.value as Document['assetType'])} className={`${inputClass} font-semibold bg-surface-muted`}>
                         <option value="Vehicle">Vehicle (Car, BodaBoda)</option>
                         <option value="Tool">Power Tool</option>
                         <option value="Electronics">Electronics</option>
@@ -97,7 +97,7 @@ const RegisterAssetView: React.FC<RegisterAssetViewProps> = ({ onBack, onSave })
                 
                 {assetType === 'Vehicle' && (
                     <div className="bg-white p-4 rounded-xl shadow-sm border space-y-4">
-                         <h2 className="font-bold text-lg text-gray-800">Vehicle Details</h2>
+                         <h2 className="font-bold text-lg text-ink">Vehicle Details</h2>
                         <input value={regNumber} onChange={e => setRegNumber(e.target.value.toUpperCase())} placeholder="Registration Plate (e.g. KDA 123X)" className={inputClass} required/>
                         <input value={model} onChange={e => setModel(e.target.value)} placeholder="Make & Model (e.g. Toyota Fielder)" className={inputClass} required/>
                         <input value={yom} onChange={e => setYom(e.target.value)} placeholder="Year of Manufacture" className={inputClass} required/>
@@ -106,7 +106,7 @@ const RegisterAssetView: React.FC<RegisterAssetViewProps> = ({ onBack, onSave })
 
                 {(assetType === 'Tool' || assetType === 'Electronics' || assetType === 'Other') && (
                      <div className="bg-white p-4 rounded-xl shadow-sm border space-y-4">
-                        <h2 className="font-bold text-lg text-gray-800">{assetType} Details</h2>
+                        <h2 className="font-bold text-lg text-ink">{assetType} Details</h2>
                         <input value={itemDesc} onChange={e => setItemDesc(e.target.value)} placeholder="Item Name (e.g. Bosch Power Drill)" className={inputClass} required/>
                         <input value={model} onChange={e => setModel(e.target.value)} placeholder="Model Number (Optional)" className={inputClass} />
                         <input value={itemSerial} onChange={e => setItemSerial(e.target.value)} placeholder="Serial Number" className={inputClass} required/>
@@ -114,20 +114,20 @@ const RegisterAssetView: React.FC<RegisterAssetViewProps> = ({ onBack, onSave })
                 )}
                 
                  <div className="bg-white p-4 rounded-xl shadow-sm border space-y-4">
-                     <h2 className="font-bold text-lg text-gray-800">Images & Documents</h2>
+                     <h2 className="font-bold text-lg text-ink">Images & Documents</h2>
                      <div>
-                        <label className="text-sm font-medium text-gray-600 mb-2 block">Asset Photos (up to 4)</label>
+                        <label className="text-sm font-medium text-ink-soft mb-2 block">Asset Photos (up to 4)</label>
                         <div className="grid grid-cols-4 gap-2">
                             {productImages.map((src, i) => <img key={i} src={src} className="w-full h-16 object-cover rounded-lg border"/>)}
-                            {productImages.length < 4 && <button type="button" onClick={() => productImgRef.current?.click()} className="w-full h-16 border-2 border-dashed rounded-lg flex items-center justify-center text-gray-400 hover:bg-gray-50 transition">+</button>}
+                            {productImages.length < 4 && <button type="button" onClick={() => productImgRef.current?.click()} className="w-full h-16 border-2 border-dashed rounded-lg flex items-center justify-center text-ink-faint hover:bg-surface-muted transition">+</button>}
                         </div>
                         <input type="file" ref={productImgRef} onChange={(e) => handleFileChange(e, 'product')} accept="image/*" className="hidden"/>
                     </div>
                      {assetType === 'Vehicle' && (
                          <div>
-                            <label className="text-sm font-medium text-gray-600 mb-2 block">Logbook Photo</label>
+                            <label className="text-sm font-medium text-ink-soft mb-2 block">Logbook Photo</label>
                             {logbookImage ? <img src={logbookImage} onClick={() => logbookImgRef.current?.click()} className="w-full h-32 object-contain rounded-lg border p-1 cursor-pointer"/> : (
-                                <button type="button" onClick={() => logbookImgRef.current?.click()} className="w-full h-24 border-2 border-dashed rounded-lg flex items-center justify-center text-gray-500 text-sm hover:bg-gray-50 transition">
+                                <button type="button" onClick={() => logbookImgRef.current?.click()} className="w-full h-24 border-2 border-dashed rounded-lg flex items-center justify-center text-ink-soft text-sm hover:bg-surface-muted transition">
                                     Click to Upload Logbook
                                 </button>
                             )}

@@ -60,7 +60,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose, onNavigate, curren
                       <img src={currentUser.avatarUrl || 'https://i.pravatar.cc/150?img=5'} alt="User Avatar" className="w-14 h-14 rounded-full border-2 border-white/30" />
                       <div>
                           <p className="font-semibold text-lg">{currentUser.name}</p>
-                          <p className="text-xs text-gray-400">{currentUser.service}</p>
+                          <p className="text-xs text-ink-faint">{currentUser.service}</p>
                       </div>
                   </div>
               </header>
