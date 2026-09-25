@@ -5,6 +5,7 @@ import type { ServiceProvider, CatalogueItem, Document, QaRibuRequest, Ticket, G
 export const mockProviders: ServiceProvider[] = [
     {
         id: '1',
+        createdAt: new Date(Date.now() - 120 * 60 * 60 * 1000).toISOString(),
         name: 'John Doe',
         phone: '254712345678',
         whatsapp: '254712345678',
@@ -41,6 +42,7 @@ export const mockProviders: ServiceProvider[] = [
     },
     {
         id: '3',
+        createdAt: new Date(Date.now() - 240 * 60 * 60 * 1000).toISOString(),
         name: 'Nairobi Institute of Technology',
         phone: '254734567890',
         service: 'Technical & Vocational Training',
@@ -119,6 +121,7 @@ export const mockProviders: ServiceProvider[] = [
     },
     {
         id: '6',
+        createdAt: new Date(Date.now() - 26 * 60 * 60 * 1000).toISOString(),
         name: 'Kevin "Speedy" Otieno',
         phone: '254767890123',
         service: 'Boda Boda Rider',
@@ -142,6 +145,7 @@ export const mockProviders: ServiceProvider[] = [
     },
     {
         id: '7',
+        createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
         name: 'Flash Courier',
         phone: '254778901234',
         service: 'City Courier',
@@ -228,6 +232,7 @@ export const mockProviders: ServiceProvider[] = [
     // --- NEW DUMMY TENANTS ---
     {
         id: 't4',
+        createdAt: new Date(Date.now() - 480 * 60 * 60 * 1000).toISOString(),
         name: 'Alice Kamau',
         phone: '254722000001',
         service: 'Resident',
@@ -260,6 +265,7 @@ export const mockProviders: ServiceProvider[] = [
     },
     {
         id: 't5',
+        createdAt: new Date(Date.now() - 50 * 60 * 60 * 1000).toISOString(),
         name: 'Global Tech Solutions',
         phone: '254722000002',
         service: 'Software Development',

@@ -32,15 +32,44 @@ const I = {
 const prefersReducedMotion = () =>
     typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
-// Cycles through a list on an interval, paused for prefers-reduced-motion. Returns the current index.
-function useCarousel(length: number, intervalMs: number): number {
-    const [index, setIndex] = useState(0);
+// Requests a larger, sharper image from Unsplash's own resize params where present.
+const hiRes = (url: string, width = 1000) =>
+    url.includes('images.unsplash.com') ? url.replace(/([?&])w=\d+/, `$1w=${width}`).replace(/q=\d+/, 'q=85') : url;
+
+type BannerFrame = { kind: 'wordmark' } | { kind: 'location'; area: string } | { kind: 'tagline' } | { kind: 'highlight'; provider: ServiceProvider };
+
+// The banner's opening sequence: logo+"Qaribu" -> logo+area -> logo+tagline -> an ongoing loop of
+// recent, nearby listings with no logo, full-bleed, one every 3s. Stops advancing (but keeps frame 1
+// visible) for prefers-reduced-motion.
+const WORDMARK_MS = 1600;
+const LOCATION_MS = 1800;
+const TAGLINE_MS = 1800;
+const HIGHLIGHT_MS = 3000;
+const INTRO_MS = WORDMARK_MS + LOCATION_MS + TAGLINE_MS;
+
+// Derives the current frame from wall-clock elapsed time rather than chained timers, so a single
+// setInterval "tick" (at a much finer grain than any one frame) always lands on the mathematically
+// correct frame — it can't silently stall if a browser throttles timers on a backgrounded/inactive tab.
+function useBannerStages(area: string | undefined, highlights: ServiceProvider[]): BannerFrame {
+    const [, forceTick] = useState(0);
+    const startedAt = useRef(Date.now());
+    const reduced = useRef(prefersReducedMotion()).current;
+
     useEffect(() => {
-        if (length < 2 || prefersReducedMotion()) return;
-        const id = setInterval(() => setIndex(i => (i + 1) % length), intervalMs);
+        if (reduced) return;
+        const id = setInterval(() => forceTick(t => t + 1), 400);
         return () => clearInterval(id);
-    }, [length, intervalMs]);
-    return length > 0 ? index % length : 0;
+    }, [reduced]);
+
+    if (reduced) return { kind: 'wordmark' };
+
+    const elapsed = Date.now() - startedAt.current;
+    if (elapsed < WORDMARK_MS) return { kind: 'wordmark' };
+    if (elapsed < WORDMARK_MS + LOCATION_MS) return { kind: 'location', area: area || 'Nairobi' };
+    if (elapsed < INTRO_MS) return { kind: 'tagline' };
+    if (highlights.length === 0) return { kind: 'tagline' };
+    const idx = Math.floor((elapsed - INTRO_MS) / HIGHLIGHT_MS) % highlights.length;
+    return { kind: 'highlight', provider: highlights[idx] };
 }
 
 interface HomeDoorProps {
@@ -68,39 +97,72 @@ const Seal: React.FC<{ size?: string }> = ({ size = 'h-20 w-20' }) => (
     </div>
 );
 
-// "Qaribu Ruaka." / "Qaribu CBD." — cycling through areas people are actually listed in.
-const LocationLine: React.FC<{ areas: string[] }> = ({ areas }) => {
-    const index = useCarousel(areas.length, 2000);
-    return (
-        <p className="rise-in-2 mt-3 font-serif text-headline text-brand-navy" aria-live="polite">
-            Qaribu <span key={index} className="inline-block text-brand-gold-dark rise-in">{areas[index] || 'Nairobi'}</span>
-            <span className="text-brand-navy">.</span>
-        </p>
-    );
+const recency = (createdAt?: string): string | null => {
+    if (!createdAt) return null;
+    const hrs = (Date.now() - new Date(createdAt).getTime()) / 3_600_000;
+    if (hrs < 1) return 'Just listed';
+    if (hrs < 24) return `${Math.round(hrs)}h ago`;
+    return `${Math.round(hrs / 24)}d ago`;
 };
 
-// Rotates through real listed providers — a live pulse of what's on the app right now.
-const Spotlight: React.FC<{ providers: ServiceProvider[]; onSelect: (p: ServiceProvider) => void }> = ({ providers, onSelect }) => {
-    const index = useCarousel(providers.length, 4000);
-    const p = providers[index];
-    if (!p) return null;
+// Frames 1-3 (logo present, white ground) and 4+ (no logo, full-bleed recent listing) of the banner's
+// opening sequence. Each frame owns its own fade/rise-in via a remounting `key`.
+const BannerStageView: React.FC<{ stage: BannerFrame; onSelect: (p: ServiceProvider) => void }> = ({ stage, onSelect }) => {
+    if (stage.kind === 'highlight') {
+        const p = stage.provider;
+        const when = recency(p.createdAt);
+        return (
+            <button
+                key={p.id}
+                onClick={() => onSelect(p)}
+                className="rise-in group relative block h-64 w-full overflow-hidden rounded-hero text-left shadow-float"
+            >
+                <img
+                    src={hiRes(p.coverImageUrl)}
+                    alt=""
+                    className="h-full w-full object-cover transition-transform duration-700 group-active:scale-105"
+                    onError={e => { e.currentTarget.style.opacity = '0'; }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-night via-night/25 to-transparent" />
+                <div className="absolute left-0 right-0 top-3 flex justify-between px-4">
+                    {when && <span className="badge bg-white/90 text-brand-navy backdrop-blur">{when}</span>}
+                    {p.isVerified && (
+                        <span className="badge bg-night/70 text-chain backdrop-blur">
+                            <Ico d={I.shield} className="h-3 w-3" /> Verified
+                        </span>
+                    )}
+                </div>
+                <div className="absolute inset-x-0 bottom-0 p-4">
+                    <p className="flex items-center gap-1 text-caption font-semibold text-white/70">
+                        <Ico d={I.pin} className="h-3.5 w-3.5" /> {p.location}
+                    </p>
+                    <p className="mt-0.5 truncate font-serif text-title text-white">{p.name}</p>
+                    <p className="truncate text-body text-white/80">{p.service}</p>
+                    <span className="btn-accent btn-sm mt-3 inline-flex">View profile <Ico d={I.arrow} className="h-3.5 w-3.5" /></span>
+                </div>
+            </button>
+        );
+    }
+
     return (
-        <button
-            key={p.id}
-            onClick={() => onSelect(p)}
-            className="rise-in mt-4 flex w-full items-center gap-3 rounded-card border border-line bg-surface p-2.5 text-left shadow-card transition-transform active:scale-[0.98]"
-        >
-            <img src={p.avatarUrl} alt="" className="h-11 w-11 flex-shrink-0 rounded-control object-cover" />
-            <span className="min-w-0 flex-1">
-                <span className="flex items-center gap-1.5">
-                    <span className="badge-brand shrink-0 !py-0.5">Live near you</span>
-                </span>
-                <span className="mt-0.5 block truncate text-body font-bold text-ink">{p.name} · {p.service}</span>
-            </span>
-            <span className="flex flex-shrink-0 items-center gap-1 text-caption font-bold text-ink-soft">
-                <Ico d={I.star} className="h-3.5 w-3.5 text-brand-gold-dark" /> {p.rating.toFixed(1)}
-            </span>
-        </button>
+        <div className="rise-in flex h-64 flex-col items-center justify-center text-center">
+            <Seal />
+            {stage.kind === 'wordmark' && (
+                <p className="mt-3 font-serif text-headline text-brand-navy">
+                    Qaribu<span className="text-brand-gold-dark">.</span>
+                </p>
+            )}
+            {stage.kind === 'location' && (
+                <p className="mt-3 font-serif text-headline text-brand-navy" aria-live="polite">
+                    {stage.area}<span className="text-brand-gold-dark">.</span>
+                </p>
+            )}
+            {stage.kind === 'tagline' && (
+                <p className="mt-3 font-serif text-headline text-brand-navy">
+                    Discover. <span className="text-brand-gold-dark">Connect.</span> Trust.
+                </p>
+            )}
+        </div>
     );
 };
 
@@ -145,11 +207,15 @@ const Home: React.FC<HomeDoorProps> = ({
         return seen.size > 0 ? Array.from(seen).slice(0, 5) : ['Nairobi'];
     }, [providers]);
 
-    // A rotating pulse of live listings for the banner — verified first, so the "lively" effect leads with trust.
-    const spotlightPool = useMemo(
-        () => [...providers].sort((a, b) => Number(b.isVerified) - Number(a.isVerified)).slice(0, 10),
-        [providers]
-    );
+    // Frame 4+ pool: "recent" filters to listings with a real post date, "in the area" sorts what's
+    // left by distance. Falls back to all providers only if none have a post date yet.
+    const recentNearby = useMemo(() => {
+        const dated = providers.filter(p => p.createdAt);
+        const pool = dated.length > 0 ? dated : providers;
+        return [...pool].sort((a, b) => a.distanceKm - b.distanceKm).slice(0, 6);
+    }, [providers]);
+
+    const bannerStage = useBannerStages(areas[0], recentNearby);
 
     const goProfile = () => (currentUser && isAuthenticated ? onSelectProvider(currentUser) : onAuthClick());
 
@@ -195,10 +261,7 @@ const Home: React.FC<HomeDoorProps> = ({
                 </header>
 
                 <div className="relative z-10 mx-auto max-w-md px-6 pb-6 pt-3 text-center">
-                    <div className="rise-in flex justify-center"><Seal /></div>
-                    <LocationLine areas={areas} />
-
-                    {spotlightPool.length > 0 && <Spotlight providers={spotlightPool} onSelect={onSelectProvider} />}
+                    <BannerStageView stage={bannerStage} onSelect={onSelectProvider} />
 
                     <div className="rise-in-3 mt-4 flex items-center rounded-full border border-line bg-surface p-1.5 shadow-card">
                         <div className="flex flex-1 items-center gap-2 px-3 text-ink-faint">

@@ -165,7 +165,8 @@ export interface ServiceProvider {
   category: string;
   location: string;
   isOnline: boolean;
-  
+  createdAt?: string; // When this listing was posted — drives "recent in the area" surfacing (e.g. the home banner highlights)
+
   // NEW/UPDATED fields
   accountType: 'individual' | 'organization'; // organization = Tenant
   role?: 'BuildingManager' | 'TenantAdmin' | 'Staff' | 'Gateman'; // Added Gateman

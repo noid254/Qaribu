@@ -194,7 +194,10 @@
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
     <script>
-      if ('serviceWorker' in navigator) {
+      // Skip on localhost/127.0.0.1: the SW's cache-first strategy otherwise serves a stale build
+      // during local dev (the page looks unchanged after an edit until you manually clear it).
+      const isLocalDev = ['localhost', '127.0.0.1'].includes(location.hostname);
+      if ('serviceWorker' in navigator && !isLocalDev) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/sw.js').then(registration => {
             console.log('SW registered: ', registration);
