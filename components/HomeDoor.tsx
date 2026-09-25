@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import type { ServiceProvider, CatalogueItem, Document, Premise, CurrentPage } from '../types';
 import ServiceCard from './ServiceCard';
 
@@ -25,7 +25,23 @@ const I = {
     wallet: ['M4 7a2 2 0 012-2h11v4', 'M4 7v10a2 2 0 002 2h13a1 1 0 001-1v-8a1 1 0 00-1-1H6a2 2 0 01-2-2z', 'M16 14h.01'],
     user: ['M12 12a4 4 0 100-8 4 4 0 000 8z', 'M4 20a8 8 0 0116 0'],
     arrow: 'M5 12h14M13 6l6 6-6 6',
+    pin: ['M12 21s7-6.1 7-11.5A7 7 0 105 9.5C5 14.9 12 21 12 21z', 'M12 11.5a2 2 0 100-4 2 2 0 000 4z'],
+    star: 'M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7-5.4-4.7 7.1-.6L12 2z',
 };
+
+const prefersReducedMotion = () =>
+    typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+
+// Cycles through a list on an interval, paused for prefers-reduced-motion. Returns the current index.
+function useCarousel(length: number, intervalMs: number): number {
+    const [index, setIndex] = useState(0);
+    useEffect(() => {
+        if (length < 2 || prefersReducedMotion()) return;
+        const id = setInterval(() => setIndex(i => (i + 1) % length), intervalMs);
+        return () => clearInterval(id);
+    }, [length, intervalMs]);
+    return length > 0 ? index % length : 0;
+}
 
 interface HomeDoorProps {
     providers: ServiceProvider[];
@@ -45,12 +61,48 @@ interface HomeDoorProps {
 }
 
 // The mark: Qaribu's own pin+keyhole "Q" — your door in, glowing.
-const Seal: React.FC = () => (
+const Seal: React.FC<{ size?: string }> = ({ size = 'h-20 w-20' }) => (
     <div className="relative flex items-center justify-center">
-        <div className="door-breathe absolute h-40 w-40 rounded-full bg-glow/30 blur-2xl" aria-hidden="true" />
-        <img src="/logo.png" alt="Qaribu" className="relative h-32 w-32 drop-shadow-[0_8px_28px_rgba(239,176,63,0.45)]" />
+        <div className="door-breathe absolute h-28 w-28 rounded-full bg-glow/25 blur-2xl" aria-hidden="true" />
+        <img src="/logo.png" alt="Qaribu" className={`relative ${size} drop-shadow-[0_6px_20px_rgba(239,176,63,0.4)]`} />
     </div>
 );
+
+// "Qaribu Ruaka." / "Qaribu CBD." — cycling through areas people are actually listed in.
+const LocationLine: React.FC<{ areas: string[] }> = ({ areas }) => {
+    const index = useCarousel(areas.length, 2000);
+    return (
+        <p className="rise-in-2 mt-3 font-serif text-headline text-brand-navy" aria-live="polite">
+            Qaribu <span key={index} className="inline-block text-brand-gold-dark rise-in">{areas[index] || 'Nairobi'}</span>
+            <span className="text-brand-navy">.</span>
+        </p>
+    );
+};
+
+// Rotates through real listed providers — a live pulse of what's on the app right now.
+const Spotlight: React.FC<{ providers: ServiceProvider[]; onSelect: (p: ServiceProvider) => void }> = ({ providers, onSelect }) => {
+    const index = useCarousel(providers.length, 4000);
+    const p = providers[index];
+    if (!p) return null;
+    return (
+        <button
+            key={p.id}
+            onClick={() => onSelect(p)}
+            className="rise-in mt-4 flex w-full items-center gap-3 rounded-card border border-line bg-surface p-2.5 text-left shadow-card transition-transform active:scale-[0.98]"
+        >
+            <img src={p.avatarUrl} alt="" className="h-11 w-11 flex-shrink-0 rounded-control object-cover" />
+            <span className="min-w-0 flex-1">
+                <span className="flex items-center gap-1.5">
+                    <span className="badge-brand shrink-0 !py-0.5">Live near you</span>
+                </span>
+                <span className="mt-0.5 block truncate text-body font-bold text-ink">{p.name} · {p.service}</span>
+            </span>
+            <span className="flex flex-shrink-0 items-center gap-1 text-caption font-bold text-ink-soft">
+                <Ico d={I.star} className="h-3.5 w-3.5 text-brand-gold-dark" /> {p.rating.toFixed(1)}
+            </span>
+        </button>
+    );
+};
 
 const Home: React.FC<HomeDoorProps> = ({
     providers, catalogueItems, documents, premises, currentUser, isAuthenticated,
@@ -80,6 +132,25 @@ const Home: React.FC<HomeDoorProps> = ({
         return [...list].sort((a, b) => a.distanceKm - b.distanceKm).slice(0, q ? 12 : 4);
     }, [providers, searchTerm]);
 
+    // Areas actually in use, e.g. "Kilimani, Nairobi" -> "Kilimani" — for the cycling "Qaribu {Area}." line.
+    const areas = useMemo(() => {
+        const seen = new Set<string>();
+        for (const p of providers) {
+            // Only "Neighborhood, City" formatted locations — skips one-word entries
+            // like a gate post's "Gate House" or a bare "Nairobi", which read oddly as areas.
+            if (!p.location?.includes(',')) continue;
+            const area = p.location.split(',')[0].trim();
+            if (area) seen.add(area);
+        }
+        return seen.size > 0 ? Array.from(seen).slice(0, 5) : ['Nairobi'];
+    }, [providers]);
+
+    // A rotating pulse of live listings for the banner — verified first, so the "lively" effect leads with trust.
+    const spotlightPool = useMemo(
+        () => [...providers].sort((a, b) => Number(b.isVerified) - Number(a.isVerified)).slice(0, 10),
+        [providers]
+    );
+
     const goProfile = () => (currentUser && isAuthenticated ? onSelectProvider(currentUser) : onAuthClick());
 
     const actions: { label: string; hint: string; icon: string | string[]; page: CurrentPage; tone: string }[] = [
@@ -104,40 +175,32 @@ const Home: React.FC<HomeDoorProps> = ({
     ];
 
     return (
-        <div className="min-h-screen bg-night font-sans pb-28">
-            {/* ===== THE DOOR ===== */}
-            <section className="relative overflow-hidden">
-                {/* light spilling through the doorway */}
-                <div className="pointer-events-none absolute left-1/2 top-24 h-80 w-80 -translate-x-1/2 rounded-full bg-glow/25 blur-3xl door-breathe" />
-                <div className="pointer-events-none absolute -right-16 top-0 h-56 w-56 rounded-full bg-chain/15 blur-3xl ray-drift" />
+        <div className="min-h-screen bg-surface font-sans pb-28">
+            {/* ===== WHITE BANNER ===== */}
+            <section className="relative overflow-hidden bg-surface">
+                {/* a hint of glow behind the mark, never overwhelming the white */}
+                <div className="pointer-events-none absolute left-1/2 top-8 h-64 w-64 -translate-x-1/2 rounded-full bg-glow/15 blur-3xl" />
 
                 <header className="relative z-10 mx-auto flex max-w-md items-center justify-between px-5 pt-5">
-                    <button onClick={onOpenMenu} aria-label="Open menu" className="rounded-full bg-white/10 p-2.5 text-white backdrop-blur hover:bg-white/20">
+                    <button onClick={onOpenMenu} aria-label="Open menu" className="rounded-full bg-surface-sunken p-2.5 text-brand-navy hover:bg-line">
                         <Ico d={I.menu} className="h-5 w-5" />
                     </button>
-                    <span className="flex items-center gap-2">
-                        <img src="/logo.png" alt="" className="h-7 w-7" />
-                        <span className="font-serif text-lg font-bold tracking-wide text-white">Qaribu</span>
+                    <span className="text-caption font-semibold uppercase tracking-[0.2em] text-ink-faint">
+                        {firstName ? `Karibu, ${firstName}` : 'Karibu'}
                     </span>
-                    <button onClick={onMessagesClick} aria-label="Notifications" className="relative rounded-full bg-white/10 p-2.5 text-white backdrop-blur hover:bg-white/20">
+                    <button onClick={onMessagesClick} aria-label="Notifications" className="relative rounded-full bg-surface-sunken p-2.5 text-brand-navy hover:bg-line">
                         <Ico d={I.bell} className="h-5 w-5" />
-                        {hasNewMessages && <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-glow ring-2 ring-night" />}
+                        {hasNewMessages && <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-brand-gold-dark ring-2 ring-surface" />}
                     </button>
                 </header>
 
-                <div className="relative z-10 mx-auto max-w-md px-5 pb-8 pt-4 text-center">
+                <div className="relative z-10 mx-auto max-w-md px-6 pb-6 pt-3 text-center">
                     <div className="rise-in flex justify-center"><Seal /></div>
-                    <p className="rise-in-2 mt-4 text-caption font-semibold uppercase tracking-[0.2em] text-chain">
-                        {firstName ? `Karibu, ${firstName}` : 'Karibu'}
-                    </p>
-                    <h1 className="rise-in-2 mt-1 font-serif text-display text-white">
-                        Own it. Prove it.<br /><span className="text-glow">Trade it.</span>
-                    </h1>
-                    <p className="rise-in-3 mx-auto mt-2 max-w-xs text-body text-white/70">
-                        Turn your skills, gear and property into verified assets — then decide what's for sale.
-                    </p>
+                    <LocationLine areas={areas} />
 
-                    <div className="rise-in-3 mt-5 flex items-center rounded-full bg-white p-1.5 shadow-float">
+                    {spotlightPool.length > 0 && <Spotlight providers={spotlightPool} onSelect={onSelectProvider} />}
+
+                    <div className="rise-in-3 mt-4 flex items-center rounded-full border border-line bg-surface p-1.5 shadow-card">
                         <div className="flex flex-1 items-center gap-2 px-3 text-ink-faint">
                             <Ico d={I.search} className="h-5 w-5" />
                             <input
@@ -148,7 +211,7 @@ const Home: React.FC<HomeDoorProps> = ({
                                 className="w-full bg-transparent text-body text-ink outline-none placeholder-ink-faint"
                             />
                         </div>
-                        <button onClick={() => onNavigate('qrScan')} className="flex items-center gap-1.5 rounded-full bg-night px-4 py-2.5 text-caption font-bold text-white hover:bg-night-raised">
+                        <button onClick={() => onNavigate('qrScan')} className="flex items-center gap-1.5 rounded-full bg-brand-navy px-4 py-2.5 text-caption font-bold text-white hover:bg-brand-navy-light">
                             <Ico d={I.scan} className="h-4 w-4" /> Scan
                         </button>
                     </div>
@@ -156,15 +219,15 @@ const Home: React.FC<HomeDoorProps> = ({
             </section>
 
             {/* ===== QUICK ACTIONS ===== */}
-            <section className="mx-auto max-w-md px-5">
+            <section className="mx-auto max-w-md px-5 pt-1">
                 <div className="grid grid-cols-4 gap-2.5">
                     {actions.map(a => (
                         <button key={a.label} onClick={() => onNavigate(a.page)} className="group flex flex-col items-center gap-2 rounded-card p-1 text-center">
-                            <span className={`flex h-14 w-14 items-center justify-center rounded-card border border-night-line shadow-raised transition-transform group-active:scale-95 ${a.tone}`}>
+                            <span className={`flex h-14 w-14 items-center justify-center rounded-card shadow-raised transition-transform group-active:scale-95 ${a.tone}`}>
                                 <Ico d={a.icon} />
                             </span>
-                            <span className="text-caption font-bold leading-tight text-white">{a.label}</span>
-                            <span className="-mt-1.5 text-[10px] leading-tight text-white/50">{a.hint}</span>
+                            <span className="text-caption font-bold leading-tight text-ink">{a.label}</span>
+                            <span className="-mt-1.5 text-[10px] leading-tight text-ink-faint">{a.hint}</span>
                         </button>
                     ))}
                 </div>
