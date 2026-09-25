@@ -1,10 +1,14 @@
 {
-  "short_name": "Niko Soko",
-  "name": "Niko Soko - Service Finder",
-  "description": "A minimalistic app to find and connect with essential service providers near you. Browse services, view profiles, and list your own services with an easy-to-use interface.",
+  "short_name": "Qaribu",
+  "name": "Qaribu - Own it. Prove it. Trade it.",
+  "description": "Tokenize skills, products and property. Verify ownership, check before you buy, and exchange what's yours.",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#F9FAFB",
-  "theme_color": "#1F2937"
+  "background_color": "#0F1D30",
+  "theme_color": "#1B2D45",
+  "icons": [
+    { "src": "/logo.png", "sizes": "500x499", "type": "image/png", "purpose": "any" },
+    { "src": "/logo.png", "sizes": "500x499", "type": "image/png", "purpose": "maskable" }
+  ]
 }

@@ -44,28 +44,12 @@ interface HomeDoorProps {
     onNavigate: (page: CurrentPage) => void;
 }
 
-// The doorway: an arch of light opening onto a new world.
-const Doorway: React.FC = () => (
-    <svg viewBox="0 0 160 200" className="h-44 w-auto" aria-hidden="true">
-        <defs>
-            <linearGradient id="doorLight" x1="0" y1="1" x2="0" y2="0">
-                <stop offset="0" stopColor="#FFC24B" />
-                <stop offset="0.55" stopColor="#FFE3A1" />
-                <stop offset="1" stopColor="#FFF8E6" />
-            </linearGradient>
-            <linearGradient id="doorFrame" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stopColor="#2DD4BF" stopOpacity="0.9" />
-                <stop offset="1" stopColor="#FFC24B" stopOpacity="0.9" />
-            </linearGradient>
-        </defs>
-        <path d="M20 196V80a60 60 0 01120 0v116z" fill="none" stroke="url(#doorFrame)" strokeWidth="2.5" />
-        <path d="M32 196V82a48 48 0 0196 0v114z" fill="url(#doorLight)" className="door-breathe" style={{ transformOrigin: '80px 196px' }} />
-        {/* threshold steps */}
-        <path d="M14 196h132M22 202h116" stroke="#22324F" strokeWidth="3" strokeLinecap="round" />
-        {/* a figure stepping in */}
-        <circle cx="80" cy="128" r="7" fill="#0A1120" />
-        <path d="M80 137c-9 0-13 8-13 20v39h26v-39c0-12-4-20-13-20z" fill="#0A1120" />
-    </svg>
+// The mark: Qaribu's own pin+keyhole "Q" — your door in, glowing.
+const Seal: React.FC = () => (
+    <div className="relative flex items-center justify-center">
+        <div className="door-breathe absolute h-40 w-40 rounded-full bg-glow/30 blur-2xl" aria-hidden="true" />
+        <img src="/logo.png" alt="Qaribu" className="relative h-32 w-32 drop-shadow-[0_8px_28px_rgba(239,176,63,0.45)]" />
+    </div>
 );
 
 const Home: React.FC<HomeDoorProps> = ({
@@ -131,7 +115,10 @@ const Home: React.FC<HomeDoorProps> = ({
                     <button onClick={onOpenMenu} aria-label="Open menu" className="rounded-full bg-white/10 p-2.5 text-white backdrop-blur hover:bg-white/20">
                         <Ico d={I.menu} className="h-5 w-5" />
                     </button>
-                    <span className="font-serif text-lg font-bold tracking-wide text-white">Qaribu<span className="text-glow">.</span></span>
+                    <span className="flex items-center gap-2">
+                        <img src="/logo.png" alt="" className="h-7 w-7" />
+                        <span className="font-serif text-lg font-bold tracking-wide text-white">Qaribu</span>
+                    </span>
                     <button onClick={onMessagesClick} aria-label="Notifications" className="relative rounded-full bg-white/10 p-2.5 text-white backdrop-blur hover:bg-white/20">
                         <Ico d={I.bell} className="h-5 w-5" />
                         {hasNewMessages && <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-glow ring-2 ring-night" />}
@@ -139,15 +126,15 @@ const Home: React.FC<HomeDoorProps> = ({
                 </header>
 
                 <div className="relative z-10 mx-auto max-w-md px-5 pb-8 pt-4 text-center">
-                    <div className="rise-in flex justify-center"><Doorway /></div>
+                    <div className="rise-in flex justify-center"><Seal /></div>
                     <p className="rise-in-2 mt-4 text-caption font-semibold uppercase tracking-[0.2em] text-chain">
                         {firstName ? `Karibu, ${firstName}` : 'Karibu'}
                     </p>
                     <h1 className="rise-in-2 mt-1 font-serif text-display text-white">
-                        Step into your<br /><span className="text-glow">digital world.</span>
+                        Own it. Prove it.<br /><span className="text-glow">Trade it.</span>
                     </h1>
                     <p className="rise-in-3 mx-auto mt-2 max-w-xs text-body text-white/70">
-                        Own it, prove it, trade it. Skills, products and property, verified and worth what they're worth.
+                        Turn your skills, gear and property into verified assets — then decide what's for sale.
                     </p>
 
                     <div className="rise-in-3 mt-5 flex items-center rounded-full bg-white p-1.5 shadow-float">
@@ -241,8 +228,15 @@ const Home: React.FC<HomeDoorProps> = ({
                             <div className="no-scrollbar -mx-5 flex gap-3 overflow-x-auto px-5 pb-1">
                                 {exchangeItems.map(item => (
                                     <button key={item.id} onClick={() => onNavigate('tukosoko')} className="card-interactive w-40 flex-shrink-0 overflow-hidden text-left">
-                                        <div className="relative h-28 bg-surface-sunken">
-                                            {item.imageUrls?.[0] && <img src={item.imageUrls[0]} alt={item.title} className="h-full w-full object-cover" />}
+                                        <div className="relative h-28 overflow-hidden bg-surface-sunken">
+                                            {item.imageUrls?.[0] && (
+                                                <img
+                                                    src={item.imageUrls[0]}
+                                                    alt=""
+                                                    className="h-full w-full object-cover"
+                                                    onError={e => { e.currentTarget.style.display = 'none'; }}
+                                                />
+                                            )}
                                             {item.isVerified && (
                                                 <span className="badge absolute left-2 top-2 bg-night/80 text-chain backdrop-blur">
                                                     <Ico d={I.shield} className="h-3 w-3" /> Verified
