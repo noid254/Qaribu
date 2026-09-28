@@ -17,7 +17,7 @@ const FootstepsIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h
 const BookIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>;
 
 const SkillProgressCard: React.FC<{ skillName: string; progress: number }> = ({ skillName, progress }) => (
-    <div className="bg-white p-4 rounded-Nonecard shadow-sm border">
+    <div className="bg-white p-4 rounded-card shadow-sm border">
         <div className="flex justify-between items-center mb-1">
             <p className="font-bold text-ink">{skillName}</p>
             <p className="text-body font-semibold text-brand-navy">{progress}%</p>
@@ -168,7 +168,7 @@ const JourneyPage: React.FC<JourneyPageProps> = ({ providers, currentUser, onSel
                 {activeTab === 'steps' && (
                     <div className="space-y-6 animate-fade-in">
                         {/* Personal Stats */}
-                        <div className="bg-brand-navy rounded-Nonecard p-6 text-white shadow-lg relative overflow-hidden">
+                        <div className="bg-brand-navy rounded-card p-6 text-white shadow-lg relative overflow-hidden">
                             <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
                             
                             <div className="flex justify-between items-start mb-4">
@@ -181,12 +181,12 @@ const JourneyPage: React.FC<JourneyPageProps> = ({ providers, currentUser, onSel
                                 </div>
                                 
                                 {/* History Toggle */}
-                                <div className="flex bg-white/10 rounded-Nonecontrol p-0.5">
+                                <div className="flex bg-white/10 rounded-control p-0.5">
                                     {(['daily', 'weekly', 'monthly'] as const).map((view) => (
                                         <button
                                             key={view}
                                             onClick={() => setHistoryView(view)}
-                                            className={`px-2 py-1 text-[10px] font-bold rounded-Nonecontrol uppercase transition-all ${historyView === view ? 'bg-white text-brand-navy' : 'text-gray-300 hover:text-white'}`}
+                                            className={`px-2 py-1 text-[10px] font-bold rounded-control uppercase transition-all ${historyView === view ? 'bg-white text-brand-navy' : 'text-gray-300 hover:text-white'}`}
                                         >
                                             {view === 'daily' ? 'Days' : view === 'weekly' ? 'Wks' : 'Mos'}
                                         </button>
@@ -218,16 +218,16 @@ const JourneyPage: React.FC<JourneyPageProps> = ({ providers, currentUser, onSel
                         <div>
                             <div className="flex items-center justify-between mb-4">
                                 <h2 className="font-bold text-lg text-ink">Leaderboard</h2>
-                                <div className="bg-white border rounded-Nonecontrol p-1 flex text-caption font-semibold">
+                                <div className="bg-white border rounded-control p-1 flex text-caption font-semibold">
                                     <button 
                                         onClick={() => setRankFilter('neighbourhood')}
-                                        className={`px-3 py-1.5 rounded-Nonecontrol transition-all ${rankFilter === 'neighbourhood' ? 'bg-brand-navy text-white shadow-sm' : 'text-ink-soft'}`}
+                                        className={`px-3 py-1.5 rounded-control transition-all ${rankFilter === 'neighbourhood' ? 'bg-brand-navy text-white shadow-sm' : 'text-ink-soft'}`}
                                     >
                                         {userLocationName}
                                     </button>
                                     <button 
                                         onClick={() => setRankFilter('country')}
-                                        className={`px-3 py-1.5 rounded-Nonecontrol transition-all ${rankFilter === 'country' ? 'bg-brand-navy text-white shadow-sm' : 'text-ink-soft'}`}
+                                        className={`px-3 py-1.5 rounded-control transition-all ${rankFilter === 'country' ? 'bg-brand-navy text-white shadow-sm' : 'text-ink-soft'}`}
                                     >
                                         Kenya
                                     </button>
@@ -239,7 +239,7 @@ const JourneyPage: React.FC<JourneyPageProps> = ({ providers, currentUser, onSel
                                 <select 
                                     value={professionFilter}
                                     onChange={(e) => setProfessionFilter(e.target.value)}
-                                    className="w-full p-3 bg-white border border-line rounded-Nonecontrol text-body font-semibold text-ink focus:ring-2 focus:ring-brand-gold outline-none"
+                                    className="w-full p-3 bg-white border border-line rounded-control text-body font-semibold text-ink focus:ring-2 focus:ring-brand-gold outline-none"
                                 >
                                     {uniqueProfessions.map(p => <option key={p} value={p}>{p}</option>)}
                                 </select>
@@ -247,7 +247,7 @@ const JourneyPage: React.FC<JourneyPageProps> = ({ providers, currentUser, onSel
                             
                             {/* Rank Highlight Card */}
                             {currentUser && myRanks.overall > 0 && (
-                                <div className="bg-info-soft border border-info-soft rounded-Nonecard p-4 mb-4 flex items-center justify-between shadow-sm animate-fade-in">
+                                <div className="bg-info-soft border border-info-soft rounded-card p-4 mb-4 flex items-center justify-between shadow-sm animate-fade-in">
                                     <div>
                                         <p className="text-body text-info-strong">
                                             You are position <span className="font-bold text-lg text-brand-navy">#{myRanks.overall}</span> in <span className="font-bold">{rankFilter === 'neighbourhood' ? userLocationName : 'Kenya'}</span>
@@ -261,7 +261,7 @@ const JourneyPage: React.FC<JourneyPageProps> = ({ providers, currentUser, onSel
                             )}
 
                             {/* Leaderboard List */}
-                            <div className="bg-white rounded-Nonecard shadow-sm border border-line divide-y divide-gray-100 overflow-hidden">
+                            <div className="bg-white rounded-card shadow-sm border border-line divide-y divide-gray-100 overflow-hidden">
                                 {filteredLeaderboard.map((user, index) => {
                                     const isMe = (user as any).isMe;
                                     return (
@@ -315,7 +315,7 @@ const JourneyPage: React.FC<JourneyPageProps> = ({ providers, currentUser, onSel
                                     ))}
                                 </div>
                             ) : (
-                                <div className="text-center py-10 px-4 bg-white rounded-Nonecontrol border border-dashed">
+                                <div className="text-center py-10 px-4 bg-white rounded-control border border-dashed">
                                     <h3 className="mt-2 text-body font-medium text-ink">No Skills Tracked</h3>
                                     <p className="mt-1 text-body text-ink-soft">Start a course to track your progress here.</p>
                                 </div>
@@ -331,7 +331,7 @@ const JourneyPage: React.FC<JourneyPageProps> = ({ providers, currentUser, onSel
                                     ))}
                                 </div>
                             ) : (
-                                 <div className="text-center py-10 px-4 bg-white rounded-Nonecontrol border">
+                                 <div className="text-center py-10 px-4 bg-white rounded-control border">
                                     <p className="text-body text-ink-soft">No training institutions found nearby.</p>
                                 </div>
                             )}

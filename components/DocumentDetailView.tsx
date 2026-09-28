@@ -80,7 +80,7 @@ const DocumentDetailView: React.FC<{ document: Document; onBack: () => void; onU
             </div>
 
             <div className="p-4 space-y-4">
-                <div className="bg-white rounded-Nonecard shadow-sm p-4">
+                <div className="bg-white rounded-card shadow-sm p-4">
                     <h1 className="text-2xl font-bold text-ink">{document.items?.[0]?.description || document.model || 'Asset Details'}</h1>
                     
                     {document.assetType === 'Vehicle' ? (
@@ -95,15 +95,15 @@ const DocumentDetailView: React.FC<{ document: Document; onBack: () => void; onU
                     {document.specifications && <p className="text-body text-ink-soft mt-2 whitespace-pre-wrap">{document.specifications}</p>}
                 </div>
 
-                 <div className="bg-white rounded-Nonecard shadow-sm p-4">
+                 <div className="bg-white rounded-card shadow-sm p-4">
                      <h2 className="font-semibold text-ink mb-3">Ownership & Verification</h2>
                      {document.pendingOwnerPhone && (
-                        <div className="text-center p-2 rounded-Nonecontrol font-semibold text-body mb-3 bg-orange-100 text-orange-800">
+                        <div className="text-center p-2 rounded-control font-semibold text-body mb-3 bg-orange-100 text-orange-800">
                             Transfer pending for {document.pendingOwnerPhone}
                         </div>
                      )}
                      {document.verificationStatus && (
-                        <div className={`text-center p-2 rounded-Nonecontrol font-semibold text-body mb-3 ${verificationStyles[document.verificationStatus].classes}`}>
+                        <div className={`text-center p-2 rounded-control font-semibold text-body mb-3 ${verificationStyles[document.verificationStatus].classes}`}>
                             {verificationStyles[document.verificationStatus].text}
                         </div>
                     )}
@@ -126,7 +126,7 @@ const DocumentDetailView: React.FC<{ document: Document; onBack: () => void; onU
                     </div>
                  </div>
 
-                 <div className="bg-white rounded-Nonecard shadow-sm p-4">
+                 <div className="bg-white rounded-card shadow-sm p-4">
                     <h2 className="font-semibold text-ink mb-3">Purchase Details</h2>
                     <div className="text-body space-y-2">
                          <div className="flex justify-between">
@@ -140,7 +140,7 @@ const DocumentDetailView: React.FC<{ document: Document; onBack: () => void; onU
                          {document.scannedImageUrl && (
                             <div className="pt-3">
                                 <button onClick={() => setIsReceiptModalOpen(true)} className="flex items-center gap-2 text-body text-info font-semibold">
-                                    <img src={document.scannedImageUrl} alt="Receipt thumbnail" className="w-10 h-10 object-cover rounded-Nonecontrol border"/>
+                                    <img src={document.scannedImageUrl} alt="Receipt thumbnail" className="w-10 h-10 object-cover rounded-control border"/>
                                     <span>View Original Receipt</span>
                                 </button>
                             </div>
@@ -150,14 +150,14 @@ const DocumentDetailView: React.FC<{ document: Document; onBack: () => void; onU
 
                 <div className="pt-2 space-y-3">
                     {document.isAsset && document.ownerPhone === currentUser.phone && (
-                        <button onClick={handleTransfer} disabled={!!document.pendingOwnerPhone} className="w-full bg-brand-dark text-white font-bold py-3 rounded-Nonecard shadow-md hover:bg-gray-800 transition disabled:bg-gray-400 disabled:cursor-not-allowed">
+                        <button onClick={handleTransfer} disabled={!!document.pendingOwnerPhone} className="w-full bg-brand-dark text-white font-bold py-3 rounded-card shadow-md hover:bg-gray-800 transition disabled:bg-gray-400 disabled:cursor-not-allowed">
                             {document.pendingOwnerPhone ? 'Transfer Pending' : 'Transfer Asset'}
                         </button>
                     )}
                     {document.type === 'Receipt' && document.verificationStatus === 'Unverified' && (
-                        <button onClick={handleRequestVerification} className="w-full bg-info text-white font-bold py-3 rounded-Nonecontrol hover:bg-info transition">Request Seller Verification</button>
+                        <button onClick={handleRequestVerification} className="w-full bg-info text-white font-bold py-3 rounded-control hover:bg-info transition">Request Seller Verification</button>
                     )}
-                     <button onClick={() => alert("Coming soon: Sell this verified asset on Tukosoko!")} className="w-full bg-success text-white font-bold py-3 rounded-Nonecard shadow-md hover:bg-success-strong transition">
+                     <button onClick={() => alert("Coming soon: Sell this verified asset on Tukosoko!")} className="w-full bg-success text-white font-bold py-3 rounded-card shadow-md hover:bg-success-strong transition">
                         Sell This Asset
                     </button>
                 </div>
@@ -165,12 +165,12 @@ const DocumentDetailView: React.FC<{ document: Document; onBack: () => void; onU
 
             {isReceiptModalOpen && document.scannedImageUrl && (
                 <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onClick={() => setIsReceiptModalOpen(false)}>
-                    <img src={document.scannedImageUrl} alt="Full receipt" className="max-w-full max-h-full rounded-Nonecontrol" onClick={e => e.stopPropagation()} />
+                    <img src={document.scannedImageUrl} alt="Full receipt" className="max-w-full max-h-full rounded-control" onClick={e => e.stopPropagation()} />
                 </div>
             )}
             {isLogbookModalOpen && document.logbookImageUrl && (
                 <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onClick={() => setIsLogbookModalOpen(false)}>
-                    <img src={document.logbookImageUrl} alt="Logbook" className="max-w-full max-h-full rounded-Nonecontrol" onClick={e => e.stopPropagation()} />
+                    <img src={document.logbookImageUrl} alt="Logbook" className="max-w-full max-h-full rounded-control" onClick={e => e.stopPropagation()} />
                 </div>
             )}
         </div>

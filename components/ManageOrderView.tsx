@@ -37,7 +37,7 @@ const ManageOrderView: React.FC<ManageOrderViewProps> = ({ orderData, nearbyRide
 
             <div className="p-4 space-y-6 max-w-lg mx-auto">
                 {/* Customer Card */}
-                <div className="bg-white rounded-Nonecard shadow-md p-5 border-l-4 border-brand-navy">
+                <div className="bg-white rounded-card shadow-md p-5 border-l-4 border-brand-navy">
                     <div className="flex justify-between items-start">
                         <div>
                             <p className="text-caption text-ink-soft font-bold uppercase mb-1">Customer</p>
@@ -54,7 +54,7 @@ const ManageOrderView: React.FC<ManageOrderViewProps> = ({ orderData, nearbyRide
                 </div>
 
                 {/* Order Summary */}
-                <div className="bg-white rounded-Nonecard shadow-sm p-5">
+                <div className="bg-white rounded-card shadow-sm p-5">
                     <p className="text-caption text-ink-soft font-bold uppercase mb-3 border-b pb-2">Order Details • {new Date(orderData.date).toLocaleTimeString()}</p>
                     <div className="space-y-3 mb-4">
                         {orderData.items.map((item, idx) => (
@@ -81,7 +81,7 @@ const ManageOrderView: React.FC<ManageOrderViewProps> = ({ orderData, nearbyRide
                     {nearbyRiders.length > 0 ? (
                         <div className="space-y-3">
                             {nearbyRiders.map(rider => (
-                                <div key={rider.id} className="bg-white rounded-Nonecard p-4 shadow-sm border border-line flex items-center justify-between">
+                                <div key={rider.id} className="bg-white rounded-card p-4 shadow-sm border border-line flex items-center justify-between">
                                     <div className="flex items-center gap-3">
                                         <img src={rider.avatarUrl} alt={rider.name} className="w-12 h-12 rounded-full object-cover bg-surface-sunken" />
                                         <div>
@@ -91,7 +91,7 @@ const ManageOrderView: React.FC<ManageOrderViewProps> = ({ orderData, nearbyRide
                                     </div>
                                     <button 
                                         onClick={() => handleDispatch(rider)}
-                                        className="bg-success-soft text-success-strong hover:bg-success hover:text-white border border-success-soft font-bold text-caption px-3 py-2 rounded-Nonecontrol transition flex items-center gap-1"
+                                        className="bg-success-soft text-success-strong hover:bg-success hover:text-white border border-success-soft font-bold text-caption px-3 py-2 rounded-control transition flex items-center gap-1"
                                     >
                                         <WhatsAppIcon /> Dispatch
                                     </button>
@@ -99,7 +99,7 @@ const ManageOrderView: React.FC<ManageOrderViewProps> = ({ orderData, nearbyRide
                             ))}
                         </div>
                     ) : (
-                        <div className="bg-white rounded-Nonecontrol p-6 text-center border border-dashed">
+                        <div className="bg-white rounded-control p-6 text-center border border-dashed">
                             <p className="text-ink-soft text-body">No registered riders found nearby.</p>
                         </div>
                     )}

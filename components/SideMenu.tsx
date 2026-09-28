@@ -69,7 +69,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose, onNavigate, curren
             <div className="p-6 border-b border-white/10">
                 <button
                     onClick={() => handleNavigate('login')}
-                    className="w-full flex items-center justify-center gap-3 text-left px-4 py-3 rounded-Nonecontrol bg-brand-gold/10 text-brand-gold hover:bg-brand-gold/20 transition-colors"
+                    className="w-full flex items-center justify-center gap-3 text-left px-4 py-3 rounded-control bg-brand-gold/10 text-brand-gold hover:bg-brand-gold/20 transition-colors"
                 >
                     <LoginIcon />
                     <span className="font-medium">Login / Sign Up</span>
@@ -84,7 +84,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose, onNavigate, curren
                 <button
                 key={item.page}
                 onClick={() => handleNavigate(item.page)}
-                className="w-full flex items-center gap-4 text-left px-4 py-3 rounded-Nonecontrol text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
+                className="w-full flex items-center gap-4 text-left px-4 py-3 rounded-control text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
                 >
                 {item.icon}
                 <span className="font-medium">{item.label}</span>
@@ -94,7 +94,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose, onNavigate, curren
             {isSuperAdmin && (
                 <button
                 onClick={() => handleNavigate('admin')}
-                className="w-full flex items-center gap-4 text-left px-4 py-3 rounded-Nonecontrol text-yellow-400 hover:bg-white/10 transition-colors font-bold border border-yellow-400/30 mt-4"
+                className="w-full flex items-center gap-4 text-left px-4 py-3 rounded-control text-yellow-400 hover:bg-white/10 transition-colors font-bold border border-yellow-400/30 mt-4"
                 >
                 <AdminIcon />
                 <span>Admin Panel</span>
@@ -106,7 +106,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose, onNavigate, curren
         {/* Logout Section */}
         <footer className="p-4 border-t border-white/10 mt-auto">
           {currentUser && (
-            <button onClick={handleLogout} className="w-full flex items-center gap-4 text-left px-4 py-3 rounded-Nonecontrol text-gray-300 hover:bg-white/10 hover:text-white transition-colors">
+            <button onClick={handleLogout} className="w-full flex items-center gap-4 text-left px-4 py-3 rounded-control text-gray-300 hover:bg-white/10 hover:text-white transition-colors">
               <LogoutIcon />
               <span className="font-medium">Logout</span>
             </button>

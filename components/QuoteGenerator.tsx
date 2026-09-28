@@ -146,34 +146,34 @@ const QuoteGenerator: React.FC<QuoteGeneratorProps> = ({ assets, onSave, onBack 
 
 const AddressStep: React.FC<any> = ({ fromName, setFromName, fromDetails, setFromDetails, toName, setToName, toDetails, setToDetails, quoteNumber, setQuoteNumber, date, setDate, validUntil, setValidUntil, onNext }) => {
     return (
-        <div className="bg-white p-4 rounded-Nonecontrol shadow-sm">
+        <div className="bg-white p-4 rounded-control shadow-sm">
             <h2 className="text-xl font-bold mb-4 text-ink">Parties & Details</h2>
             <div className="space-y-4">
                  <div>
                     <label className="text-body font-medium text-ink">From</label>
-                    <input value={fromName} onChange={e => setFromName(e.target.value)} type="text" placeholder="Your Business Name" className="mt-1 w-full p-2 border rounded-Nonecontrol" />
-                    <textarea value={fromDetails} onChange={e => setFromDetails(e.target.value)} rows={3} placeholder="Your Address & Contact" className="mt-1 w-full p-2 border rounded-Nonecontrol" />
+                    <input value={fromName} onChange={e => setFromName(e.target.value)} type="text" placeholder="Your Business Name" className="mt-1 w-full p-2 border rounded-control" />
+                    <textarea value={fromDetails} onChange={e => setFromDetails(e.target.value)} rows={3} placeholder="Your Address & Contact" className="mt-1 w-full p-2 border rounded-control" />
                 </div>
                 <div>
                     <label className="text-body font-medium text-ink">To (Client)</label>
-                    <input value={toName} onChange={e => setToName(e.target.value)} type="text" placeholder="Client Name" className="mt-1 w-full p-2 border rounded-Nonecontrol" required/>
-                     <textarea value={toDetails} onChange={e => setToDetails(e.target.value)} rows={3} placeholder="Client Address, Country, Tax ID" className="mt-1 w-full p-2 border rounded-Nonecontrol" />
+                    <input value={toName} onChange={e => setToName(e.target.value)} type="text" placeholder="Client Name" className="mt-1 w-full p-2 border rounded-control" required/>
+                     <textarea value={toDetails} onChange={e => setToDetails(e.target.value)} rows={3} placeholder="Client Address, Country, Tax ID" className="mt-1 w-full p-2 border rounded-control" />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                         <label className="text-body font-medium text-ink">Quote #</label>
-                        <input value={quoteNumber} onChange={e => setQuoteNumber(e.target.value)} type="text" className="mt-1 w-full p-2 border rounded-Nonecontrol" required/>
+                        <input value={quoteNumber} onChange={e => setQuoteNumber(e.target.value)} type="text" className="mt-1 w-full p-2 border rounded-control" required/>
                     </div>
                      <div>
                         <label className="text-body font-medium text-ink">Date</label>
-                        <input value={date} onChange={e => setDate(e.target.value)} type="date" className="mt-1 w-full p-2 border rounded-Nonecontrol" required/>
+                        <input value={date} onChange={e => setDate(e.target.value)} type="date" className="mt-1 w-full p-2 border rounded-control" required/>
                     </div>
                      <div>
                         <label className="text-body font-medium text-ink">Valid Until</label>
-                        <input value={validUntil} onChange={e => setValidUntil(e.target.value)} type="date" className="mt-1 w-full p-2 border rounded-Nonecontrol" required/>
+                        <input value={validUntil} onChange={e => setValidUntil(e.target.value)} type="date" className="mt-1 w-full p-2 border rounded-control" required/>
                     </div>
                 </div>
-                <button onClick={onNext} className="w-full bg-brand-navy text-white font-bold py-3 rounded-Nonecontrol mt-4">Next: Add Items</button>
+                <button onClick={onNext} className="w-full bg-brand-navy text-white font-bold py-3 rounded-control mt-4">Next: Add Items</button>
             </div>
         </div>
     );
@@ -210,13 +210,13 @@ const ItemsStep: React.FC<{lineItems: LineItem[], setLineItems: React.Dispatch<R
     };
 
     return (
-        <div className="bg-white p-4 rounded-Nonecontrol shadow-sm">
+        <div className="bg-white p-4 rounded-control shadow-sm">
             <h2 className="text-xl font-bold mb-4 text-ink">Quote Items & Totals</h2>
-            <form onSubmit={handleFormSubmit} className="space-y-3 p-4 border rounded-Nonecontrol bg-surface-muted mb-4">
-                 <input id="item-description-input" value={desc} onChange={e => setDesc(e.target.value)} type="text" placeholder="Item/Service Description" className="w-full p-2 border rounded-Nonecontrol" required autoFocus/>
-                 <input value={qty} onChange={e => setQty(e.target.value)} type="number" placeholder="Quantity" className="w-full p-2 border rounded-Nonecontrol" required/>
-                 <input value={unitPrice} onChange={e => setUnitPrice(e.target.value)} type="number" step="0.01" placeholder="Unit Price" className="w-full p-2 border rounded-Nonecontrol" required onKeyDown={handlePriceKeyDown} />
-                 <button type="submit" className="w-full bg-info text-white font-bold py-2 rounded-Nonecontrol text-body">+ Add Item</button>
+            <form onSubmit={handleFormSubmit} className="space-y-3 p-4 border rounded-control bg-surface-muted mb-4">
+                 <input id="item-description-input" value={desc} onChange={e => setDesc(e.target.value)} type="text" placeholder="Item/Service Description" className="w-full p-2 border rounded-control" required autoFocus/>
+                 <input value={qty} onChange={e => setQty(e.target.value)} type="number" placeholder="Quantity" className="w-full p-2 border rounded-control" required/>
+                 <input value={unitPrice} onChange={e => setUnitPrice(e.target.value)} type="number" step="0.01" placeholder="Unit Price" className="w-full p-2 border rounded-control" required onKeyDown={handlePriceKeyDown} />
+                 <button type="submit" className="w-full bg-info text-white font-bold py-2 rounded-control text-body">+ Add Item</button>
             </form>
 
             <div className="space-y-2 mb-4">
@@ -234,17 +234,17 @@ const ItemsStep: React.FC<{lineItems: LineItem[], setLineItems: React.Dispatch<R
                 ))}
             </div>
 
-            <div className="space-y-3 p-4 border rounded-Nonecontrol bg-surface-muted">
+            <div className="space-y-3 p-4 border rounded-control bg-surface-muted">
                 <div className="grid grid-cols-2 gap-3">
-                    <input value={discount} onChange={e => setDiscount(parseFloat(e.target.value) || 0)} type="number" placeholder="Discount" className="w-full p-2 border rounded-Nonecontrol"/>
-                    <input value={taxRate} onChange={e => setTaxRate(parseFloat(e.target.value) || 0)} type="number" placeholder="Tax Rate (%)" className="w-full p-2 border rounded-Nonecontrol"/>
-                    <input value={shipping} onChange={e => setShipping(parseFloat(e.target.value) || 0)} type="number" placeholder="Shipping" className="w-full p-2 border rounded-Nonecontrol"/>
+                    <input value={discount} onChange={e => setDiscount(parseFloat(e.target.value) || 0)} type="number" placeholder="Discount" className="w-full p-2 border rounded-control"/>
+                    <input value={taxRate} onChange={e => setTaxRate(parseFloat(e.target.value) || 0)} type="number" placeholder="Tax Rate (%)" className="w-full p-2 border rounded-control"/>
+                    <input value={shipping} onChange={e => setShipping(parseFloat(e.target.value) || 0)} type="number" placeholder="Shipping" className="w-full p-2 border rounded-control"/>
                 </div>
             </div>
 
             <div className="flex gap-2 pt-4">
-                <button onClick={onBack} className="flex-1 bg-surface-sunken text-ink font-bold py-3 rounded-Nonecontrol">Back</button>
-                <button onClick={onNext} className="flex-1 bg-brand-navy text-white font-bold py-3 rounded-Nonecontrol">Preview Quote</button>
+                <button onClick={onBack} className="flex-1 bg-surface-sunken text-ink font-bold py-3 rounded-control">Back</button>
+                <button onClick={onNext} className="flex-1 bg-brand-navy text-white font-bold py-3 rounded-control">Preview Quote</button>
             </div>
         </div>
     )
@@ -341,8 +341,8 @@ const QuotePreview = React.forwardRef<HTMLDivElement, any>(({ assets, fromName, 
             </div>
 
             <div className="flex gap-2 pt-4">
-                <button onClick={onBack} className="flex-1 bg-surface-sunken text-ink font-bold py-3 rounded-Nonecontrol">Back</button>
-                <button onClick={onShare} className="flex-1 bg-success text-white font-bold py-3 rounded-Nonecontrol">Save & Share</button>
+                <button onClick={onBack} className="flex-1 bg-surface-sunken text-ink font-bold py-3 rounded-control">Back</button>
+                <button onClick={onShare} className="flex-1 bg-success text-white font-bold py-3 rounded-control">Save & Share</button>
             </div>
         </div>
     )
@@ -360,13 +360,13 @@ const ShareQuoteModal: React.FC<{clientPhone: string, onClose: () => void, quote
     
     return (
         <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 p-4" onClick={onClose}>
-            <div className="bg-white p-6 rounded-Nonecontrol shadow-xl w-full max-w-sm" onClick={e => e.stopPropagation()}>
+            <div className="bg-white p-6 rounded-control shadow-xl w-full max-w-sm" onClick={e => e.stopPropagation()}>
                 <h2 className="text-xl font-bold mb-4">Share via SMS</h2>
                 <p className="text-body text-ink-soft mb-2">Enter your client's phone number to send them a link to the quote.</p>
-                <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} className="w-full p-2 border rounded-Nonecontrol mb-4" placeholder="Client's phone number" />
+                <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} className="w-full p-2 border rounded-control mb-4" placeholder="Client's phone number" />
                 <div className="flex gap-2">
-                    <button onClick={onClose} className="flex-1 bg-surface-sunken text-ink font-bold py-2 rounded-Nonecontrol">Cancel</button>
-                    <button onClick={handleSend} className="flex-1 bg-success text-white font-bold py-2 rounded-Nonecontrol">Send SMS</button>
+                    <button onClick={onClose} className="flex-1 bg-surface-sunken text-ink font-bold py-2 rounded-control">Cancel</button>
+                    <button onClick={handleSend} className="flex-1 bg-success text-white font-bold py-2 rounded-control">Send SMS</button>
                 </div>
             </div>
         </div>

@@ -159,12 +159,12 @@ const InvoiceGenerator: React.FC<InvoiceGeneratorProps> = ({ assets, onSave, onB
   );
 };
 
-const formInputClass = "mt-1 w-full p-3 border border-line rounded-Nonecontrol bg-surface-muted focus:bg-white focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none transition-all";
+const formInputClass = "mt-1 w-full p-3 border border-line rounded-control bg-surface-muted focus:bg-white focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none transition-all";
 const labelClass = "block text-caption font-bold text-ink-soft uppercase tracking-wide ml-1";
 
 const AddressStep: React.FC<any> = ({ fromName, setFromName, fromDetails, setFromDetails, toName, setToName, toDetails, setToDetails, invoiceNumber, setInvoiceNumber, date, setDate, dueDate, setDueDate, onNext }) => {
     return (
-        <div className="bg-white p-6 rounded-Nonecard shadow-sm space-y-6">
+        <div className="bg-white p-6 rounded-card shadow-sm space-y-6">
             <h2 className="text-xl font-bold text-brand-navy border-b pb-2">Invoice Details</h2>
             
             <div className="space-y-4">
@@ -197,7 +197,7 @@ const AddressStep: React.FC<any> = ({ fromName, setFromName, fromDetails, setFro
                     </div>
                 </div>
                 
-                <button onClick={onNext} className="w-full bg-brand-navy text-white font-bold py-4 rounded-Nonecard shadow-lg mt-4 active:scale-95 transition-transform">
+                <button onClick={onNext} className="w-full bg-brand-navy text-white font-bold py-4 rounded-card shadow-lg mt-4 active:scale-95 transition-transform">
                     Next: Add Items
                 </button>
             </div>
@@ -236,11 +236,11 @@ const ItemsStep: React.FC<{lineItems: LineItem[], setLineItems: React.Dispatch<R
     };
 
     return (
-        <div className="bg-white p-6 rounded-Nonecard shadow-sm space-y-6">
+        <div className="bg-white p-6 rounded-card shadow-sm space-y-6">
             <h2 className="text-xl font-bold text-brand-navy border-b pb-2">Items & Calculations</h2>
             
             <div className="space-y-4">
-                <form onSubmit={handleFormSubmit} className="space-y-3 p-4 border border-brand-gold/30 bg-brand-gold/5 rounded-Nonecontrol">
+                <form onSubmit={handleFormSubmit} className="space-y-3 p-4 border border-brand-gold/30 bg-brand-gold/5 rounded-control">
                      <h3 className="font-bold text-body text-brand-navy mb-2">Add New Item</h3>
                      <div>
                         <label className="text-[10px] uppercase font-bold text-ink-soft">Description</label>
@@ -258,12 +258,12 @@ const ItemsStep: React.FC<{lineItems: LineItem[], setLineItems: React.Dispatch<R
                         </div>
                      </div>
                      
-                     <button type="submit" className="w-full bg-brand-navy text-white font-bold py-3 rounded-Nonecontrol text-body shadow-md mt-2">+ Add to List</button>
+                     <button type="submit" className="w-full bg-brand-navy text-white font-bold py-3 rounded-control text-body shadow-md mt-2">+ Add to List</button>
                 </form>
 
                 <div className="space-y-2 max-h-60 overflow-y-auto">
                     {lineItems.map(item => (
-                        <div key={item.id} className="flex justify-between items-center p-3 bg-surface-muted border border-line rounded-Nonecontrol">
+                        <div key={item.id} className="flex justify-between items-center p-3 bg-surface-muted border border-line rounded-control">
                             <div>
                                 <p className="font-bold text-ink">{item.description}</p>
                                 <p className="text-caption text-ink-soft">{item.quantity} x {currencyFormatter.format(item.unitPrice)}</p>
@@ -300,8 +300,8 @@ const ItemsStep: React.FC<{lineItems: LineItem[], setLineItems: React.Dispatch<R
                 </div>
 
                 <div className="flex gap-3 pt-4">
-                    <button onClick={onBack} className="flex-1 bg-surface-sunken text-ink font-bold py-3 rounded-Nonecontrol">Back</button>
-                    <button onClick={onNext} className="flex-1 bg-brand-navy text-white font-bold py-3 rounded-Nonecard shadow-lg">Preview Invoice</button>
+                    <button onClick={onBack} className="flex-1 bg-surface-sunken text-ink font-bold py-3 rounded-control">Back</button>
+                    <button onClick={onNext} className="flex-1 bg-brand-navy text-white font-bold py-3 rounded-card shadow-lg">Preview Invoice</button>
                 </div>
             </div>
         </div>
@@ -312,7 +312,7 @@ const InvoicePreview = React.forwardRef<HTMLDivElement, any>(({ assets, fromName
     return (
         <div className="flex flex-col h-full">
             {/* Scale Wrapper for Fit-to-Page Effect on Mobile */}
-            <div className="flex-1 overflow-auto bg-surface-sunken p-2 md:p-4 rounded-Nonecontrol border border-line flex justify-center mb-4 relative">
+            <div className="flex-1 overflow-auto bg-surface-sunken p-2 md:p-4 rounded-control border border-line flex justify-center mb-4 relative">
                  {/* The visual scaling container */}
                  <div className="transform scale-[0.45] origin-top md:scale-100 md:origin-top w-[210mm] h-[297mm] bg-white shadow-2xl">
                     <div ref={ref} className="bg-white p-12 h-full w-full font-sans text-body relative text-ink" style={{ width: '210mm', height: '297mm' }}>
@@ -435,8 +435,8 @@ const InvoicePreview = React.forwardRef<HTMLDivElement, any>(({ assets, fromName
             </div>
 
             <div className="flex gap-3 pt-2">
-                <button onClick={onBack} className="flex-1 bg-surface-sunken text-ink font-bold py-4 rounded-Nonecontrol">Back to Edit</button>
-                <button onClick={onShare} className="flex-1 bg-success text-white font-bold py-4 rounded-Nonecard shadow-lg flex items-center justify-center gap-2">
+                <button onClick={onBack} className="flex-1 bg-surface-sunken text-ink font-bold py-4 rounded-control">Back to Edit</button>
+                <button onClick={onShare} className="flex-1 bg-success text-white font-bold py-4 rounded-card shadow-lg flex items-center justify-center gap-2">
                     <span>Save & Share</span>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" /></svg>
                 </button>
@@ -469,10 +469,10 @@ const ShareInvoiceModal: React.FC<{clientPhone: string, onClose: () => void, inv
     
     return (
         <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 p-4" onClick={onClose}>
-            <div className="bg-white p-6 rounded-Nonecard shadow-xl w-full max-w-sm" onClick={e => e.stopPropagation()}>
+            <div className="bg-white p-6 rounded-card shadow-xl w-full max-w-sm" onClick={e => e.stopPropagation()}>
                 <h2 className="text-xl font-bold mb-4 text-brand-navy">Share Invoice</h2>
                 <p className="text-body text-ink-soft mb-4">Enter client's phone number to send the invoice link.</p>
-                <div className="flex items-center border rounded-Nonecontrol bg-surface-muted mb-6 focus-within:ring-2 focus-within:ring-brand-gold">
+                <div className="flex items-center border rounded-control bg-surface-muted mb-6 focus-within:ring-2 focus-within:ring-brand-gold">
                     <span className="pl-4 text-ink-soft font-bold">+254</span>
                     <input 
                         type="tel" 
@@ -483,16 +483,16 @@ const ShareInvoiceModal: React.FC<{clientPhone: string, onClose: () => void, inv
                     />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
-                    <button onClick={handleSendSMS} className="bg-surface-sunken hover:bg-surface-sunken text-ink font-bold py-3 rounded-Nonecontrol transition">
+                    <button onClick={handleSendSMS} className="bg-surface-sunken hover:bg-surface-sunken text-ink font-bold py-3 rounded-control transition">
                         SMS
                     </button>
-                    <button onClick={handleSendWhatsApp} className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3 rounded-Nonecontrol transition flex items-center justify-center gap-2">
+                    <button onClick={handleSendWhatsApp} className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3 rounded-control transition flex items-center justify-center gap-2">
                         WhatsApp
                     </button>
                 </div>
                 <div className="flex gap-2 mt-4">
-                    <button onClick={onClose} className="flex-1 bg-surface-sunken text-ink-soft text-body font-semibold py-2 rounded-Nonecontrol">Cancel</button>
-                    <button onClick={onDone} className="flex-1 bg-brand-navy text-white text-body font-semibold py-2 rounded-Nonecontrol">Done</button>
+                    <button onClick={onClose} className="flex-1 bg-surface-sunken text-ink-soft text-body font-semibold py-2 rounded-control">Cancel</button>
+                    <button onClick={onDone} className="flex-1 bg-brand-navy text-white text-body font-semibold py-2 rounded-control">Done</button>
                 </div>
             </div>
         </div>

@@ -22,11 +22,11 @@ const UsersPage: React.FC<UsersPageProps> = ({ providers, onViewProvider, onUpda
     }, [providers, userSearchTerm, userFilter]);
 
     return (
-        <div className="bg-white rounded-Nonecontrol shadow-sm p-4">
+        <div className="bg-white rounded-control shadow-sm p-4">
             <h2 className="text-xl font-bold text-ink mb-4">Manage Users</h2>
             <div className="flex flex-col sm:flex-row gap-4 mb-4">
-                <input type="text" placeholder="Search users..." value={userSearchTerm} onChange={e => setUserSearchTerm(e.target.value)} className="flex-grow p-2 border rounded-Nonecontrol"/>
-                <select value={userFilter} onChange={e => setUserFilter(e.target.value as any)} className="p-2 border rounded-Nonecontrol bg-white">
+                <input type="text" placeholder="Search users..." value={userSearchTerm} onChange={e => setUserSearchTerm(e.target.value)} className="flex-grow p-2 border rounded-control"/>
+                <select value={userFilter} onChange={e => setUserFilter(e.target.value as any)} className="p-2 border rounded-control bg-white">
                     <option>All</option>
                     <option>Verified</option>
                     <option>Unverified</option>
@@ -34,7 +34,7 @@ const UsersPage: React.FC<UsersPageProps> = ({ providers, onViewProvider, onUpda
             </div>
             <div className="space-y-3 max-h-[60vh] overflow-y-auto">
                 {filteredProviders.map(p => (
-                    <div key={p.id} className="flex items-center justify-between p-3 bg-surface-muted rounded-Nonecontrol">
+                    <div key={p.id} className="flex items-center justify-between p-3 bg-surface-muted rounded-control">
                         <button onClick={() => onViewProvider(p)} className="flex items-center gap-3 text-left">
                             <img src={p.avatarUrl} className="w-10 h-10 rounded-full object-cover" />
                             <div>

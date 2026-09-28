@@ -31,7 +31,7 @@ const OwnershipCheckView: React.FC<OwnershipCheckViewProps> = ({ allDocuments })
 
     return (
         <div className="p-4 bg-surface-muted min-h-full">
-            <div className="bg-white p-4 rounded-Nonecard shadow-sm border">
+            <div className="bg-white p-4 rounded-card shadow-sm border">
                 <h1 className="text-xl font-bold text-ink mb-2">Confirm Asset Ownership</h1>
                 <p className="text-body text-ink-soft mb-4">Enter an asset's serial number or vehicle registration plate to find its registered owner.</p>
                 
@@ -41,10 +41,10 @@ const OwnershipCheckView: React.FC<OwnershipCheckViewProps> = ({ allDocuments })
                         value={identifier}
                         onChange={e => setIdentifier(e.target.value)}
                         placeholder="Enter Serial or Reg. Number" 
-                        className="w-full p-3 border rounded-Nonecontrol"
+                        className="w-full p-3 border rounded-control"
                         autoFocus
                     />
-                    <button type="submit" disabled={isLoading} className="w-full bg-brand-dark text-white font-bold py-3 px-4 rounded-Nonecontrol disabled:bg-gray-400">
+                    <button type="submit" disabled={isLoading} className="w-full bg-brand-dark text-white font-bold py-3 px-4 rounded-control disabled:bg-gray-400">
                         {isLoading ? 'Searching...' : 'Search'}
                     </button>
                 </form>
@@ -54,7 +54,7 @@ const OwnershipCheckView: React.FC<OwnershipCheckViewProps> = ({ allDocuments })
                 {isLoading && <LoadingSpinner message="Checking asset database..." />}
                 
                 {result && result !== 'not_found' && (
-                    <div className="bg-white p-4 rounded-Nonecard shadow-md border-l-4 border-success animate-fade-in">
+                    <div className="bg-white p-4 rounded-card shadow-md border-l-4 border-success animate-fade-in">
                         <h3 className="font-bold text-lg text-success-strong">Asset Found & Verified</h3>
                         <div className="mt-3 space-y-2 text-body">
                             <p><strong>Item:</strong> {result.items?.[0]?.description || result.model}</p>
@@ -66,7 +66,7 @@ const OwnershipCheckView: React.FC<OwnershipCheckViewProps> = ({ allDocuments })
                 )}
 
                 {result === 'not_found' && (
-                    <div className="bg-white p-4 rounded-Nonecard shadow-md border-l-4 border-danger animate-fade-in">
+                    <div className="bg-white p-4 rounded-card shadow-md border-l-4 border-danger animate-fade-in">
                          <h3 className="font-bold text-lg text-danger-strong">Asset Not Found</h3>
                          <p className="mt-2 text-body text-ink">No asset with this identifier is registered in the $KILL database. The item may be unregistered or the identifier is incorrect. Proceed with caution.</p>
                     </div>

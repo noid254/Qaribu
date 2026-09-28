@@ -25,7 +25,7 @@ const Stat: React.FC<{ value: string; label: string }> = ({ value, label }) => (
 );
 
 const ActionCard: React.FC<{ title: string; icon: React.ReactNode; onClick: () => void }> = ({ title, icon, onClick }) => (
-    <button onClick={onClick} className="bg-info-strong text-white p-4 rounded-Nonecard shadow-lg text-left w-full h-32 flex flex-col justify-between hover:bg-info-strong hover:-translate-y-1 transition-all duration-200">
+    <button onClick={onClick} className="bg-info-strong text-white p-4 rounded-card shadow-lg text-left w-full h-32 flex flex-col justify-between hover:bg-info-strong hover:-translate-y-1 transition-all duration-200">
         <div className="text-amber-400">
             {icon}
         </div>
@@ -34,7 +34,7 @@ const ActionCard: React.FC<{ title: string; icon: React.ReactNode; onClick: () =
 );
 
 const FileLink: React.FC<{ title: string, onClick: () => void, icon: React.ReactNode, stat: string }> = ({ title, onClick, icon, stat }) => (
-     <button onClick={onClick} className="bg-white p-4 rounded-Nonecard shadow-sm text-left w-full hover:shadow-md hover:bg-surface-muted transition-all duration-200 border border-line flex justify-between items-center">
+     <button onClick={onClick} className="bg-white p-4 rounded-card shadow-sm text-left w-full hover:shadow-md hover:bg-surface-muted transition-all duration-200 border border-line flex justify-between items-center">
         <div className="flex items-center gap-4">
              <div className="text-ink-soft">
                 {icon}
@@ -59,7 +59,7 @@ const InvoiceHub: React.FC<InvoiceHubProps> = ({ onNavigate, onBack }) => {
                  <button onClick={onBack} className="text-2xl text-ink-soft hover:text-ink">&times;</button>
             </header>
 
-            <div className="bg-white p-4 rounded-Nonecard shadow-sm border border-line mb-6 flex justify-around">
+            <div className="bg-white p-4 rounded-card shadow-sm border border-line mb-6 flex justify-around">
                 <Stat value="3" label="Invoices" />
                 <Stat value="1" label="Quotes" />
                 <Stat value="5" label="Assets" />

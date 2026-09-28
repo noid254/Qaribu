@@ -32,7 +32,7 @@ const BidModal: React.FC<{ gig: Gig; onClose: () => void; }> = ({ gig, onClose }
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 p-4" onClick={onClose}>
-            <div className="bg-white rounded-Nonecontrol shadow-xl p-6 w-full max-w-sm" onClick={e => e.stopPropagation()}>
+            <div className="bg-white rounded-control shadow-xl p-6 w-full max-w-sm" onClick={e => e.stopPropagation()}>
                 <h2 className="text-xl font-bold mb-2">Place Your Bid</h2>
                 <p className="text-body text-ink-soft mb-4">for "{gig.title}"</p>
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -43,7 +43,7 @@ const BidModal: React.FC<{ gig: Gig; onClose: () => void; }> = ({ gig, onClose }
                             id="bidAmount"
                             value={amount}
                             onChange={e => setAmount(e.target.value)}
-                            className="mt-1 w-full p-2 border rounded-Nonecontrol"
+                            className="mt-1 w-full p-2 border rounded-control"
                             placeholder={`e.g., ${gig.budget}`}
                             required
                         />
@@ -55,14 +55,14 @@ const BidModal: React.FC<{ gig: Gig; onClose: () => void; }> = ({ gig, onClose }
                             rows={4}
                             value={proposal}
                             onChange={e => setProposal(e.target.value)}
-                            className="mt-1 w-full p-2 border rounded-Nonecontrol"
+                            className="mt-1 w-full p-2 border rounded-control"
                             placeholder="Explain why you're a good fit for this gig..."
                             required
                         ></textarea>
                     </div>
                     <div className="flex gap-2 pt-2">
-                        <button type="button" onClick={onClose} className="flex-1 bg-surface-sunken text-ink font-bold py-2 px-4 rounded-Nonecontrol">Cancel</button>
-                        <button type="submit" className="flex-1 bg-brand-primary text-white font-bold py-2 px-4 rounded-Nonecontrol">Submit Bid</button>
+                        <button type="button" onClick={onClose} className="flex-1 bg-surface-sunken text-ink font-bold py-2 px-4 rounded-control">Cancel</button>
+                        <button type="submit" className="flex-1 bg-brand-primary text-white font-bold py-2 px-4 rounded-control">Submit Bid</button>
                     </div>
                 </form>
             </div>
@@ -128,7 +128,7 @@ const GigDetailView: React.FC<GigDetailViewProps> = ({ gig, provider, onBack, on
                     {provider && (
                         <div>
                             <h2 className="font-bold text-lg text-ink mt-4 border-t pt-4">Posted By</h2>
-                            <button onClick={() => onSelectProvider(provider)} className="flex items-center gap-3 p-3 bg-white border border-line rounded-Nonecontrol mt-2 w-full text-left hover:bg-surface-sunken">
+                            <button onClick={() => onSelectProvider(provider)} className="flex items-center gap-3 p-3 bg-white border border-line rounded-control mt-2 w-full text-left hover:bg-surface-sunken">
                                 <img src={provider.avatarUrl} alt={provider.name} className="w-12 h-12 rounded-full object-cover"/>
                                 <div>
                                     <p className="font-bold text-ink">{provider.name}</p>
@@ -140,10 +140,10 @@ const GigDetailView: React.FC<GigDetailViewProps> = ({ gig, provider, onBack, on
                 </div>
 
                 <div className="p-4 bg-white border-t flex-shrink-0 flex items-center gap-3">
-                    <button onClick={handleBidClick} className="flex-1 bg-surface-sunken text-ink font-bold py-3 px-4 rounded-Nonecontrol hover:bg-gray-300 transition-colors">
+                    <button onClick={handleBidClick} className="flex-1 bg-surface-sunken text-ink font-bold py-3 px-4 rounded-control hover:bg-gray-300 transition-colors">
                         Bid
                     </button>
-                    <button onClick={handleApply} className="flex-1 bg-brand-dark text-white font-bold py-3 px-4 rounded-Nonecontrol hover:bg-gray-800 transition-colors">
+                    <button onClick={handleApply} className="flex-1 bg-brand-dark text-white font-bold py-3 px-4 rounded-control hover:bg-gray-800 transition-colors">
                         Apply
                     </button>
                 </div>
@@ -165,8 +165,8 @@ const GigsPage: React.FC<GigsPageProps> = ({ gigs, providers, onSelectProvider, 
                     {gigs.map(gig => {
                         const provider = providers.find(p => p.id === gig.providerId);
                         return (
-                            <button key={gig.id} onClick={() => setSelectedGig(gig)} className="w-full text-left bg-white p-3 rounded-Nonecard shadow-sm hover:shadow-md transition-shadow flex items-center gap-4 border border-line">
-                                <img src={gig.imageUrl} alt={gig.title} className="w-20 h-20 rounded-Nonecontrol object-cover flex-shrink-0 bg-surface-sunken" />
+                            <button key={gig.id} onClick={() => setSelectedGig(gig)} className="w-full text-left bg-white p-3 rounded-card shadow-sm hover:shadow-md transition-shadow flex items-center gap-4 border border-line">
+                                <img src={gig.imageUrl} alt={gig.title} className="w-20 h-20 rounded-control object-cover flex-shrink-0 bg-surface-sunken" />
                                 <div className="flex-grow overflow-hidden">
                                     <p className="text-caption text-ink-soft">{gig.location}</p>
                                     <h3 className="font-bold text-ink truncate">{gig.title}</h3>

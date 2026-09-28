@@ -37,7 +37,7 @@ const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
     const SettingItem: React.FC<{ icon: React.ReactNode, label: string, action?: React.ReactNode, onClick?: () => void, isDestructive?: boolean }> = ({ icon, label, action, onClick, isDestructive }) => (
         <div onClick={onClick} className={`flex items-center justify-between p-4 bg-white border-b border-line last:border-0 ${onClick ? 'cursor-pointer hover:bg-surface-muted' : ''}`}>
             <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-Nonecontrol ${isDestructive ? 'bg-danger-soft text-danger' : 'bg-surface-sunken text-ink-soft'}`}>
+                <div className={`p-2 rounded-control ${isDestructive ? 'bg-danger-soft text-danger' : 'bg-surface-sunken text-ink-soft'}`}>
                     {icon}
                 </div>
                 <span className={`font-medium ${isDestructive ? 'text-danger' : 'text-ink'}`}>{label}</span>
@@ -71,7 +71,7 @@ const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                 {/* Preferences */}
                 <div>
                     <h3 className="text-caption font-bold text-ink-soft uppercase mb-2 ml-1">Preferences</h3>
-                    <div className="bg-white rounded-Nonecard shadow-sm overflow-hidden">
+                    <div className="bg-white rounded-card shadow-sm overflow-hidden">
                         <SettingItem 
                             icon={<MoonIcon />} 
                             label="Dark Mode" 
@@ -88,7 +88,7 @@ const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                 {/* System */}
                 <div>
                     <h3 className="text-caption font-bold text-ink-soft uppercase mb-2 ml-1">System & Data</h3>
-                    <div className="bg-white rounded-Nonecard shadow-sm overflow-hidden">
+                    <div className="bg-white rounded-card shadow-sm overflow-hidden">
                         <SettingItem 
                             icon={<RefreshIcon />} 
                             label={isClearing ? "Refreshing..." : "Hard Refresh"} 

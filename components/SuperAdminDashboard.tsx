@@ -111,7 +111,7 @@ const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = (props) => {
                     <ul>
                         {navItems.map(item => (
                             <li key={item.page}>
-                                <button onClick={() => setActivePage(item.page)} className={`w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-Nonecontrol text-body font-medium transition-colors ${activePage === item.page ? 'bg-gray-600 text-white' : 'text-gray-300 hover:bg-gray-700'}`}>
+                                <button onClick={() => setActivePage(item.page)} className={`w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-control text-body font-medium transition-colors ${activePage === item.page ? 'bg-gray-600 text-white' : 'text-gray-300 hover:bg-gray-700'}`}>
                                     {item.icon}
                                     {item.page}
                                 </button>

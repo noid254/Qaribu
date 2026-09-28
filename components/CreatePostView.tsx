@@ -27,7 +27,7 @@ const CreatePostView: React.FC<CreatePostViewProps> = ({ onNavigate, onBack }) =
                 <div className="w-full space-y-5">
                     <button 
                         onClick={() => onNavigate('createProductPost')}
-                        className="w-full bg-white p-6 rounded-Nonecard shadow-md border-2 border-transparent hover:border-brand-gold transition-all active-scale text-center"
+                        className="w-full bg-white p-6 rounded-card shadow-md border-2 border-transparent hover:border-brand-gold transition-all active-scale text-center"
                     >
                         <ProductIcon />
                         <h3 className="text-xl font-bold text-brand-navy">A Product</h3>
@@ -36,7 +36,7 @@ const CreatePostView: React.FC<CreatePostViewProps> = ({ onNavigate, onBack }) =
 
                      <button 
                         onClick={() => onNavigate('addService')}
-                        className="w-full bg-white p-6 rounded-Nonecard shadow-md border-2 border-transparent hover:border-brand-gold transition-all active-scale text-center"
+                        className="w-full bg-white p-6 rounded-card shadow-md border-2 border-transparent hover:border-brand-gold transition-all active-scale text-center"
                     >
                         <ServiceIcon />
                         <h3 className="text-xl font-bold text-brand-navy">A Service</h3>

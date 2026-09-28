@@ -17,7 +17,7 @@ interface CatalogueViewProps {
 // --- Icons ---
 
 const CatalogueCard: React.FC<{item: CatalogueItem, onClick: () => void}> = ({ item, onClick }) => (
-    <div onClick={onClick} className="bg-white rounded-Nonecontrol shadow-sm overflow-hidden cursor-pointer group">
+    <div onClick={onClick} className="bg-white rounded-control shadow-sm overflow-hidden cursor-pointer group">
         <img src={item.imageUrls[0] || 'https://picsum.photos/seed/placeholder/400/300'} alt={item.title} className="w-full h-32 object-cover" />
         <div className="p-3">
             <p className="text-caption font-bold text-brand-primary group-hover:underline">{item.category}</p>
@@ -74,7 +74,7 @@ const CatalogueFormModal: React.FC<{ onSave: (item: Omit<CatalogueItem, 'id' | '
     
     return (
         <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 p-4" onClick={onCancel}>
-            <div className="bg-white p-6 rounded-Nonecontrol shadow-xl w-full max-w-sm" onClick={e => e.stopPropagation()}>
+            <div className="bg-white p-6 rounded-control shadow-xl w-full max-w-sm" onClick={e => e.stopPropagation()}>
                 <h2 className="text-xl font-bold text-ink mb-4">Add to Catalogue</h2>
                 <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-2">
                     <input value={title} onChange={e => setTitle(e.target.value)} type="text" placeholder="Item Title" className="w-full p-2 border rounded"/>
@@ -96,12 +96,12 @@ const CatalogueFormModal: React.FC<{ onSave: (item: Omit<CatalogueItem, 'id' | '
                         <div className="grid grid-cols-3 gap-2">
                             {imagePreviews.map((src, index) => (
                                 <div key={index} className="relative aspect-square">
-                                    <img src={src} className="w-full h-full object-cover rounded-Nonecontrol" alt={`preview ${index}`}/>
+                                    <img src={src} className="w-full h-full object-cover rounded-control" alt={`preview ${index}`}/>
                                     <button onClick={() => removeImage(index)} className="absolute top-1 right-1 bg-black/50 text-white rounded-full w-5 h-5 flex items-center justify-center text-caption font-mono leading-none">&times;</button>
                                 </div>
                             ))}
                             {imagePreviews.length < maxImages && (
-                                <button onClick={() => fileInputRef.current?.click()} className="aspect-square border-2 border-dashed rounded-Nonecontrol flex items-center justify-center text-ink-faint hover:bg-surface-muted transition-colors">
+                                <button onClick={() => fileInputRef.current?.click()} className="aspect-square border-2 border-dashed rounded-control flex items-center justify-center text-ink-faint hover:bg-surface-muted transition-colors">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                                 </button>
                             )}
@@ -110,8 +110,8 @@ const CatalogueFormModal: React.FC<{ onSave: (item: Omit<CatalogueItem, 'id' | '
                     </div>
                 </div>
                 <div className="flex gap-2 pt-4 mt-4 border-t">
-                    <button onClick={onCancel} className="flex-1 bg-surface-sunken font-bold py-2 px-4 rounded-Nonecontrol">Cancel</button>
-                    <button onClick={handleSave} className="flex-1 bg-brand-primary text-white font-bold py-2 px-4 rounded-Nonecontrol">Save Item</button>
+                    <button onClick={onCancel} className="flex-1 bg-surface-sunken font-bold py-2 px-4 rounded-control">Cancel</button>
+                    <button onClick={handleSave} className="flex-1 bg-brand-primary text-white font-bold py-2 px-4 rounded-control">Save Item</button>
                 </div>
             </div>
         </div>
@@ -120,13 +120,13 @@ const CatalogueFormModal: React.FC<{ onSave: (item: Omit<CatalogueItem, 'id' | '
 
 const ShareCatalogueModal: React.FC<{ catalogueUrl: string; onClose: () => void }> = ({ catalogueUrl, onClose }) => (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4" onClick={onClose}>
-        <div className="bg-white rounded-Nonecontrol shadow-xl p-6 w-full max-w-xs" onClick={e => e.stopPropagation()}>
+        <div className="bg-white rounded-control shadow-xl p-6 w-full max-w-xs" onClick={e => e.stopPropagation()}>
             <h2 className="text-xl font-bold text-center mb-4">Share Your Catalogue</h2>
             <div className="flex justify-center">
-                <img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(catalogueUrl)}`} alt="Catalogue QR Code" className="w-48 h-48 rounded-Nonecontrol"/>
+                <img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(catalogueUrl)}`} alt="Catalogue QR Code" className="w-48 h-48 rounded-control"/>
             </div>
             <p className="text-caption text-ink-soft text-center mt-3">Scan this code to view and share your public catalogue page.</p>
-            <button onClick={onClose} className="mt-4 w-full bg-brand-dark text-white font-bold py-2 rounded-Nonecontrol">Done</button>
+            <button onClick={onClose} className="mt-4 w-full bg-brand-dark text-white font-bold py-2 rounded-control">Done</button>
         </div>
     </div>
 );

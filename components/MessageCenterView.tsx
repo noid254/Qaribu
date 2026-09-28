@@ -99,7 +99,7 @@ const MessageCenterView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 {messages.map(msg => (
                     <div key={msg.id} className={`flex items-end gap-2 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                        <div className={`max-w-[80%] p-3 rounded-Nonecard ${msg.sender === 'user' ? 'bg-brand-navy text-white rounded-br-none' : 'bg-white text-ink rounded-bl-none shadow-sm'}`}>
+                        <div className={`max-w-[80%] p-3 rounded-card ${msg.sender === 'user' ? 'bg-brand-navy text-white rounded-br-none' : 'bg-white text-ink rounded-bl-none shadow-sm'}`}>
                             <p className="text-body" style={{ wordBreak: 'break-word' }}>{msg.text}</p>
                             <p className={`text-caption mt-1 ${msg.sender === 'user' ? 'text-gray-300' : 'text-ink-faint'} text-right`}>{msg.timestamp}</p>
                         </div>

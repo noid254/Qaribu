@@ -47,7 +47,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ pendingProviders, isForced, o
 
     return (
         <div className="fixed inset-0 bg-black/80 z-[70] flex items-center justify-center p-4 backdrop-blur-sm animate-fade-in">
-            <div className="bg-white w-full max-w-sm rounded-Nonecard shadow-2xl overflow-hidden transform transition-all">
+            <div className="bg-white w-full max-w-sm rounded-card shadow-2xl overflow-hidden transform transition-all">
                 {/* Header */}
                 <div className="bg-brand-navy p-6 text-white text-center relative">
                     {!isForced && (
@@ -88,14 +88,14 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ pendingProviders, isForced, o
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                             placeholder="Write a brief review (optional)..."
-                            className="w-full p-3 bg-surface-muted border border-line rounded-Nonecontrol text-body focus:outline-none focus:ring-2 focus:ring-brand-gold mb-4 resize-none"
+                            className="w-full p-3 bg-surface-muted border border-line rounded-control text-body focus:outline-none focus:ring-2 focus:ring-brand-gold mb-4 resize-none"
                             rows={3}
                         />
 
                         <button 
                             onClick={handleSubmit}
                             disabled={rating === 0}
-                            className="w-full bg-brand-navy text-white font-bold py-3.5 rounded-Nonecard shadow-lg hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all active:scale-95"
+                            className="w-full bg-brand-navy text-white font-bold py-3.5 rounded-card shadow-lg hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all active:scale-95"
                         >
                             Submit Review
                         </button>

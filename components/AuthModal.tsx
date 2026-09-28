@@ -76,7 +76,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose, onLogin }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white rounded-Nonecontrol shadow-xl p-6 w-full max-w-xs mx-4">
+      <div className="bg-white rounded-control shadow-xl p-6 w-full max-w-xs mx-4">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Sign In / Sign Up</h2>
           <button onClick={onClose} className="text-ink-soft hover:text-ink">&times;</button>
@@ -89,7 +89,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose, onLogin }) => {
             <p className="text-ink-soft mb-4">Enter your phone number to continue.</p>
             <div className="mb-6">
               <label htmlFor="phone" className="block text-body font-medium text-ink">Phone Number</label>
-              <div className="flex items-center mt-1 bg-surface-sunken rounded-Nonecontrol shadow-inner focus-within:ring-2 focus-within:ring-brand-gold">
+              <div className="flex items-center mt-1 bg-surface-sunken rounded-control shadow-inner focus-within:ring-2 focus-within:ring-brand-gold">
                   <span className="px-3 text-ink-soft border-r border-line">+254</span>
                   <input 
                       type="tel" 
@@ -103,7 +103,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose, onLogin }) => {
                   />
               </div>
             </div>
-            <button type="submit" disabled={isLoading} className="w-full bg-brand-gold text-brand-navy font-bold py-2 px-4 rounded-Nonecontrol hover:opacity-90 transition-colors disabled:bg-gray-400 active-scale">
+            <button type="submit" disabled={isLoading} className="w-full bg-brand-gold text-brand-navy font-bold py-2 px-4 rounded-control hover:opacity-90 transition-colors disabled:bg-gray-400 active-scale">
               {isLoading ? 'Sending...' : 'Continue'}
             </button>
             
@@ -129,11 +129,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose, onLogin }) => {
                 onChange={handleOtpChange} 
                 required 
                 autoFocus 
-                className="mt-1 block w-full text-center tracking-[1em] text-lg px-3 py-3 border-0 bg-surface-sunken rounded-Nonecontrol shadow-inner focus:outline-none focus:ring-2 focus:ring-brand-gold sm:text-body"
+                className="mt-1 block w-full text-center tracking-[1em] text-lg px-3 py-3 border-0 bg-surface-sunken rounded-control shadow-inner focus:outline-none focus:ring-2 focus:ring-brand-gold sm:text-body"
               />
               <p className="text-caption text-center text-ink-soft mt-2">(Superadmin OTP: 3232)</p>
             </div>
-            <button type="submit" disabled={isLoading} className="w-full bg-brand-gold text-brand-navy font-bold py-2 px-4 rounded-Nonecontrol hover:opacity-90 transition-colors disabled:bg-gray-400 active-scale">
+            <button type="submit" disabled={isLoading} className="w-full bg-brand-gold text-brand-navy font-bold py-2 px-4 rounded-control hover:opacity-90 transition-colors disabled:bg-gray-400 active-scale">
                 {isLoading ? 'Verifying...' : 'Confirm & Sign In'}
             </button>
           </form>

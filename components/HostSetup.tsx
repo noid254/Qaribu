@@ -45,7 +45,7 @@ const HostSetup: React.FC<HostSetupProps> = ({ setupData, currentUser, onSave, o
                 <h2 className="text-2xl font-bold text-ink mb-2">Confirm Security Role</h2>
                 <p className="text-ink-soft mb-8">You are accepting the role of <strong>Gateman</strong> for premise <strong>{setupData.premiseId}</strong>.</p>
                 
-                <button onClick={handleSubmit} className="w-full bg-brand-navy text-white font-bold py-4 rounded-Nonecard shadow-lg hover:bg-black transition active:scale-95">
+                <button onClick={handleSubmit} className="w-full bg-brand-navy text-white font-bold py-4 rounded-card shadow-lg hover:bg-black transition active:scale-95">
                     Accept & Start Shift
                 </button>
                 <button onClick={onBack} className="mt-4 text-ink-soft font-bold text-body">Cancel</button>
@@ -63,7 +63,7 @@ const HostSetup: React.FC<HostSetupProps> = ({ setupData, currentUser, onSave, o
                 <h2 className="text-2xl font-bold text-ink mb-2">Become a Co-host</h2>
                 <p className="text-ink-soft mb-8">You have been invited to co-manage <strong>Unit {setupData.unitId}</strong>.</p>
                 
-                <button onClick={handleSubmit} className="w-full bg-success text-white font-bold py-4 rounded-Nonecard shadow-lg hover:bg-success-strong transition active:scale-95">
+                <button onClick={handleSubmit} className="w-full bg-success text-white font-bold py-4 rounded-card shadow-lg hover:bg-success-strong transition active:scale-95">
                     Accept Invitation
                 </button>
                 <button onClick={onBack} className="mt-4 text-ink-soft font-bold text-body">Decline</button>
@@ -82,7 +82,7 @@ const HostSetup: React.FC<HostSetupProps> = ({ setupData, currentUser, onSave, o
             </header>
 
             <main className="flex-1 p-4 pb-24 overflow-y-auto">
-                <div className="bg-white p-4 rounded-Nonecard shadow-sm border border-line mb-6">
+                <div className="bg-white p-4 rounded-card shadow-sm border border-line mb-6">
                     <h2 className="text-body font-bold text-ink-soft uppercase mb-2">Location</h2>
                     <p className="text-lg font-bold text-brand-navy">Unit {setupData.unitId}</p>
                     <p className="text-body text-ink-soft">Premise ID: {setupData.premiseId}</p>
@@ -93,13 +93,13 @@ const HostSetup: React.FC<HostSetupProps> = ({ setupData, currentUser, onSave, o
                     <div className="flex gap-3">
                         <button 
                             onClick={() => setType('Business')}
-                            className={`flex-1 py-4 rounded-Nonecontrol border-2 font-bold transition-all ${type === 'Business' ? 'border-brand-navy bg-info-soft text-brand-navy' : 'border-line bg-white text-ink-soft'}`}
+                            className={`flex-1 py-4 rounded-control border-2 font-bold transition-all ${type === 'Business' ? 'border-brand-navy bg-info-soft text-brand-navy' : 'border-line bg-white text-ink-soft'}`}
                         >
                             Business
                         </button>
                         <button 
                             onClick={() => setType('Residence')}
-                            className={`flex-1 py-4 rounded-Nonecontrol border-2 font-bold transition-all ${type === 'Residence' ? 'border-brand-navy bg-info-soft text-brand-navy' : 'border-line bg-white text-ink-soft'}`}
+                            className={`flex-1 py-4 rounded-control border-2 font-bold transition-all ${type === 'Residence' ? 'border-brand-navy bg-info-soft text-brand-navy' : 'border-line bg-white text-ink-soft'}`}
                         >
                             Residence
                         </button>
@@ -108,12 +108,12 @@ const HostSetup: React.FC<HostSetupProps> = ({ setupData, currentUser, onSave, o
 
                 {type === 'Business' && (
                     <div className="space-y-6 animate-fade-in">
-                        <div className="bg-white p-4 rounded-Nonecard shadow-sm border border-line">
+                        <div className="bg-white p-4 rounded-card shadow-sm border border-line">
                             <h3 className="font-bold text-ink mb-3">Current Status</h3>
                             <select 
                                 value={status} 
                                 onChange={e => setStatus(e.target.value as any)}
-                                className="w-full p-3 border rounded-Nonecontrol bg-surface-muted font-semibold text-ink focus:outline-none focus:ring-2 focus:ring-brand-gold"
+                                className="w-full p-3 border rounded-control bg-surface-muted font-semibold text-ink focus:outline-none focus:ring-2 focus:ring-brand-gold"
                             >
                                 <option value="Available">Open / Available</option>
                                 <option value="Busy">Busy / In Meeting</option>
@@ -121,18 +121,18 @@ const HostSetup: React.FC<HostSetupProps> = ({ setupData, currentUser, onSave, o
                             </select>
                         </div>
 
-                        <div className="bg-white p-4 rounded-Nonecard shadow-sm border border-line">
+                        <div className="bg-white p-4 rounded-card shadow-sm border border-line">
                             <h3 className="font-bold text-ink mb-3">Operating Hours</h3>
                             <div className="flex items-center gap-2">
-                                <input type="time" value={startTime} onChange={e => setStartTime(e.target.value)} className="flex-1 p-3 border rounded-Nonecontrol bg-surface-muted" />
+                                <input type="time" value={startTime} onChange={e => setStartTime(e.target.value)} className="flex-1 p-3 border rounded-control bg-surface-muted" />
                                 <span className="text-ink-faint">to</span>
-                                <input type="time" value={endTime} onChange={e => setEndTime(e.target.value)} className="flex-1 p-3 border rounded-Nonecontrol bg-surface-muted" />
+                                <input type="time" value={endTime} onChange={e => setEndTime(e.target.value)} className="flex-1 p-3 border rounded-control bg-surface-muted" />
                             </div>
                         </div>
                         
-                        <div className="bg-white p-4 rounded-Nonecard shadow-sm border border-line">
+                        <div className="bg-white p-4 rounded-card shadow-sm border border-line">
                             <h3 className="font-bold text-ink mb-3">Public Profile Preview</h3>
-                            <div className="flex items-center gap-3 p-3 bg-surface-muted rounded-Nonecontrol border border-line">
+                            <div className="flex items-center gap-3 p-3 bg-surface-muted rounded-control border border-line">
                                 <img src={currentUser.avatarUrl} alt="Profile" className="w-12 h-12 rounded-full object-cover" />
                                 <div>
                                     <p className="font-bold text-ink">{currentUser.name}</p>
@@ -149,7 +149,7 @@ const HostSetup: React.FC<HostSetupProps> = ({ setupData, currentUser, onSave, o
                         {/* Large DND Toggle Switch */}
                         <div 
                             onClick={toggleDoNotDisturb}
-                            className={`p-4 rounded-Nonecontrol border-2 flex items-center justify-between cursor-pointer transition-all duration-300 ${status === 'Do Not Disturb' ? 'border-danger bg-danger-soft' : 'border-success bg-success-soft'}`}
+                            className={`p-4 rounded-control border-2 flex items-center justify-between cursor-pointer transition-all duration-300 ${status === 'Do Not Disturb' ? 'border-danger bg-danger-soft' : 'border-success bg-success-soft'}`}
                         >
                             <div className="flex items-center gap-3">
                                 <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${status === 'Do Not Disturb' ? 'bg-danger-soft text-danger' : 'bg-success-soft text-success'}`}>
@@ -165,14 +165,14 @@ const HostSetup: React.FC<HostSetupProps> = ({ setupData, currentUser, onSave, o
                             </div>
                         </div>
 
-                        <div className="bg-white p-4 rounded-Nonecard shadow-sm border border-line">
+                        <div className="bg-white p-4 rounded-card shadow-sm border border-line">
                             <h3 className="font-bold text-ink mb-3">Door Note</h3>
                             <textarea 
                                 value={doorNote}
                                 onChange={e => setDoorNote(e.target.value)}
                                 placeholder="e.g. Please leave packages at the reception. Ring doorbell twice."
                                 rows={4}
-                                className="w-full p-3 border rounded-Nonecontrol bg-surface-muted focus:outline-none focus:ring-2 focus:ring-brand-gold"
+                                className="w-full p-3 border rounded-control bg-surface-muted focus:outline-none focus:ring-2 focus:ring-brand-gold"
                             />
                         </div>
                     </div>
@@ -180,7 +180,7 @@ const HostSetup: React.FC<HostSetupProps> = ({ setupData, currentUser, onSave, o
             </main>
 
             <footer className="fixed bottom-0 left-0 right-0 max-w-md mx-auto p-4 bg-white border-t border-line">
-                <button onClick={handleSubmit} className="w-full bg-brand-navy text-white font-bold py-4 rounded-Nonecard shadow-lg hover:opacity-90 transition active:scale-95">
+                <button onClick={handleSubmit} className="w-full bg-brand-navy text-white font-bold py-4 rounded-card shadow-lg hover:opacity-90 transition active:scale-95">
                     Save & Complete Setup
                 </button>
             </footer>

@@ -18,7 +18,7 @@ const GigCard: React.FC<GigCardProps> = ({ gig, provider, onClick, layout = 'hor
 
     if (layout === 'vertical') {
          return (
-            <div onClick={onClick} className="bg-white rounded-Nonecard shadow-sm overflow-hidden cursor-pointer w-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex items-center gap-4 group">
+            <div onClick={onClick} className="bg-white rounded-card shadow-sm overflow-hidden cursor-pointer w-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex items-center gap-4 group">
                 <div className="w-24 h-24 flex-shrink-0 overflow-hidden">
                     <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src={gig.imageUrl} alt={gig.title} />
                 </div>
@@ -39,7 +39,7 @@ const GigCard: React.FC<GigCardProps> = ({ gig, provider, onClick, layout = 'hor
 
     // Default horizontal layout
     return (
-        <div onClick={onClick} className="bg-white rounded-Nonecard shadow-sm overflow-hidden cursor-pointer w-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
+        <div onClick={onClick} className="bg-white rounded-card shadow-sm overflow-hidden cursor-pointer w-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
             <div className="relative h-32 overflow-hidden">
                 <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src={gig.imageUrl} alt={gig.title} />
                  <div className="absolute top-1.5 left-1.5 bg-black bg-opacity-50 text-white text-[10px] px-2 py-0.5 rounded-full font-semibold">

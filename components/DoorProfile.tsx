@@ -47,13 +47,13 @@ const DoorProfile: React.FC<DoorProfileProps> = ({ unit, premise, tenant, viewSo
                 <>
                     <button 
                         onClick={() => onContactHost('call')}
-                        className="flex-1 bg-white text-brand-navy border-2 border-brand-navy font-bold py-3 rounded-Nonecontrol hover:bg-surface-muted transition flex items-center justify-center gap-2"
+                        className="flex-1 bg-white text-brand-navy border-2 border-brand-navy font-bold py-3 rounded-control hover:bg-surface-muted transition flex items-center justify-center gap-2"
                     >
                         <PhoneIcon /> Call
                     </button>
                     <button 
                         onClick={onBook}
-                        className="flex-[2] bg-brand-navy text-white font-bold py-3 rounded-Nonecard shadow-lg hover:bg-black transition active:scale-95 flex items-center justify-center gap-2"
+                        className="flex-[2] bg-brand-navy text-white font-bold py-3 rounded-card shadow-lg hover:bg-black transition active:scale-95 flex items-center justify-center gap-2"
                     >
                         <CalendarIcon /> {listingType === 'ShortStay' ? 'Book Now' : 'Schedule Viewing'}
                     </button>
@@ -69,8 +69,8 @@ const DoorProfile: React.FC<DoorProfileProps> = ({ unit, premise, tenant, viewSo
         return activeCtas.map((cta, index) => {
             const isPrimary = index === activeCtas.length - 1; // Last button is primary
             const baseClass = isPrimary 
-                ? "flex-[2] bg-brand-navy text-white font-bold py-3 rounded-Nonecard shadow-lg hover:bg-black transition active:scale-95 flex items-center justify-center gap-2"
-                : "flex-1 bg-white text-brand-navy border-2 border-brand-navy font-bold py-3 rounded-Nonecontrol hover:bg-surface-muted transition flex items-center justify-center gap-2";
+                ? "flex-[2] bg-brand-navy text-white font-bold py-3 rounded-card shadow-lg hover:bg-black transition active:scale-95 flex items-center justify-center gap-2"
+                : "flex-1 bg-white text-brand-navy border-2 border-brand-navy font-bold py-3 rounded-control hover:bg-surface-muted transition flex items-center justify-center gap-2";
 
             switch (cta) {
                 case 'call':
@@ -110,13 +110,13 @@ const DoorProfile: React.FC<DoorProfileProps> = ({ unit, premise, tenant, viewSo
                 <div className="absolute bottom-8 left-6 text-white z-10 max-w-[80%]">
                     {isVacant ? (
                         <div className="flex gap-2 mb-2">
-                            <span className="bg-brand-gold text-brand-navy text-caption font-bold px-2 py-1 rounded-Nonecontrol uppercase tracking-wide">
+                            <span className="bg-brand-gold text-brand-navy text-caption font-bold px-2 py-1 rounded-control uppercase tracking-wide">
                                 {listingType === 'ShortStay' ? 'Airbnb / Short Stay' : `For ${listingType}`}
                             </span>
                         </div>
                     ) : (
                         <div className="flex gap-2 mb-2">
-                            <span className="bg-white/20 backdrop-blur-md text-white text-caption font-bold px-2 py-1 rounded-Nonecontrol uppercase tracking-wide border border-white/30">
+                            <span className="bg-white/20 backdrop-blur-md text-white text-caption font-bold px-2 py-1 rounded-control uppercase tracking-wide border border-white/30">
                                 {tenant?.category || 'Private Residence'}
                             </span>
                         </div>
@@ -183,7 +183,7 @@ const DoorProfile: React.FC<DoorProfileProps> = ({ unit, premise, tenant, viewSo
                         <h3 className="font-bold text-ink text-lg mb-3">Amenities & Features</h3>
                         <div className="flex flex-wrap gap-2">
                             {unit.amenities.map((am, i) => (
-                                <span key={i} className="bg-surface-muted text-ink px-3 py-2 rounded-Nonecontrol text-caption font-semibold border border-line">
+                                <span key={i} className="bg-surface-muted text-ink px-3 py-2 rounded-control text-caption font-semibold border border-line">
                                     {am}
                                 </span>
                             ))}
@@ -193,7 +193,7 @@ const DoorProfile: React.FC<DoorProfileProps> = ({ unit, premise, tenant, viewSo
 
                 {/* Host Info (if occupied) */}
                 {isOccupied && tenant && (
-                    <div className="bg-info-soft p-4 rounded-Nonecontrol flex items-center gap-4 mb-6 border border-info-soft">
+                    <div className="bg-info-soft p-4 rounded-control flex items-center gap-4 mb-6 border border-info-soft">
                         <img src={tenant.avatarUrl} alt={tenant.name} className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm" />
                         <div>
                             <p className="text-caption text-info font-bold uppercase tracking-wide">Hosted By</p>
@@ -209,7 +209,7 @@ const DoorProfile: React.FC<DoorProfileProps> = ({ unit, premise, tenant, viewSo
                     {viewSource === 'scan' && isOccupied ? (
                         <button 
                             onClick={handleCheckInAction}
-                            className="flex-1 bg-success text-white font-bold py-4 rounded-Nonecard shadow-lg hover:bg-success-strong active:scale-95 transition-all flex items-center justify-center gap-2 text-lg"
+                            className="flex-1 bg-success text-white font-bold py-4 rounded-card shadow-lg hover:bg-success-strong active:scale-95 transition-all flex items-center justify-center gap-2 text-lg"
                         >
                             <CheckIcon /> Check In Now
                         </button>

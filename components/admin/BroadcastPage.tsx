@@ -30,24 +30,24 @@ const BroadcastPage: React.FC<BroadcastPageProps> = ({ onBroadcast, providers, c
     };
     
     return (
-        <div className="bg-white rounded-Nonecontrol shadow-sm p-4 max-w-md mx-auto">
+        <div className="bg-white rounded-control shadow-sm p-4 max-w-md mx-auto">
            <h2 className="text-lg font-bold text-ink mb-4">Broadcast Message</h2>
            
            <div className="space-y-3 mb-4">
                 <label className="text-caption font-medium text-ink-soft">FILTERS</label>
-               <select value={broadcastLocation} onChange={e => setBroadcastLocation(e.target.value)} className="w-full p-2 border rounded-Nonecontrol bg-white">
+               <select value={broadcastLocation} onChange={e => setBroadcastLocation(e.target.value)} className="w-full p-2 border rounded-control bg-white">
                    {uniqueLocations.map(l => <option key={l} value={l}>{l}</option>)}
                </select>
-               <select value={broadcastCategory} onChange={e => setBroadcastCategory(e.target.value)} className="w-full p-2 border rounded-Nonecontrol bg-white">
+               <select value={broadcastCategory} onChange={e => setBroadcastCategory(e.target.value)} className="w-full p-2 border rounded-control bg-white">
                    {uniqueCategoriesForBroadcast.map(c => <option key={c} value={c}>{c}</option>)}
                </select>
-               <select value={broadcastRating} onChange={e => setBroadcastRating(e.target.value)} className="w-full p-2 border rounded-Nonecontrol bg-white">
+               <select value={broadcastRating} onChange={e => setBroadcastRating(e.target.value)} className="w-full p-2 border rounded-control bg-white">
                    {ratingOptions.map(r => <option key={r} value={r}>{r}</option>)}
                </select>
            </div>
 
-           <textarea rows={5} value={broadcastMessage} onChange={(e) => setBroadcastMessage(e.target.value)} placeholder="Type your notification message to all users here..." className="w-full p-2 border border-line rounded-Nonecontrol focus:ring-brand-primary focus:border-brand-primary"/>
-           <button onClick={handleBroadcast} className="mt-3 w-full bg-brand-primary text-white font-bold py-3 px-4 rounded-Nonecontrol hover:bg-gray-700">Send Broadcast</button>
+           <textarea rows={5} value={broadcastMessage} onChange={(e) => setBroadcastMessage(e.target.value)} placeholder="Type your notification message to all users here..." className="w-full p-2 border border-line rounded-control focus:ring-brand-primary focus:border-brand-primary"/>
+           <button onClick={handleBroadcast} className="mt-3 w-full bg-brand-primary text-white font-bold py-3 px-4 rounded-control hover:bg-gray-700">Send Broadcast</button>
        </div>
     );
 };

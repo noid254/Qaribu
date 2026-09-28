@@ -22,7 +22,7 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ providers }) => {
     return (
         <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-               <div className="bg-white rounded-Nonecontrol shadow-sm p-4">
+               <div className="bg-white rounded-control shadow-sm p-4">
                    <h3 className="font-bold text-lg mb-3">Users by Location</h3>
                    <div className="space-y-2">
                        {usersByLocation.map(([loc, count]) => (
@@ -33,7 +33,7 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ providers }) => {
                        ))}
                    </div>
                </div>
-                <div className="bg-white rounded-Nonecontrol shadow-sm p-4">
+                <div className="bg-white rounded-control shadow-sm p-4">
                    <h3 className="font-bold text-lg mb-3">Most Viewed Profiles</h3>
                     <div className="space-y-3">
                        {mostViewedUsers.map(p => (

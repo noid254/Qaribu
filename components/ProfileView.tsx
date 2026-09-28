@@ -64,7 +64,7 @@ const UserPlusIcon = () => <SharedUserPlusIcon className="h-6 w-6" />;
 const MenuIcon = () => <SharedMenuIcon className="h-6 w-6" />;
 
 const CatalogueItemCard: React.FC<{item: CatalogueItem, onClick?: () => void}> = ({ item, onClick }) => (
-    <div onClick={onClick} className={`bg-white rounded-Nonecontrol shadow-sm overflow-hidden border border-line ${onClick ? 'cursor-pointer' : ''}`}>
+    <div onClick={onClick} className={`bg-white rounded-control shadow-sm overflow-hidden border border-line ${onClick ? 'cursor-pointer' : ''}`}>
         <img src={item.imageUrls[0] || 'https://picsum.photos/seed/placeholder/400/300'} alt={item.title} className="w-full h-24 object-cover" />
         <div className="p-2">
             <h3 className="font-bold text-ink text-body truncate">{item.title}</h3>
@@ -82,7 +82,7 @@ const MembersScroller: React.FC<{ members: Member[], selectedMemberId: string, o
                     <button 
                         key={member.id} 
                         onClick={() => onSelectMember(member)} 
-                        className={`flex-shrink-0 flex flex-col items-center gap-1 text-center w-20 p-1 rounded-Nonecontrol transition-all duration-200 ${selectedMemberId === member.id ? 'bg-brand-gold/10' : 'bg-transparent'}`}
+                        className={`flex-shrink-0 flex flex-col items-center gap-1 text-center w-20 p-1 rounded-control transition-all duration-200 ${selectedMemberId === member.id ? 'bg-brand-gold/10' : 'bg-transparent'}`}
                     >
                         <div className={`w-16 h-16 rounded-full border-2 p-0.5 transition-all ${selectedMemberId === member.id ? 'border-brand-gold' : 'border-line'}`}>
                             <img src={member.avatarUrl} alt={member.name} className="w-full h-full object-cover rounded-full" />
@@ -99,11 +99,11 @@ const FlagModal: React.FC<{onClose: () => void, onFlag: (reason: string) => void
     const reasons = ["Inappropriate Content", "Spam or Misleading", "Scam or Fraud", "Not a real service"];
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
-            <div className="bg-white rounded-Nonecontrol shadow-xl p-6 w-full max-w-sm">
+            <div className="bg-white rounded-control shadow-xl p-6 w-full max-w-sm">
                 <h2 className="text-xl font-bold mb-4">Flag Profile</h2>
                 <div className="space-y-2">
                     {reasons.map(reason => (
-                        <button key={reason} onClick={() => onFlag(reason)} className="w-full text-left p-3 bg-surface-sunken hover:bg-surface-sunken rounded-Nonecontrol">{reason}</button>
+                        <button key={reason} onClick={() => onFlag(reason)} className="w-full text-left p-3 bg-surface-sunken hover:bg-surface-sunken rounded-control">{reason}</button>
                     ))}
                 </div>
                 <button onClick={onClose} className="mt-4 w-full text-center text-ink-soft">Cancel</button>
@@ -116,13 +116,13 @@ const UnverifyModal: React.FC<{onClose: () => void, onUnverify: (reason: string)
     const [reason, setReason] = useState('');
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
-            <div className="bg-white rounded-Nonecontrol shadow-xl p-6 w-full max-w-sm">
+            <div className="bg-white rounded-control shadow-xl p-6 w-full max-w-sm">
                 <h2 className="text-xl font-bold mb-2">Un-verify User</h2>
                 <p className="text-body text-ink-soft mb-4">Please provide a reason. This will be sent to the user.</p>
-                <textarea value={reason} onChange={e => setReason(e.target.value)} rows={4} className="w-full p-2 border rounded-Nonecontrol" placeholder="e.g. Profile information is misleading..."/>
+                <textarea value={reason} onChange={e => setReason(e.target.value)} rows={4} className="w-full p-2 border rounded-control" placeholder="e.g. Profile information is misleading..."/>
                 <div className="flex gap-2 mt-4">
-                    <button onClick={onClose} className="flex-1 bg-surface-sunken text-ink font-bold py-2 px-4 rounded-Nonecontrol">Cancel</button>
-                    <button onClick={() => onUnverify(reason)} disabled={!reason} className="flex-1 bg-danger text-white font-bold py-2 px-4 rounded-Nonecontrol disabled:bg-red-300">Confirm</button>
+                    <button onClick={onClose} className="flex-1 bg-surface-sunken text-ink font-bold py-2 px-4 rounded-control">Cancel</button>
+                    <button onClick={() => onUnverify(reason)} disabled={!reason} className="flex-1 bg-danger text-white font-bold py-2 px-4 rounded-control disabled:bg-red-300">Confirm</button>
                 </div>
             </div>
         </div>
@@ -130,7 +130,7 @@ const UnverifyModal: React.FC<{onClose: () => void, onUnverify: (reason: string)
 };
 
 const SkillCard: React.FC<{ skill: Skill; onClick: () => void }> = ({ skill, onClick }) => (
-    <div onClick={onClick} className="flex-shrink-0 flex items-center gap-4 text-left p-3 rounded-Nonecontrol hover:bg-surface-sunken transition-colors bg-white border border-line shadow-sm w-full cursor-pointer">
+    <div onClick={onClick} className="flex-shrink-0 flex items-center gap-4 text-left p-3 rounded-control hover:bg-surface-sunken transition-colors bg-white border border-line shadow-sm w-full cursor-pointer">
         <div className="relative w-16 h-16">
             <img src={skill.iconUrl} alt={skill.name} className="w-full h-full object-cover rounded-full" />
             {skill.isVerified && (
@@ -150,18 +150,18 @@ const SkillCard: React.FC<{ skill: Skill; onClick: () => void }> = ({ skill, onC
 const SkillDetailModal: React.FC<{ skill: Skill; onClose: () => void }> = ({ skill, onClose }) => {
     return (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 p-4" onClick={onClose}>
-            <div className="bg-white rounded-Nonecard shadow-xl p-6 w-full max-w-sm" onClick={e => e.stopPropagation()}>
+            <div className="bg-white rounded-card shadow-xl p-6 w-full max-w-sm" onClick={e => e.stopPropagation()}>
                 <div className="flex flex-col items-center text-center">
                     <img src={skill.iconUrl} alt={skill.name} className="w-20 h-20 rounded-full border-4 border-line object-cover" />
                     <h2 className="text-2xl font-bold mt-3">{skill.name}</h2>
                     {skill.isVerified && <p className="text-info font-semibold text-body">Verified Skill</p>}
                 </div>
-                <div className="mt-6 text-body bg-surface-muted p-4 rounded-Nonecontrol border">
+                <div className="mt-6 text-body bg-surface-muted p-4 rounded-control border">
                     <p className="font-semibold text-ink-soft uppercase text-caption">{skill.verifier.type === 'institution' ? 'Verified By' : 'Mentored By'}</p>
                     <p className="font-bold text-ink text-base mt-1">{skill.verifier.name}</p>
                     <p className="text-ink-soft mt-2">{skill.verifier.details}</p>
                 </div>
-                <button onClick={onClose} className="mt-6 w-full bg-brand-navy text-white font-bold py-3 rounded-Nonecontrol">Close</button>
+                <button onClick={onClose} className="mt-6 w-full bg-brand-navy text-white font-bold py-3 rounded-control">Close</button>
             </div>
         </div>
     );
@@ -469,7 +469,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profileData, isOwner, isAuthe
                                     <SettingsIcon />
                                 </button>
                                 {showMenu && (
-                                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-Nonecontrol shadow-lg z-20 border border-line">
+                                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-control shadow-lg z-20 border border-line">
                                         <button onClick={() => { setIsEditing(true); setShowMenu(false); }} className="block px-4 py-2 text-body text-ink hover:bg-surface-sunken w-full text-left">Edit Profile</button>
                                         {isOwner && <button onClick={() => { onLogout(); setShowMenu(false); }} className="block px-4 py-2 text-body text-ink hover:bg-surface-sunken w-full text-left">Logout</button>}
                                         {isSuperAdmin && <button onClick={() => { handleDelete(); setShowMenu(false); }} className="block px-4 py-2 text-body text-danger hover:bg-surface-sunken w-full text-left">Delete Profile</button>}
@@ -501,7 +501,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profileData, isOwner, isAuthe
                                 onClick={isSuperAdmin ? () => setShowUnverifyModal(true) : undefined}
                             />
                         ) : (
-                            isSuperAdmin && !isEditing && <button onClick={handleVerify} className="text-caption bg-yellow-400 text-warning-strong font-bold px-2 py-1 rounded-Nonecontrol hover:bg-warning">Verify</button>
+                            isSuperAdmin && !isEditing && <button onClick={handleVerify} className="text-caption bg-yellow-400 text-warning-strong font-bold px-2 py-1 rounded-control hover:bg-warning">Verify</button>
                         )}
                     </div>
                     {isEditing ? (
@@ -509,7 +509,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profileData, isOwner, isAuthe
                             type="text" 
                             value={editedService} 
                             onChange={(e) => setEditedService(e.target.value)} 
-                            className="text-md text-ink-soft bg-surface-sunken border border-line rounded-Nonecontrol text-center mt-1 px-2 py-1"
+                            className="text-md text-ink-soft bg-surface-sunken border border-line rounded-control text-center mt-1 px-2 py-1"
                         />
                     ) : (
                         <p className="text-md text-ink-soft">{profileData.service}</p>
@@ -520,7 +520,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profileData, isOwner, isAuthe
                             value={editedLocation} 
                             onChange={(e) => setEditedLocation(e.target.value)} 
                             placeholder="e.g. Westlands, Nairobi"
-                            className="text-body text-ink-soft bg-surface-sunken border border-line rounded-Nonecontrol text-center mt-1 px-2 py-1"
+                            className="text-body text-ink-soft bg-surface-sunken border border-line rounded-control text-center mt-1 px-2 py-1"
                         />
                     ) : (
                         <p className="text-body text-ink-soft mt-1">{profileData.location}</p>
@@ -561,13 +561,13 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profileData, isOwner, isAuthe
                                         type="number"
                                         value={editedRate}
                                         onChange={e => setEditedRate(e.target.value)}
-                                        className="w-16 text-center bg-surface-sunken border border-line rounded-Nonecontrol px-1 py-0.5"
+                                        className="w-16 text-center bg-surface-sunken border border-line rounded-control px-1 py-0.5"
                                     />
                                     <span>/</span>
                                     <select 
                                         value={editedRateType} 
                                         onChange={e => setEditedRateType(e.target.value as ServiceProvider['rateType'])}
-                                        className="text-caption bg-surface-sunken border border-line rounded-Nonecontrol py-0.5"
+                                        className="text-caption bg-surface-sunken border border-line rounded-control py-0.5"
                                     >
                                         {Object.entries(rateSuffix).map(([key, value]) => (
                                             <option key={key} value={key}>{value}</option>
@@ -586,7 +586,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profileData, isOwner, isAuthe
                         <label className="block text-body font-medium text-ink mb-2">Call to Action Buttons (Select up to 2)</label>
                         <div className="grid grid-cols-2 gap-2">
                             {allCtaOptions.map(option => (
-                                 <label key={option.value} className="flex items-center p-2 border rounded-Nonecontrol bg-white">
+                                 <label key={option.value} className="flex items-center p-2 border rounded-control bg-white">
                                     <input 
                                         type="checkbox" 
                                         value={option.value} 
@@ -605,7 +605,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profileData, isOwner, isAuthe
                 {!isEditing && (
                     <div className="px-4 pt-4">
                         <div className="flex items-center space-x-3">
-                            <button onClick={() => onToggleSaveContact(profileData.id)} className={`p-3 rounded-Nonecontrol transition flex-shrink-0 active-scale ${isSaved ? 'bg-brand-gold/20 text-brand-gold' : 'bg-surface-sunken text-ink hover:bg-gray-300'}`}>
+                            <button onClick={() => onToggleSaveContact(profileData.id)} className={`p-3 rounded-control transition flex-shrink-0 active-scale ${isSaved ? 'bg-brand-gold/20 text-brand-gold' : 'bg-surface-sunken text-ink hover:bg-gray-300'}`}>
                                 <BookmarkIcon filled={isSaved} />
                             </button>
                             {(profileData.cta || []).map((ctaKey) => {
@@ -616,7 +616,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profileData, isOwner, isAuthe
                                     ? "bg-brand-gold text-brand-navy hover:opacity-90" 
                                     : "bg-surface-sunken text-ink hover:bg-gray-300";
                                 return (
-                                    <button key={ctaKey} onClick={cta.action} className={`flex-1 font-bold py-3 px-4 rounded-Nonecontrol transition flex items-center justify-center space-x-2 active-scale ${buttonClass}`}>
+                                    <button key={ctaKey} onClick={cta.action} className={`flex-1 font-bold py-3 px-4 rounded-control transition flex items-center justify-center space-x-2 active-scale ${buttonClass}`}>
                                         {cta.icon} <span>{cta.label}</span>
                                     </button>
                                 );
@@ -626,8 +626,8 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profileData, isOwner, isAuthe
                 )}
                 {isEditing && (
                     <div className="px-4 pt-4 flex items-center space-x-3">
-                        <button onClick={handleCancelEdit} className="flex-1 bg-surface-sunken text-ink font-bold py-3 px-4 rounded-Nonecontrol active-scale">Cancel</button>
-                        <button onClick={handleSave} className="flex-1 bg-brand-navy text-white font-bold py-3 px-4 rounded-Nonecontrol active-scale">Save Changes</button>
+                        <button onClick={handleCancelEdit} className="flex-1 bg-surface-sunken text-ink font-bold py-3 px-4 rounded-control active-scale">Cancel</button>
+                        <button onClick={handleSave} className="flex-1 bg-brand-navy text-white font-bold py-3 px-4 rounded-control active-scale">Save Changes</button>
                     </div>
                 )}
             </div>
@@ -661,7 +661,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profileData, isOwner, isAuthe
                                         value={editedAbout}
                                         onChange={(e) => setEditedAbout(e.target.value)}
                                         rows={5}
-                                        className="w-full text-body text-ink leading-relaxed bg-surface-sunken border border-line rounded-Nonecontrol p-2"
+                                        className="w-full text-body text-ink leading-relaxed bg-surface-sunken border border-line rounded-control p-2"
                                     />
                                 ) : (
                                     <p className="text-body text-ink leading-relaxed">{profileData.about}</p>
@@ -681,7 +681,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profileData, isOwner, isAuthe
                     {linkedAsset && (
                         <div>
                             <h2 className="text-md font-semibold text-ink mt-4">Primary Asset</h2>
-                            <div className="mt-2 bg-white p-3 rounded-Nonecontrol shadow-sm border border-line">
+                            <div className="mt-2 bg-white p-3 rounded-control shadow-sm border border-line">
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <p className="font-bold text-ink">{linkedAsset.items?.[0]?.description || linkedAsset.model}</p>
@@ -730,7 +730,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profileData, isOwner, isAuthe
                             {galleryTab === 'works' && hasWorks && (
                                 <div className="grid grid-cols-3 gap-2">
                                     {profileData.works.map((workUrl, index) => (
-                                        <div key={index} className="aspect-square bg-surface-sunken rounded-Nonecontrol overflow-hidden">
+                                        <div key={index} className="aspect-square bg-surface-sunken rounded-control overflow-hidden">
                                             <img src={workUrl} alt={`Work sample ${index + 1}`} className="w-full h-full object-cover" />
                                         </div>
                                     ))}
@@ -744,7 +744,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profileData, isOwner, isAuthe
                                 </div>
                             )}
                             {galleryTab === 'qr' && (
-                                <div className="bg-white p-4 rounded-Nonecontrol flex flex-col items-center justify-center">
+                                <div className="bg-white p-4 rounded-control flex flex-col items-center justify-center">
                                 <img 
                                     src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(profileUrl)}`} 
                                     alt="Contact QR Code"

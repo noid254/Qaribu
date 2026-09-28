@@ -19,7 +19,7 @@ const MyContactsView: React.FC<MyContactsViewProps> = ({ contacts, onSelectConta
             <div className="p-4 space-y-3">
                 {contacts.length > 0 ? (
                     contacts.map(contact => (
-                        <button key={contact.id} onClick={() => onSelectContact(contact)} className="w-full text-left bg-white p-3 rounded-Nonecard shadow-sm hover:shadow-md transition-shadow flex items-center gap-4">
+                        <button key={contact.id} onClick={() => onSelectContact(contact)} className="w-full text-left bg-white p-3 rounded-card shadow-sm hover:shadow-md transition-shadow flex items-center gap-4">
                             <img src={contact.avatarUrl} alt={contact.name} className="w-12 h-12 rounded-full object-cover" />
                             <div>
                                 <p className="font-bold text-ink">{contact.name}</p>

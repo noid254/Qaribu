@@ -15,7 +15,7 @@ const TukosokoItemCard: React.FC<{
     onClick: () => void;
 }> = ({ item, provider, onClick }) => {
     return (
-        <div onClick={onClick} className="bg-white rounded-Nonecard shadow-sm overflow-hidden cursor-pointer group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+        <div onClick={onClick} className="bg-white rounded-card shadow-sm overflow-hidden cursor-pointer group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
             <div className="overflow-hidden">
                 <img src={item.imageUrls[0]} alt={item.title} className="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300" />
             </div>

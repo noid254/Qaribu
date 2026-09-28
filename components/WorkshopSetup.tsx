@@ -23,9 +23,9 @@ const InputField: React.FC<{ label: string, value: string, onChange: (e: React.C
     <div>
         <label className="font-semibold text-ink mb-2 block">{label}</label>
         {isTextarea ? (
-            <textarea value={value} onChange={onChange} placeholder={placeholder} required={required} rows={4} className="w-full p-3 border-2 border-line rounded-Nonecontrol bg-surface-muted focus:bg-white focus:ring-2 focus:ring-brand-gold focus:outline-none transition" />
+            <textarea value={value} onChange={onChange} placeholder={placeholder} required={required} rows={4} className="w-full p-3 border-2 border-line rounded-control bg-surface-muted focus:bg-white focus:ring-2 focus:ring-brand-gold focus:outline-none transition" />
         ) : (
-            <input value={value} onChange={onChange} placeholder={placeholder} required={required} className="w-full p-3 border-2 border-line rounded-Nonecontrol bg-surface-muted focus:bg-white focus:ring-2 focus:ring-brand-gold focus:outline-none transition" />
+            <input value={value} onChange={onChange} placeholder={placeholder} required={required} className="w-full p-3 border-2 border-line rounded-control bg-surface-muted focus:bg-white focus:ring-2 focus:ring-brand-gold focus:outline-none transition" />
         )}
     </div>
 );
@@ -76,7 +76,7 @@ const WorkshopSetup: React.FC<WorkshopSetupProps> = ({ onSetupComplete, onBack }
                         <InputField label="Business Name" value={businessName} onChange={e => setBusinessName(e.target.value)} placeholder="e.g., John's Electricals" required />
                         <div>
                             <label className="font-semibold text-ink mb-2 block">Logo (Optional)</label>
-                            <div onClick={() => logoInputRef.current?.click()} className="cursor-pointer w-full h-40 border-2 border-dashed rounded-Nonecontrol flex flex-col items-center justify-center bg-surface-muted hover:bg-surface-sunken transition-colors">
+                            <div onClick={() => logoInputRef.current?.click()} className="cursor-pointer w-full h-40 border-2 border-dashed rounded-control flex flex-col items-center justify-center bg-surface-muted hover:bg-surface-sunken transition-colors">
                                 {logo ? (
                                     <img src={logo} alt="logo" className="h-full w-full object-contain p-2"/>
                                 ) : (
@@ -88,7 +88,7 @@ const WorkshopSetup: React.FC<WorkshopSetupProps> = ({ onSetupComplete, onBack }
                             </div>
                            <input type="file" ref={logoInputRef} onChange={handleLogoUpload} accept="image/*" className="hidden"/>
                         </div>
-                        <button type="submit" className="w-full bg-brand-navy text-white font-bold py-4 rounded-Nonecard shadow-lg mt-4">Next</button>
+                        <button type="submit" className="w-full bg-brand-navy text-white font-bold py-4 rounded-card shadow-lg mt-4">Next</button>
                     </form>
                 );
             case 2:
@@ -97,8 +97,8 @@ const WorkshopSetup: React.FC<WorkshopSetupProps> = ({ onSetupComplete, onBack }
                         <InputField label="Business Address" value={address} onChange={e => setAddress(e.target.value)} placeholder="e.g., 123 Main St, Nairobi" isTextarea required />
                         <InputField label="Contact Details (Phone/Email)" value={contactInfo} onChange={e => setContactInfo(e.target.value)} placeholder="e.g., 0712345678 / info@john.co.ke" required />
                         <div className="flex gap-3">
-                            <button type="button" onClick={handleBack} className="flex-1 bg-surface-sunken text-ink font-bold py-4 rounded-Nonecontrol">Back</button>
-                            <button type="submit" className="flex-1 bg-brand-navy text-white font-bold py-4 rounded-Nonecard shadow-lg">Next</button>
+                            <button type="button" onClick={handleBack} className="flex-1 bg-surface-sunken text-ink font-bold py-4 rounded-control">Back</button>
+                            <button type="submit" className="flex-1 bg-brand-navy text-white font-bold py-4 rounded-card shadow-lg">Next</button>
                         </div>
                     </form>
                 );
@@ -107,8 +107,8 @@ const WorkshopSetup: React.FC<WorkshopSetupProps> = ({ onSetupComplete, onBack }
                     <form onSubmit={handleNext} className="space-y-6">
                         <InputField label="How You Get Paid" value={paymentDetails} onChange={e => setPaymentDetails(e.target.value)} placeholder="e.g., M-Pesa Paybill: 123456, Acc: Your Name&#10;Bank: ABC Bank, Acc: 987654321" isTextarea required />
                          <div className="flex gap-3">
-                            <button type="button" onClick={handleBack} className="flex-1 bg-surface-sunken text-ink font-bold py-4 rounded-Nonecontrol">Back</button>
-                            <button type="submit" className="flex-1 bg-brand-navy text-white font-bold py-4 rounded-Nonecard shadow-lg">Review</button>
+                            <button type="button" onClick={handleBack} className="flex-1 bg-surface-sunken text-ink font-bold py-4 rounded-control">Back</button>
+                            <button type="submit" className="flex-1 bg-brand-navy text-white font-bold py-4 rounded-card shadow-lg">Review</button>
                         </div>
                     </form>
                 );
@@ -117,21 +117,21 @@ const WorkshopSetup: React.FC<WorkshopSetupProps> = ({ onSetupComplete, onBack }
                     <div className="space-y-6">
                         <div className="space-y-4 text-body">
                             <h3 className="font-bold text-ink-soft uppercase text-caption">Review Details</h3>
-                            <div className="flex justify-between items-center p-3 bg-surface-muted rounded-Nonecontrol"><span>Business Name</span><span className="font-semibold text-right">{businessName}</span></div>
-                            <div className="flex justify-between items-center p-3 bg-surface-muted rounded-Nonecontrol"><span>Address</span><span className="font-semibold text-right whitespace-pre-line">{address}</span></div>
-                            <div className="flex justify-between items-center p-3 bg-surface-muted rounded-Nonecontrol"><span>Contact</span><span className="font-semibold text-right">{contactInfo}</span></div>
-                            <div className="flex justify-between items-center p-3 bg-surface-muted rounded-Nonecontrol"><span>Payment Info</span><span className="font-semibold text-right whitespace-pre-line">{paymentDetails}</span></div>
+                            <div className="flex justify-between items-center p-3 bg-surface-muted rounded-control"><span>Business Name</span><span className="font-semibold text-right">{businessName}</span></div>
+                            <div className="flex justify-between items-center p-3 bg-surface-muted rounded-control"><span>Address</span><span className="font-semibold text-right whitespace-pre-line">{address}</span></div>
+                            <div className="flex justify-between items-center p-3 bg-surface-muted rounded-control"><span>Contact</span><span className="font-semibold text-right">{contactInfo}</span></div>
+                            <div className="flex justify-between items-center p-3 bg-surface-muted rounded-control"><span>Payment Info</span><span className="font-semibold text-right whitespace-pre-line">{paymentDetails}</span></div>
                         </div>
-                         <div className="text-caption p-3 border rounded-Nonecontrol h-24 overflow-y-auto bg-surface-muted">
+                         <div className="text-caption p-3 border rounded-control h-24 overflow-y-auto bg-surface-muted">
                            <p>By using this service, you agree to generate documents accurately and lawfully. The developers of this app are not responsible for any misuse or inaccuracies in the generated documents. All data is stored locally on your device.</p>
                         </div>
-                        <label className="flex items-center gap-3 p-3 bg-surface-muted rounded-Nonecontrol cursor-pointer">
+                        <label className="flex items-center gap-3 p-3 bg-surface-muted rounded-control cursor-pointer">
                             <input type="checkbox" checked={termsAccepted} onChange={e => setTermsAccepted(e.target.checked)} className="h-5 w-5 rounded text-brand-navy focus:ring-brand-gold"/>
                             <span className="font-semibold text-body">I agree to the terms and conditions</span>
                         </label>
                         <div className="flex gap-3">
-                             <button type="button" onClick={handleBack} className="flex-1 bg-surface-sunken text-ink font-bold py-4 rounded-Nonecontrol">Back</button>
-                            <button onClick={handleSubmit} disabled={!termsAccepted} className="flex-1 bg-success text-white font-bold py-4 rounded-Nonecard disabled:bg-gray-400 shadow-lg">Complete Setup</button>
+                             <button type="button" onClick={handleBack} className="flex-1 bg-surface-sunken text-ink font-bold py-4 rounded-control">Back</button>
+                            <button onClick={handleSubmit} disabled={!termsAccepted} className="flex-1 bg-success text-white font-bold py-4 rounded-card disabled:bg-gray-400 shadow-lg">Complete Setup</button>
                         </div>
                     </div>
                 );
@@ -146,13 +146,13 @@ const WorkshopSetup: React.FC<WorkshopSetupProps> = ({ onSetupComplete, onBack }
              <header className="p-4 bg-surface-muted sticky top-0 z-10">
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl font-bold font-serif text-brand-navy">{titles[step - 1]}</h1>
-                    <button onClick={onBack} className="text-body font-semibold text-ink-soft bg-surface-sunken px-3 py-1 rounded-Nonecontrol">Exit Setup</button>
+                    <button onClick={onBack} className="text-body font-semibold text-ink-soft bg-surface-sunken px-3 py-1 rounded-control">Exit Setup</button>
                 </div>
                 <ProgressBar current={step} total={totalSteps} />
             </header>
             
             <main className="p-4">
-                <div key={step} className="bg-white p-6 rounded-Nonecard shadow-sm animate-fade-in">
+                <div key={step} className="bg-white p-6 rounded-card shadow-sm animate-fade-in">
                     {renderStepContent()}
                 </div>
             </main>

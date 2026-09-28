@@ -66,7 +66,7 @@ const CatalogueItemDetailModal: React.FC<CatalogueItemDetailModalProps> = ({ ite
                 <p className="text-body text-ink-soft font-mono">SN: {item.serialNumber}</p>
               )}
 
-              <div className={`p-3 rounded-Nonecontrol text-body ${item.isVerified ? 'bg-info-soft border border-info-soft text-info-strong' : 'bg-warning-soft border border-warning-soft text-warning-strong'}`}>
+              <div className={`p-3 rounded-control text-body ${item.isVerified ? 'bg-info-soft border border-info-soft text-info-strong' : 'bg-warning-soft border border-warning-soft text-warning-strong'}`}>
                 <p className="font-semibold">
                     {item.isVerified
                         ? "Seller has confirmed they have proof of purchase."
@@ -83,7 +83,7 @@ const CatalogueItemDetailModal: React.FC<CatalogueItemDetailModalProps> = ({ ite
               )}
               
               {item.discountInfo && (
-                <div className="mt-4 p-3 bg-success-soft border border-success-soft rounded-Nonecontrol text-center">
+                <div className="mt-4 p-3 bg-success-soft border border-success-soft rounded-control text-center">
                   <p className="font-bold text-success-strong">{item.discountInfo}</p>
                 </div>
               )}
@@ -95,7 +95,7 @@ const CatalogueItemDetailModal: React.FC<CatalogueItemDetailModalProps> = ({ ite
 
               {item.externalLink && (
                     <div className="pt-4">
-                        <a href={item.externalLink} target="_blank" rel="noopener noreferrer" className="block w-full bg-success text-white font-bold py-3 px-4 rounded-Nonecontrol text-center transition-colors hover:bg-success-strong active-scale">
+                        <a href={item.externalLink} target="_blank" rel="noopener noreferrer" className="block w-full bg-success text-white font-bold py-3 px-4 rounded-control text-center transition-colors hover:bg-success-strong active-scale">
                             Visit Course Page
                         </a>
                     </div>
@@ -105,12 +105,12 @@ const CatalogueItemDetailModal: React.FC<CatalogueItemDetailModalProps> = ({ ite
 
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-line shadow-[0_-2px_10px_rgba(0,0,0,0.05)] flex items-center gap-3">
           {provider?.phone && (
-              <button onClick={handleCall} className="flex-1 bg-surface-sunken text-ink font-bold py-4 px-4 rounded-Nonecontrol hover:bg-gray-300 transition-colors flex items-center justify-center gap-2 active-scale">
+              <button onClick={handleCall} className="flex-1 bg-surface-sunken text-ink font-bold py-4 px-4 rounded-control hover:bg-gray-300 transition-colors flex items-center justify-center gap-2 active-scale">
                   <CallIcon /> Call
               </button>
           )}
           {provider?.whatsapp && (
-              <button onClick={handleWhatsApp} className="flex-1 bg-brand-navy text-white font-bold py-4 px-4 rounded-Nonecontrol hover:opacity-90 transition-colors flex items-center justify-center gap-2 active-scale">
+              <button onClick={handleWhatsApp} className="flex-1 bg-brand-navy text-white font-bold py-4 px-4 rounded-control hover:opacity-90 transition-colors flex items-center justify-center gap-2 active-scale">
                   <WhatsAppIcon /> WhatsApp
               </button>
           )}

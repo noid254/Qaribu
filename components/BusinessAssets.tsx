@@ -139,7 +139,7 @@ const CustomizationModal: React.FC<{
 
     return (
         <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-50 p-4" onClick={onClose}>
-            <div className="bg-surface-muted rounded-Nonecard shadow-2xl w-full max-w-lg h-[90vh] flex flex-col" onClick={e => e.stopPropagation()}>
+            <div className="bg-surface-muted rounded-card shadow-2xl w-full max-w-lg h-[90vh] flex flex-col" onClick={e => e.stopPropagation()}>
                 <header className="p-4 border-b border-line flex justify-between items-center">
                     <h2 className="text-xl font-bold text-ink">Customize {item.name}</h2>
                     <button onClick={onClose} className="text-ink-soft hover:text-ink font-bold text-2xl">&times;</button>
@@ -147,7 +147,7 @@ const CustomizationModal: React.FC<{
 
                 <main className="flex-1 flex flex-col md:flex-row gap-4 p-4 overflow-hidden">
                     {/* Preview */}
-                    <div className="w-full md:w-1/2 bg-white rounded-Nonecontrol shadow-inner border flex items-center justify-center p-4 relative">
+                    <div className="w-full md:w-1/2 bg-white rounded-control shadow-inner border flex items-center justify-center p-4 relative">
                         {isLoading ? <LoadingSpinner message="Generating..." /> : <img src={currentImageUrl} alt="Merchandise Preview" className="max-w-full max-h-full object-contain"/>}
                     </div>
 
@@ -155,21 +155,21 @@ const CustomizationModal: React.FC<{
                     <div className="w-full md:w-1/2 flex flex-col gap-4 overflow-y-auto pr-2">
                         <div>
                             <label className="text-body font-semibold text-ink-soft">AI Prompt</label>
-                            <textarea value={prompt} onChange={e => setPrompt(e.target.value)} rows={3} placeholder="e.g., a vintage, retro look with the logo on the left chest" className="mt-1 w-full p-2 border rounded-Nonecontrol"/>
+                            <textarea value={prompt} onChange={e => setPrompt(e.target.value)} rows={3} placeholder="e.g., a vintage, retro look with the logo on the left chest" className="mt-1 w-full p-2 border rounded-control"/>
                         </div>
                          <div>
                             <label className="text-body font-semibold text-ink-soft">QR Code (from URL)</label>
-                            <input type="url" value={qrUrl} onChange={e => setQrUrl(e.target.value)} placeholder="https://example.com" className="mt-1 w-full p-2 border rounded-Nonecontrol"/>
+                            <input type="url" value={qrUrl} onChange={e => setQrUrl(e.target.value)} placeholder="https://example.com" className="mt-1 w-full p-2 border rounded-control"/>
                         </div>
                         <div>
                              <label className="text-body font-semibold text-ink-soft">Upload Image</label>
                              <div className="mt-1 flex items-center gap-2">
-                                <button onClick={() => userImageInputRef.current?.click()} className="flex-1 bg-white border border-line text-ink font-semibold px-4 py-2 rounded-Nonecontrol text-body">Choose File</button>
+                                <button onClick={() => userImageInputRef.current?.click()} className="flex-1 bg-white border border-line text-ink font-semibold px-4 py-2 rounded-control text-body">Choose File</button>
                                 {userImage && <img src={userImage} alt="user upload" className="w-10 h-10 object-cover rounded"/>}
                              </div>
                              <input type="file" ref={userImageInputRef} onChange={handleUserImageUpload} accept="image/*" className="hidden"/>
                         </div>
-                        <button onClick={handleRegenerate} disabled={isLoading} className="w-full bg-info text-white font-bold py-3 px-4 rounded-Nonecontrol hover:bg-info-strong transition disabled:bg-slate-400 flex items-center justify-center gap-2">
+                        <button onClick={handleRegenerate} disabled={isLoading} className="w-full bg-info text-white font-bold py-3 px-4 rounded-control hover:bg-info-strong transition disabled:bg-slate-400 flex items-center justify-center gap-2">
                             {isLoading ? 'Generating...' : 'Regenerate Design'}
                         </button>
                         {error && <p className="text-body text-danger text-center">{error}</p>}
@@ -177,8 +177,8 @@ const CustomizationModal: React.FC<{
                 </main>
                 
                 <footer className="p-4 border-t border-line bg-white/50 flex flex-col sm:flex-row gap-2">
-                    <button onClick={() => onAddToCatalogue({ name: item.name, price: item.price, generatedImageUrl: currentImageUrl })} className="flex-1 bg-surface-sunken text-ink font-bold py-3 px-4 rounded-Nonecontrol">Add to Catalogue</button>
-                    <button onClick={() => onAddToCart(item, currentImageUrl)} className="flex-1 bg-info-strong text-white font-bold py-3 px-4 rounded-Nonecontrol">Add to Cart</button>
+                    <button onClick={() => onAddToCatalogue({ name: item.name, price: item.price, generatedImageUrl: currentImageUrl })} className="flex-1 bg-surface-sunken text-ink font-bold py-3 px-4 rounded-control">Add to Catalogue</button>
+                    <button onClick={() => onAddToCart(item, currentImageUrl)} className="flex-1 bg-info-strong text-white font-bold py-3 px-4 rounded-control">Add to Cart</button>
                 </footer>
             </div>
         </div>
@@ -195,7 +195,7 @@ const AddToCatalogueModal: React.FC<{
     const [price, setPrice] = useState('');
     return (
         <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 p-4" onClick={onClose}>
-            <div className="bg-white p-6 rounded-Nonecontrol shadow-xl w-full max-w-sm" onClick={e => e.stopPropagation()}>
+            <div className="bg-white p-6 rounded-control shadow-xl w-full max-w-sm" onClick={e => e.stopPropagation()}>
                 <h2 className="text-xl font-bold mb-2">Add to Your Catalogue</h2>
                 <p className="text-body text-ink-soft mb-4">Set a selling price for the "{brandName} {itemData.name}".</p>
                 <div className="relative">
@@ -205,14 +205,14 @@ const AddToCatalogueModal: React.FC<{
                         value={price}
                         onChange={e => setPrice(e.target.value)}
                         placeholder={`e.g., ${itemData.price + 300}`}
-                        className="w-full p-2 pl-10 border rounded-Nonecontrol"
+                        className="w-full p-2 pl-10 border rounded-control"
                         autoFocus
                     />
                 </div>
                 <p className="text-caption text-ink-soft mt-2">Base cost is Ksh {itemData.price}. You set the final price.</p>
                 <div className="flex gap-2 mt-4">
-                    <button onClick={onClose} className="flex-1 bg-surface-sunken text-ink font-bold py-2 rounded-Nonecontrol">Cancel</button>
-                    <button onClick={() => onConfirm(parseFloat(price))} disabled={!price || parseFloat(price) <= 0} className="flex-1 bg-success text-white font-bold py-2 rounded-Nonecontrol disabled:bg-gray-400">Confirm</button>
+                    <button onClick={onClose} className="flex-1 bg-surface-sunken text-ink font-bold py-2 rounded-control">Cancel</button>
+                    <button onClick={() => onConfirm(parseFloat(price))} disabled={!price || parseFloat(price) <= 0} className="flex-1 bg-success text-white font-bold py-2 rounded-control disabled:bg-gray-400">Confirm</button>
                 </div>
             </div>
         </div>
@@ -232,7 +232,7 @@ const MerchCard: React.FC<{
     template: MerchTemplate;
     onClick: () => void;
 }> = ({ template, onClick }) => (
-    <div onClick={onClick} className="bg-white rounded-Nonecard shadow-sm group cursor-pointer hover:shadow-lg transition-shadow duration-300">
+    <div onClick={onClick} className="bg-white rounded-card shadow-sm group cursor-pointer hover:shadow-lg transition-shadow duration-300">
         <div className="relative aspect-square overflow-hidden rounded-t-card bg-surface-sunken flex items-center justify-center p-4">
             <img src={template.imageUrl} alt={template.name} className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform"/>
         </div>
@@ -305,29 +305,29 @@ const BrandKitView: React.FC<BrandKitViewProps> = ({ assets, currentUser, onSave
             <div className="p-4 bg-surface-muted min-h-full">
                 <h1 className="text-3xl font-bold text-ink mb-2">Set Up Your Brand Kit</h1>
                 <p className="text-ink-soft mb-6">Provide your branding details to generate merchandise mockups.</p>
-                <div className="bg-white p-6 rounded-Nonecard shadow-sm space-y-6">
+                <div className="bg-white p-6 rounded-card shadow-sm space-y-6">
                     <div>
                        <label className="block text-body font-medium text-ink mb-2">Company Logo</label>
                        <div className="flex items-center gap-4">
-                           <div className="w-24 h-24 border border-line rounded-Nonecontrol flex items-center justify-center bg-surface-muted overflow-hidden">
+                           <div className="w-24 h-24 border border-line rounded-control flex items-center justify-center bg-surface-muted overflow-hidden">
                                 {logo ? <img src={logo} alt="logo" className="h-full w-full object-contain"/> : <span className="text-caption text-ink-soft text-center">Upload Logo</span>}
                            </div>
-                           <button onClick={() => logoInputRef.current?.click()} className="bg-surface-sunken text-ink font-bold px-4 py-2 rounded-Nonecontrol text-body">Upload</button>
+                           <button onClick={() => logoInputRef.current?.click()} className="bg-surface-sunken text-ink font-bold px-4 py-2 rounded-control text-body">Upload</button>
                            <input type="file" ref={logoInputRef} onChange={handleLogoUpload} accept="image/*" className="hidden"/>
                        </div>
                    </div>
 
                     <div>
                        <label htmlFor="companyName" className="block text-body font-medium text-ink">Company Name</label>
-                       <input id="companyName" type="text" value={name} onChange={e => setName(e.target.value)} className="mt-1 block w-full px-3 py-2 border border-line rounded-Nonecontrol shadow-sm focus:outline-none focus:ring-blue-500 focus:border-info sm:text-body"/>
+                       <input id="companyName" type="text" value={name} onChange={e => setName(e.target.value)} className="mt-1 block w-full px-3 py-2 border border-line rounded-control shadow-sm focus:outline-none focus:ring-blue-500 focus:border-info sm:text-body"/>
                    </div>
                    
                    <div>
                        <label htmlFor="companyAddress" className="block text-body font-medium text-ink">Company Address</label>
-                       <input id="companyAddress" type="text" value={address} onChange={e => setAddress(e.target.value)} className="mt-1 block w-full px-3 py-2 border border-line rounded-Nonecontrol shadow-sm focus:outline-none focus:ring-blue-500 focus:border-info sm:text-body"/>
+                       <input id="companyAddress" type="text" value={address} onChange={e => setAddress(e.target.value)} className="mt-1 block w-full px-3 py-2 border border-line rounded-control shadow-sm focus:outline-none focus:ring-blue-500 focus:border-info sm:text-body"/>
                    </div>
 
-                   <button onClick={handleSaveSetup} className="w-full bg-info-strong text-white font-bold py-3 px-4 rounded-Nonecontrol hover:bg-slate-800 transition-colors">
+                   <button onClick={handleSaveSetup} className="w-full bg-info-strong text-white font-bold py-3 px-4 rounded-control hover:bg-slate-800 transition-colors">
                        Save & View Merch
                    </button>
                 </div>
@@ -355,7 +355,7 @@ const BrandKitView: React.FC<BrandKitViewProps> = ({ assets, currentUser, onSave
             
             {showCart && (
                  <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 p-4" onClick={() => setShowCart(false)}>
-                    <div className="bg-white p-6 rounded-Nonecontrol shadow-xl w-full max-w-sm" onClick={e => e.stopPropagation()}>
+                    <div className="bg-white p-6 rounded-control shadow-xl w-full max-w-sm" onClick={e => e.stopPropagation()}>
                         <h2 className="text-xl font-bold mb-4">Your Order</h2>
                         <div className="space-y-3 max-h-64 overflow-y-auto pr-2">
                            {cart.map(({item, quantity, generatedImageUrl}, index) => (
@@ -376,8 +376,8 @@ const BrandKitView: React.FC<BrandKitViewProps> = ({ assets, currentUser, onSave
                         </div>
                         <p className="text-caption text-ink-soft mt-2">This is a quote request. Our team will contact you to finalize the order and payment.</p>
                         <div className="flex gap-2 mt-4">
-                            <button onClick={() => setShowCart(false)} className="flex-1 bg-surface-sunken text-ink font-bold py-2 rounded-Nonecontrol">Close</button>
-                            <button onClick={handlePlaceOrder} disabled={cart.length === 0} className="flex-1 bg-success text-white font-bold py-2 rounded-Nonecontrol disabled:bg-slate-400">Request Quote</button>
+                            <button onClick={() => setShowCart(false)} className="flex-1 bg-surface-sunken text-ink font-bold py-2 rounded-control">Close</button>
+                            <button onClick={handlePlaceOrder} disabled={cart.length === 0} className="flex-1 bg-success text-white font-bold py-2 rounded-control disabled:bg-slate-400">Request Quote</button>
                         </div>
                     </div>
                 </div>

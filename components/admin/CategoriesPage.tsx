@@ -18,7 +18,7 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ categories, onAddCatego
     };
 
     return (
-        <div className="bg-white rounded-Nonecontrol shadow-sm p-4 max-w-md mx-auto">
+        <div className="bg-white rounded-control shadow-sm p-4 max-w-md mx-auto">
             <h2 className="text-lg font-bold text-ink mb-4">Manage Categories</h2>
                 <form onSubmit={handleAddCategory} className="flex mb-4">
                 <input type="text" value={newCategory} onChange={(e) => setNewCategory(e.target.value)} placeholder="New category name..." className="flex-grow border rounded-l px-2 py-2 text-body border-line focus:ring-brand-primary focus:border-brand-primary"/>

@@ -50,7 +50,7 @@ const CreateProductPostView: React.FC<CreateProductPostViewProps> = ({ onBack, o
         });
     };
     
-    const inputClass = "w-full p-3 border rounded-Nonecontrol bg-surface-sunken focus:bg-white focus:ring-2 focus:ring-brand-gold focus:outline-none transition";
+    const inputClass = "w-full p-3 border rounded-control bg-surface-sunken focus:bg-white focus:ring-2 focus:ring-brand-gold focus:outline-none transition";
 
     return (
         <div className="w-full max-w-sm mx-auto h-screen bg-surface-muted flex flex-col font-sans">
@@ -67,12 +67,12 @@ const CreateProductPostView: React.FC<CreateProductPostViewProps> = ({ onBack, o
                     <div className="grid grid-cols-3 gap-2">
                         {imagePreviews.map((src, index) => (
                             <div key={index} className="relative aspect-square">
-                                <img src={src} className="w-full h-full object-cover rounded-Nonecontrol" alt={`preview ${index}`}/>
+                                <img src={src} className="w-full h-full object-cover rounded-control" alt={`preview ${index}`}/>
                                 <button type="button" onClick={() => removeImage(index)} className="absolute top-1 right-1 bg-black/50 text-white rounded-full w-5 h-5 flex items-center justify-center text-caption font-mono leading-none">&times;</button>
                             </div>
                         ))}
                         {imagePreviews.length < maxImages && (
-                            <button type="button" onClick={() => fileInputRef.current?.click()} className="aspect-square border-2 border-dashed rounded-Nonecontrol flex items-center justify-center text-ink-faint hover:bg-surface-sunken transition-colors">
+                            <button type="button" onClick={() => fileInputRef.current?.click()} className="aspect-square border-2 border-dashed rounded-control flex items-center justify-center text-ink-faint hover:bg-surface-sunken transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                             </button>
                         )}
@@ -89,7 +89,7 @@ const CreateProductPostView: React.FC<CreateProductPostViewProps> = ({ onBack, o
                 
                 <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Product Description" rows={5} className={inputClass} required/>
 
-                <div className="p-3 bg-surface-sunken rounded-Nonecontrol">
+                <div className="p-3 bg-surface-sunken rounded-control">
                     <h3 className="font-semibold text-ink text-body mb-2">Item Verification</h3>
                     <input value={serialNumber} onChange={e => setSerialNumber(e.target.value)} type="text" placeholder="Serial Number / IMEI (Optional)" className={`${inputClass} bg-white`} />
                     <label className="flex items-center gap-3 mt-3 cursor-pointer">
@@ -100,7 +100,7 @@ const CreateProductPostView: React.FC<CreateProductPostViewProps> = ({ onBack, o
             </form>
             
             <footer className="p-4 bg-white border-t">
-                <button onClick={handleSubmit} className="w-full bg-brand-navy text-white font-bold py-4 px-4 rounded-Nonecard hover:opacity-90 transition-colors shadow-lg active-scale">
+                <button onClick={handleSubmit} className="w-full bg-brand-navy text-white font-bold py-4 px-4 rounded-card hover:opacity-90 transition-colors shadow-lg active-scale">
                     Save Product
                 </button>
             </footer>

@@ -39,7 +39,7 @@ const StoryRing: React.FC<{ label: string, isActive: boolean, image: string, onC
 );
 
 const EventBanner: React.FC<{ event: RestaurantEvent, onReserve: (e: RestaurantEvent) => void, isOwner?: boolean, onDelete?: (id: string) => void }> = ({ event, onReserve, isOwner, onDelete }) => (
-    <div className="w-full max-w-md mx-auto bg-white rounded-Nonecard shadow-lg overflow-hidden relative group flex-shrink-0 border border-line transform transition hover:-translate-y-1">
+    <div className="w-full max-w-md mx-auto bg-white rounded-card shadow-lg overflow-hidden relative group flex-shrink-0 border border-line transform transition hover:-translate-y-1">
         <div className="relative h-56">
             <img src={event.imageUrl} alt={event.title} className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
@@ -68,7 +68,7 @@ const EventBanner: React.FC<{ event: RestaurantEvent, onReserve: (e: RestaurantE
                             <div>{new Date(event.date).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric'})}</div>
                          </div>
                     </div>
-                    <button onClick={() => onReserve(event)} className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold text-caption px-4 py-3 rounded-Nonecard shadow-lg active:scale-95 transition-all flex items-center gap-2 flex-shrink-0">
+                    <button onClick={() => onReserve(event)} className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold text-caption px-4 py-3 rounded-card shadow-lg active:scale-95 transition-all flex items-center gap-2 flex-shrink-0">
                         <WhatsAppIcon />
                         <span>Reserve</span>
                     </button>
@@ -89,7 +89,7 @@ const InfiniteSlider: React.FC<{ items: MenuItem[], onSelect: (item: MenuItem) =
                     <div 
                         key={`${item.id}-${index}`} 
                         onClick={() => onSelect(item)}
-                        className="w-48 h-40 bg-white rounded-Nonecard shadow-md flex-shrink-0 overflow-hidden relative cursor-pointer group/card hover:shadow-lg transition-all"
+                        className="w-48 h-40 bg-white rounded-card shadow-md flex-shrink-0 overflow-hidden relative cursor-pointer group/card hover:shadow-lg transition-all"
                     >
                         <img src={item.images[0]} alt={item.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent p-3 flex flex-col justify-end">
@@ -114,13 +114,13 @@ const InfiniteSlider: React.FC<{ items: MenuItem[], onSelect: (item: MenuItem) =
 };
 
 const BundleCard: React.FC<{ bundle: MenuBundle, onAdd: () => void, onClick: () => void }> = ({ bundle, onAdd, onClick }) => (
-    <div onClick={onClick} className="w-72 flex-shrink-0 bg-white rounded-Nonecard shadow-[0_4px_15px_rgba(0,0,0,0.05)] overflow-hidden border border-line relative group hover:shadow-lg transition-all cursor-pointer">
+    <div onClick={onClick} className="w-72 flex-shrink-0 bg-white rounded-card shadow-[0_4px_15px_rgba(0,0,0,0.05)] overflow-hidden border border-line relative group hover:shadow-lg transition-all cursor-pointer">
         <div className="h-44 relative overflow-hidden">
             <img src={bundle.imageUrl} alt={bundle.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-             <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-brand-navy text-[10px] font-bold px-2 py-1 rounded-Nonecontrol flex items-center gap-1 shadow-sm">
+             <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-brand-navy text-[10px] font-bold px-2 py-1 rounded-control flex items-center gap-1 shadow-sm">
                 <ClockIcon /> {bundle.availableTime}
             </div>
-            <div className="absolute bottom-3 right-3 bg-brand-navy text-white text-caption font-bold px-2.5 py-1 rounded-Nonecontrol shadow-lg">
+            <div className="absolute bottom-3 right-3 bg-brand-navy text-white text-caption font-bold px-2.5 py-1 rounded-control shadow-lg">
                 -{Math.round(((bundle.originalPrice - bundle.price) / bundle.originalPrice) * 100)}% OFF
             </div>
         </div>
@@ -132,7 +132,7 @@ const BundleCard: React.FC<{ bundle: MenuBundle, onAdd: () => void, onClick: () 
             
             <div className="flex flex-wrap gap-1.5 mb-4">
                 {bundle.items.slice(0, 3).map((i, idx) => (
-                    <span key={idx} className="text-[10px] bg-surface-sunken text-ink-soft px-2 py-1 rounded-Nonecontrol font-medium">{i}</span>
+                    <span key={idx} className="text-[10px] bg-surface-sunken text-ink-soft px-2 py-1 rounded-control font-medium">{i}</span>
                 ))}
                 {bundle.items.length > 3 && <span className="text-[10px] text-ink-faint px-1 py-1">+{bundle.items.length - 3} more</span>}
             </div>
@@ -151,8 +151,8 @@ const BundleCard: React.FC<{ bundle: MenuBundle, onAdd: () => void, onClick: () 
 );
 
 const MenuItemCard: React.FC<{ item: MenuItem, onAdd: () => void, onClick: () => void }> = ({ item, onAdd, onClick }) => (
-    <div onClick={onClick} className="flex gap-4 bg-white p-3 rounded-Nonecard shadow-sm border border-line mb-3 hover:shadow-md transition-all cursor-pointer">
-        <div className="w-28 h-28 rounded-Nonecontrol overflow-hidden bg-surface-sunken flex-shrink-0 relative">
+    <div onClick={onClick} className="flex gap-4 bg-white p-3 rounded-card shadow-sm border border-line mb-3 hover:shadow-md transition-all cursor-pointer">
+        <div className="w-28 h-28 rounded-control overflow-hidden bg-surface-sunken flex-shrink-0 relative">
              <img src={item.images[0]} alt={item.name} className="w-full h-full object-cover" />
              {item.isVegetarian && <div className="absolute top-1 left-1 bg-success w-2 h-2 rounded-full shadow-sm ring-1 ring-white" title="Vegetarian"></div>}
              {item.isSpicy && <div className="absolute top-1 left-1 bg-danger w-2 h-2 rounded-full shadow-sm ring-1 ring-white" title="Spicy"></div>}
@@ -186,23 +186,23 @@ const AddEventModal: React.FC<{ onClose: () => void, onSave: (event: Omit<Restau
 
     return (
         <div className="fixed inset-0 bg-black/70 z-[60] flex items-center justify-center p-4 backdrop-blur-sm" onClick={onClose}>
-            <div className="bg-white rounded-Nonecard w-full max-w-md p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="bg-white rounded-card w-full max-w-md p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
                 <h2 className="text-xl font-bold mb-4 text-brand-navy">Create New Event</h2>
                 <form onSubmit={handleSubmit} className="space-y-3 max-h-[70vh] overflow-y-auto pr-2 no-scrollbar">
-                    <input placeholder="Event Title" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full p-3 border rounded-Nonecontrol focus:ring-2 focus:ring-brand-gold outline-none" required />
-                    <textarea placeholder="Description" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full p-3 border rounded-Nonecontrol focus:ring-2 focus:ring-brand-gold outline-none" />
-                    <input placeholder="Image URL" value={formData.imageUrl} onChange={e => setFormData({...formData, imageUrl: e.target.value})} className="w-full p-3 border rounded-Nonecontrol focus:ring-2 focus:ring-brand-gold outline-none" required />
+                    <input placeholder="Event Title" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full p-3 border rounded-control focus:ring-2 focus:ring-brand-gold outline-none" required />
+                    <textarea placeholder="Description" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full p-3 border rounded-control focus:ring-2 focus:ring-brand-gold outline-none" />
+                    <input placeholder="Image URL" value={formData.imageUrl} onChange={e => setFormData({...formData, imageUrl: e.target.value})} className="w-full p-3 border rounded-control focus:ring-2 focus:ring-brand-gold outline-none" required />
                     <div className="grid grid-cols-2 gap-3">
-                        <input type="date" value={formData.date} onChange={e => setFormData({...formData, date: e.target.value})} className="w-full p-3 border rounded-Nonecontrol focus:ring-2 focus:ring-brand-gold outline-none" required />
-                        <input type="number" placeholder="Price (Ksh)" value={formData.price || ''} onChange={e => setFormData({...formData, price: parseFloat(e.target.value)})} className="w-full p-3 border rounded-Nonecontrol focus:ring-2 focus:ring-brand-gold outline-none" required />
+                        <input type="date" value={formData.date} onChange={e => setFormData({...formData, date: e.target.value})} className="w-full p-3 border rounded-control focus:ring-2 focus:ring-brand-gold outline-none" required />
+                        <input type="number" placeholder="Price (Ksh)" value={formData.price || ''} onChange={e => setFormData({...formData, price: parseFloat(e.target.value)})} className="w-full p-3 border rounded-control focus:ring-2 focus:ring-brand-gold outline-none" required />
                     </div>
                     <div className="grid grid-cols-2 gap-3">
-                        <input type="time" value={formData.startTime} onChange={e => setFormData({...formData, startTime: e.target.value})} className="w-full p-3 border rounded-Nonecontrol focus:ring-2 focus:ring-brand-gold outline-none" required />
-                        <input type="time" value={formData.endTime} onChange={e => setFormData({...formData, endTime: e.target.value})} className="w-full p-3 border rounded-Nonecontrol focus:ring-2 focus:ring-brand-gold outline-none" required />
+                        <input type="time" value={formData.startTime} onChange={e => setFormData({...formData, startTime: e.target.value})} className="w-full p-3 border rounded-control focus:ring-2 focus:ring-brand-gold outline-none" required />
+                        <input type="time" value={formData.endTime} onChange={e => setFormData({...formData, endTime: e.target.value})} className="w-full p-3 border rounded-control focus:ring-2 focus:ring-brand-gold outline-none" required />
                     </div>
-                     <input type="number" placeholder="Total Seats" value={formData.totalSeats || ''} onChange={e => setFormData({...formData, totalSeats: parseInt(e.target.value)})} className="w-full p-3 border rounded-Nonecontrol focus:ring-2 focus:ring-brand-gold outline-none" required />
+                     <input type="number" placeholder="Total Seats" value={formData.totalSeats || ''} onChange={e => setFormData({...formData, totalSeats: parseInt(e.target.value)})} className="w-full p-3 border rounded-control focus:ring-2 focus:ring-brand-gold outline-none" required />
                     
-                    <button type="submit" className="w-full bg-brand-navy text-white font-bold py-3 rounded-Nonecontrol mt-4 hover:bg-black transition">Publish Event</button>
+                    <button type="submit" className="w-full bg-brand-navy text-white font-bold py-3 rounded-control mt-4 hover:bg-black transition">Publish Event</button>
                 </form>
             </div>
         </div>
@@ -272,15 +272,15 @@ const FoodDetailModal: React.FC<{
                     </div>
                     <div className="flex flex-wrap gap-2 mb-4">
                         {isBundle ? (
-                            <span className="bg-brand-gold/10 text-brand-gold text-caption font-bold px-2 py-1 rounded-Nonecontrol uppercase tracking-wide">Bundle Deal</span>
+                            <span className="bg-brand-gold/10 text-brand-gold text-caption font-bold px-2 py-1 rounded-control uppercase tracking-wide">Bundle Deal</span>
                         ) : (
-                            <span className="bg-surface-sunken text-ink-soft text-caption font-bold px-2 py-1 rounded-Nonecontrol uppercase tracking-wide">{(item as MenuItem).category}</span>
+                            <span className="bg-surface-sunken text-ink-soft text-caption font-bold px-2 py-1 rounded-control uppercase tracking-wide">{(item as MenuItem).category}</span>
                         )}
                         {'isVegetarian' in item && item.isVegetarian && (
-                            <span className="bg-success-soft text-success-strong text-caption font-bold px-2 py-1 rounded-Nonecontrol uppercase tracking-wide">Veg</span>
+                            <span className="bg-success-soft text-success-strong text-caption font-bold px-2 py-1 rounded-control uppercase tracking-wide">Veg</span>
                         )}
                         {'isSpicy' in item && item.isSpicy && (
-                            <span className="bg-danger-soft text-danger text-caption font-bold px-2 py-1 rounded-Nonecontrol uppercase tracking-wide">Spicy</span>
+                            <span className="bg-danger-soft text-danger text-caption font-bold px-2 py-1 rounded-control uppercase tracking-wide">Spicy</span>
                         )}
                     </div>
                     <div className="space-y-4">
@@ -288,7 +288,7 @@ const FoodDetailModal: React.FC<{
                             {item.description}
                         </p>
                         {isBundle && (
-                            <div className="bg-surface-muted p-4 rounded-Nonecontrol border border-line">
+                            <div className="bg-surface-muted p-4 rounded-control border border-line">
                                 <h4 className="font-bold text-ink text-body mb-2">Includes:</h4>
                                 <ul className="list-disc list-inside text-body text-ink-soft space-y-1">
                                     {(item as MenuBundle).items.map((i, idx) => (
@@ -301,24 +301,24 @@ const FoodDetailModal: React.FC<{
                 </div>
                 <div className="p-4 border-t border-line bg-white pb-8">
                     <div className="flex items-center gap-4">
-                        <div className="flex items-center bg-surface-sunken rounded-Nonecontrol p-1">
+                        <div className="flex items-center bg-surface-sunken rounded-control p-1">
                             <button 
                                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                className="w-10 h-10 flex items-center justify-center text-ink-soft hover:bg-white rounded-Nonecontrol transition shadow-sm"
+                                className="w-10 h-10 flex items-center justify-center text-ink-soft hover:bg-white rounded-control transition shadow-sm"
                             >
                                 <MinusIcon />
                             </button>
                             <span className="w-10 text-center font-bold text-lg">{quantity}</span>
                             <button 
                                 onClick={() => setQuantity(quantity + 1)}
-                                className="w-10 h-10 flex items-center justify-center text-ink-soft hover:bg-white rounded-Nonecontrol transition shadow-sm"
+                                className="w-10 h-10 flex items-center justify-center text-ink-soft hover:bg-white rounded-control transition shadow-sm"
                             >
                                 <PlusIcon />
                             </button>
                         </div>
                         <button 
                             onClick={() => onAdd(quantity)}
-                            className="flex-1 bg-brand-navy text-white font-bold text-lg py-3.5 px-4 rounded-Nonecard shadow-lg hover:bg-gray-800 transition active:scale-95 flex justify-between items-center"
+                            className="flex-1 bg-brand-navy text-white font-bold text-lg py-3.5 px-4 rounded-card shadow-lg hover:bg-gray-800 transition active:scale-95 flex justify-between items-center"
                         >
                             <span>Add to Order</span>
                             <span>Ksh {(item.price * quantity).toLocaleString()}</span>
@@ -465,7 +465,7 @@ const RestaurantMenuModal: React.FC<RestaurantMenuModalProps> = ({ provider, onC
                         <p className="text-[10px] text-ink-soft uppercase tracking-widest font-bold">Menu & Reservations</p>
                     </div>
                     {isOwner ? (
-                        <button onClick={() => setShowAddEvent(true)} className="bg-brand-navy text-white text-caption font-bold px-3 py-2 rounded-Nonecontrol flex items-center gap-1 hover:bg-black transition">
+                        <button onClick={() => setShowAddEvent(true)} className="bg-brand-navy text-white text-caption font-bold px-3 py-2 rounded-control flex items-center gap-1 hover:bg-black transition">
                             <PlusIcon /> Event
                         </button>
                     ) : (
@@ -555,7 +555,7 @@ const RestaurantMenuModal: React.FC<RestaurantMenuModalProps> = ({ provider, onC
 
              {cart.length > 0 && (
                 <div className="absolute bottom-6 left-4 right-4 z-40 animate-slide-in-up">
-                    <div className={`bg-brand-navy text-white rounded-Nonecard shadow-2xl overflow-hidden transition-all duration-300 ${showCart ? 'max-h-[500px]' : 'max-h-20'}`}>
+                    <div className={`bg-brand-navy text-white rounded-card shadow-2xl overflow-hidden transition-all duration-300 ${showCart ? 'max-h-[500px]' : 'max-h-20'}`}>
                         <div 
                             className="p-4 flex justify-between items-center cursor-pointer hover:bg-black/20 transition"
                             onClick={() => setShowCart(!showCart)}
@@ -570,7 +570,7 @@ const RestaurantMenuModal: React.FC<RestaurantMenuModalProps> = ({ provider, onC
                                 </div>
                             </div>
                             <button 
-                                className="bg-[#25D366] text-white font-bold py-2.5 px-6 rounded-Nonecard shadow-lg hover:bg-[#128C7E] active:scale-95 transition-transform flex items-center gap-2" 
+                                className="bg-[#25D366] text-white font-bold py-2.5 px-6 rounded-card shadow-lg hover:bg-[#128C7E] active:scale-95 transition-transform flex items-center gap-2" 
                                 onClick={(e) => { e.stopPropagation(); handleCheckout(); }}
                             >
                                 <WhatsAppIcon /> Checkout
@@ -590,7 +590,7 @@ const RestaurantMenuModal: React.FC<RestaurantMenuModalProps> = ({ provider, onC
                                                 </p>
                                                 <p className="text-caption text-gray-300">Ksh {item.price}</p>
                                             </div>
-                                            <div className="flex items-center gap-3 bg-black/30 rounded-Nonecontrol p-1">
+                                            <div className="flex items-center gap-3 bg-black/30 rounded-control p-1">
                                                 <button onClick={() => removeFromCart(idx)} className="w-7 h-7 flex items-center justify-center text-white hover:bg-white/20 rounded transition"><MinusIcon /></button>
                                                 <span className="text-body font-bold w-4 text-center">{cartItem.quantity}</span>
                                                 <button onClick={() => addToCart(item, isBundle)} className="w-7 h-7 flex items-center justify-center text-white hover:bg-white/20 rounded transition"><PlusIcon /></button>

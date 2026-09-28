@@ -28,7 +28,7 @@ const RealEstateCard: React.FC<{ unit: UnitKey, onClick: () => void }> = ({ unit
     const isShortStay = unit.listingType === 'ShortStay';
     
     return (
-        <div onClick={onClick} className="bg-white rounded-Nonecard shadow-sm border border-line overflow-hidden flex flex-col group hover:shadow-md transition-all cursor-pointer">
+        <div onClick={onClick} className="bg-white rounded-card shadow-sm border border-line overflow-hidden flex flex-col group hover:shadow-md transition-all cursor-pointer">
             <div className="relative h-48 bg-surface-sunken">
                 <img 
                     src={unit.images?.[0] || 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800'} 
@@ -73,13 +73,13 @@ const RealEstateCard: React.FC<{ unit: UnitKey, onClick: () => void }> = ({ unit
                 
                 <div className="flex flex-wrap gap-1">
                     {unit.amenities?.slice(0, 2).map((am, i) => (
-                        <span key={i} className="text-[10px] bg-info-soft text-info-strong px-2 py-1 rounded-Nonecontrol border border-info-soft">{am}</span>
+                        <span key={i} className="text-[10px] bg-info-soft text-info-strong px-2 py-1 rounded-control border border-info-soft">{am}</span>
                     ))}
                     {(unit.amenities?.length || 0) > 2 && <span className="text-[10px] text-ink-faint px-1 py-1">+{unit.amenities!.length - 2} more</span>}
                 </div>
                 
                 <div className="mt-auto pt-3 flex gap-2">
-                    <button className="flex-1 py-2 bg-surface-muted text-brand-navy font-bold text-caption rounded-Nonecontrol hover:bg-surface-sunken transition-colors border border-line">
+                    <button className="flex-1 py-2 bg-surface-muted text-brand-navy font-bold text-caption rounded-control hover:bg-surface-sunken transition-colors border border-line">
                         View Details
                     </button>
                 </div>
@@ -224,21 +224,21 @@ const PremisePublicView: React.FC<PremisePublicViewProps> = ({ premise, tenants,
 
                 {isEditing && (
                     <div className="absolute top-4 right-4 flex gap-2 z-20">
-                        <button onClick={handleCancel} className="bg-danger/80 backdrop-blur-md px-3 py-1.5 rounded-Nonecontrol text-white text-caption font-bold hover:bg-danger">Cancel</button>
-                        <button onClick={handleSave} className="bg-success/80 backdrop-blur-md px-3 py-1.5 rounded-Nonecontrol text-white text-caption font-bold hover:bg-success">Save</button>
+                        <button onClick={handleCancel} className="bg-danger/80 backdrop-blur-md px-3 py-1.5 rounded-control text-white text-caption font-bold hover:bg-danger">Cancel</button>
+                        <button onClick={handleSave} className="bg-success/80 backdrop-blur-md px-3 py-1.5 rounded-control text-white text-caption font-bold hover:bg-success">Save</button>
                     </div>
                 )}
 
                 <div className="absolute bottom-0 left-0 right-0 p-6 z-10 text-center flex flex-col items-center pointer-events-none">
-                     <div className="relative w-20 h-20 bg-white rounded-Nonecard shadow-xl p-1 mb-4 group/logo pointer-events-auto transform translate-y-2">
+                     <div className="relative w-20 h-20 bg-white rounded-card shadow-xl p-1 mb-4 group/logo pointer-events-auto transform translate-y-2">
                         <img 
                             src={isEditing ? editData.logoUrl : (premise.logoUrl || 'https://via.placeholder.com/150')} 
-                            className="w-full h-full object-contain rounded-Nonecontrol" 
+                            className="w-full h-full object-contain rounded-control" 
                         />
                         {isEditing && (
                             <button 
                                 onClick={() => logoInputRef.current?.click()}
-                                className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-Nonecontrol opacity-0 group-hover/logo:opacity-100 transition-opacity cursor-pointer"
+                                className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-control opacity-0 group-hover/logo:opacity-100 transition-opacity cursor-pointer"
                             >
                                 <CameraIcon />
                             </button>
@@ -301,13 +301,13 @@ const PremisePublicView: React.FC<PremisePublicViewProps> = ({ premise, tenants,
                                 placeholder="Search businesses..." 
                                 value={searchQuery}
                                 onChange={e => setSearchQuery(e.target.value)}
-                                className="w-full p-3 pl-10 bg-white border border-line rounded-Nonecard shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-gold text-body"
+                                className="w-full p-3 pl-10 bg-white border border-line rounded-card shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-gold text-body"
                             />
                             <div className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-faint">
                                 <SearchIcon />
                             </div>
                         </div>
-                        <div className="bg-white rounded-Nonecard shadow-sm border border-line overflow-hidden divide-y divide-gray-100">
+                        <div className="bg-white rounded-card shadow-sm border border-line overflow-hidden divide-y divide-gray-100">
                             {filteredTenants.length > 0 ? (
                                 filteredTenants.map(tenant => (
                                     <DirectoryItem 
@@ -330,7 +330,7 @@ const PremisePublicView: React.FC<PremisePublicViewProps> = ({ premise, tenants,
                         
                         {/* About Section (Residential Only) */}
                         {isResidential && (
-                             <div className="bg-white p-6 rounded-Nonecard shadow-sm border border-line">
+                             <div className="bg-white p-6 rounded-card shadow-sm border border-line">
                                 <h3 className="font-bold text-ink text-lg mb-3">About this Residence</h3>
                                 <p className="text-body text-ink-soft leading-relaxed mb-4">{premise.about}</p>
                                 
@@ -348,7 +348,7 @@ const PremisePublicView: React.FC<PremisePublicViewProps> = ({ premise, tenants,
 
                         {/* Notice Board Preview */}
                         {premise.noticeBoard && premise.noticeBoard.length > 0 && (
-                            <div className="bg-info-soft border border-info-soft p-4 rounded-Nonecontrol">
+                            <div className="bg-info-soft border border-info-soft p-4 rounded-control">
                                 <h3 className="text-caption font-bold text-info-strong uppercase mb-2">Latest Notice</h3>
                                 <p className="font-bold text-ink text-body">{premise.noticeBoard[0].title}</p>
                                 <p className="text-caption text-ink-soft mt-1 line-clamp-2">{premise.noticeBoard[0].content}</p>
@@ -362,7 +362,7 @@ const PremisePublicView: React.FC<PremisePublicViewProps> = ({ premise, tenants,
                                     <h3 className="font-bold text-ink text-xl">Available Units</h3>
                                     <p className="text-caption text-ink-soft mt-1">Find your next home here</p>
                                 </div>
-                                <span className="bg-brand-navy text-white text-caption font-bold px-2.5 py-1 rounded-Nonecontrol">{vacancies.length}</span>
+                                <span className="bg-brand-navy text-white text-caption font-bold px-2.5 py-1 rounded-control">{vacancies.length}</span>
                             </div>
                             
                             {vacancies.length > 0 ? (
@@ -376,24 +376,24 @@ const PremisePublicView: React.FC<PremisePublicViewProps> = ({ premise, tenants,
                                     ))}
                                 </div>
                             ) : (
-                                <div className="text-center py-12 bg-white rounded-Nonecard border border-dashed border-line">
+                                <div className="text-center py-12 bg-white rounded-card border border-dashed border-line">
                                     <p className="text-ink-soft text-body font-medium">No units available at the moment.</p>
                                 </div>
                             )}
                         </div>
 
                         {/* Subscribe / Management CTA */}
-                        <div className="bg-gradient-to-br from-brand-navy to-gray-900 rounded-Nonecard p-8 text-center text-white shadow-lg relative overflow-hidden">
+                        <div className="bg-gradient-to-br from-brand-navy to-gray-900 rounded-card p-8 text-center text-white shadow-lg relative overflow-hidden">
                             <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
                             <div className="relative z-10">
                                 <h3 className="font-bold text-xl mb-2 font-serif">Stay Updated</h3>
                                 <p className="text-body text-gray-300 mb-6">Get notified instantly when new units become available or when management posts updates.</p>
                                 
                                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                                    <button onClick={handleNotify} className="bg-brand-gold text-brand-navy font-bold py-3 px-6 rounded-Nonecard shadow-md hover:bg-white transition active:scale-95 flex items-center justify-center gap-2">
+                                    <button onClick={handleNotify} className="bg-brand-gold text-brand-navy font-bold py-3 px-6 rounded-card shadow-md hover:bg-white transition active:scale-95 flex items-center justify-center gap-2">
                                         <BellIcon /> Subscribe
                                     </button>
-                                    <button onClick={handleContactManagement} className="bg-white/10 border border-white/30 text-white font-bold py-3 px-6 rounded-Nonecontrol hover:bg-white/20 transition active:scale-95">
+                                    <button onClick={handleContactManagement} className="bg-white/10 border border-white/30 text-white font-bold py-3 px-6 rounded-control hover:bg-white/20 transition active:scale-95">
                                         Contact Office
                                     </button>
                                 </div>
@@ -402,7 +402,7 @@ const PremisePublicView: React.FC<PremisePublicViewProps> = ({ premise, tenants,
 
                         {/* Management Contact Info (Edit Mode Only) */}
                         {isEditing && (
-                            <div className="bg-warning-soft rounded-Nonecontrol p-6 border border-warning-soft">
+                            <div className="bg-warning-soft rounded-control p-6 border border-warning-soft">
                                 <h3 className="font-bold text-warning-strong text-lg mb-2">Management Contact Info</h3>
                                 <label className="block text-caption font-bold text-ink-soft mb-1">Phone Number for Inquiries</label>
                                 <input 
