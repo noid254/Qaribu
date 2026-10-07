@@ -11,7 +11,7 @@ const serviceFilters = {
     HOME: {
         title: 'Home Services',
         subtitle: 'Plumbers, Electricians, Cleaners & more.',
-        bannerUrl: 'https://images.unsplash.com/photo-1581578731117-104f2a863726?q=80&w=800',
+        bannerUrl: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=800',
         children: ['All', 'Electrician', 'Plumber', 'Cleaner', 'Repair']
     },
     TRANSPORT: {
@@ -50,10 +50,11 @@ interface ServiceMarketplaceProps {
     onMessagesClick: () => void;
     hasNewMessages: boolean;
     onNavigate: (page: CurrentPage) => void;
+    initialCategory?: ParentCategory;
 }
 
-const ServiceMarketplace: React.FC<ServiceMarketplaceProps> = ({ providers, specialBanners, onSelectProvider, onBack, onMessagesClick, hasNewMessages }) => {
-    const [activeParent, setActiveParent] = useState<ParentCategory>('HOME');
+const ServiceMarketplace: React.FC<ServiceMarketplaceProps> = ({ providers, specialBanners, onSelectProvider, onBack, onMessagesClick, hasNewMessages, initialCategory = 'HOME' }) => {
+    const [activeParent, setActiveParent] = useState<ParentCategory>(initialCategory);
     const [activeChild, setActiveChild] = useState<string>('All');
     const [isSearchActive, setIsSearchActive] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');

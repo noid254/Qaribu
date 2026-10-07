@@ -346,7 +346,7 @@ const RestaurantMenuModal: React.FC<RestaurantMenuModalProps> = ({ provider, onC
     const getCategoryIcon = (cat: string) => {
         if (cat === 'Bundles') return bundles[0]?.imageUrl || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=200';
         const item = menu.find(i => i.category === cat);
-        return item?.images[0] || 'https://via.placeholder.com/150';
+        return item?.images[0] || 'https://placehold.co/150';
     };
 
     const handleScrollToCategory = (cat: string) => {
