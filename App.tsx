@@ -709,6 +709,10 @@ function App() {
             currentUser={currentUser}
             onNavigate={setCurrentPage}
             onSelectDocument={(doc) => { setSelectedDocument(doc); setCurrentPage('documentDetail'); }}
+            onRespondToTransfer={async (documentId, decision) => {
+              const updated = await api.finalizeAssetTransfer(documentId, decision);
+              setDocuments(prev => prev.map(d => d.id === updated.id ? updated : d));
+            }}
           />
         );
       case 'registerAsset':
@@ -719,7 +723,7 @@ function App() {
           />
         );
       case 'ownershipCheck':
-        return <OwnershipCheckView allDocuments={documents} />;
+        return <OwnershipCheckView allDocuments={documents} onBack={() => setCurrentPage('assetRegistry')} />;
       case 'brandKit':
         return (
           <BrandKitView

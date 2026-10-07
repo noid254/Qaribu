@@ -19,12 +19,16 @@ const SettingsIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-
 const LogoutIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>;
 const LoginIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" /></svg>;
 const AdminIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.286zm0 13.036h.008v.008h-.008v-.008z" /></svg>;
+// A verified/serialized item: shield with a check — for registered, ownable assets (phones, cameras, drones, bikes...).
+const AssetsIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z" /><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4" /></svg>;
 
+// Alphabetical by label, per how the menu is meant to read.
 const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose, onNavigate, currentUser, isSuperAdmin, onLogout }) => {
   const menuItems: { label: string; page: CurrentPage | 'profile'; icon: React.ReactNode }[] = [
-    { label: 'My Wallet', page: 'qaribu', icon: <WalletIcon /> },
+    { label: 'Assets', page: 'assetRegistry', icon: <AssetsIcon /> },
     { label: 'My Catalogue', page: 'mycatalogue', icon: <CatalogueIcon /> },
     { label: 'My Toolkit', page: 'mytoolkit', icon: <ToolboxIcon /> },
+    { label: 'My Wallet', page: 'qaribu', icon: <WalletIcon /> },
     { label: 'Settings', page: 'settings', icon: <SettingsIcon /> },
   ];
 
@@ -49,7 +53,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose, onNavigate, curren
       >
         {/* Logo Section */}
         <div className="p-4 text-center border-b border-white/10">
-            <img src="https://i.imgur.com/I5MaTM3.png" alt="Qaribu Logo" className="h-24 mx-auto" />
+            <img src="/logo.png" alt="Qaribu" className="h-20 mx-auto" />
         </div>
         
         {/* User Profile Section */}

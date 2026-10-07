@@ -278,6 +278,7 @@ export interface CatalogueItem {
   verifiedAssetId?: string; // Link to a verified asset in the Document DB
   serialNumber?: string;
   isVerified: boolean;
+  createdAt?: string; // When this listing was posted — drives "recent in the area" surfacing (e.g. the home banner highlights)
 }
 
 export interface SpecialBanner {

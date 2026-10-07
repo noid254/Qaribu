@@ -5,9 +5,10 @@ import LoadingSpinner from './LoadingSpinner';
 
 interface OwnershipCheckViewProps {
     allDocuments: Document[];
+    onBack?: () => void;
 }
 
-const OwnershipCheckView: React.FC<OwnershipCheckViewProps> = ({ allDocuments }) => {
+const OwnershipCheckView: React.FC<OwnershipCheckViewProps> = ({ allDocuments, onBack }) => {
     const [identifier, setIdentifier] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [result, setResult] = useState<Document | null | 'not_found'>(null);
@@ -31,7 +32,13 @@ const OwnershipCheckView: React.FC<OwnershipCheckViewProps> = ({ allDocuments })
 
     return (
         <div className="p-4 bg-surface-muted min-h-full">
-            <div className="bg-white p-4 rounded-card shadow-sm border">
+            {onBack && (
+                <button onClick={onBack} className="mb-3 flex items-center gap-1 text-body font-semibold text-ink-soft hover:text-ink">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+                    Back
+                </button>
+            )}
+            <div className="card p-4">
                 <h1 className="text-xl font-bold text-ink mb-2">Confirm Asset Ownership</h1>
                 <p className="text-body text-ink-soft mb-4">Enter an asset's serial number or vehicle registration plate to find its registered owner.</p>
                 
@@ -60,7 +67,7 @@ const OwnershipCheckView: React.FC<OwnershipCheckViewProps> = ({ allDocuments })
                             <p><strong>Item:</strong> {result.items?.[0]?.description || result.model}</p>
                             <p><strong>Identifier:</strong> {result.registrationNumber || result.items?.[0]?.serial}</p>
                             <p><strong>Registered Owner:</strong> {result.ownerPhone ? `****` + result.ownerPhone.slice(-4) : 'N/A'}</p>
-                             <p className="mt-3 text-caption text-ink-soft">Owner's full contact details are masked for privacy. This item is confirmed to be registered on the $KILL platform.</p>
+                             <p className="mt-3 text-caption text-ink-soft">Owner's full contact details are masked for privacy. This item is confirmed to be registered on Qaribu.</p>
                         </div>
                     </div>
                 )}
@@ -68,7 +75,7 @@ const OwnershipCheckView: React.FC<OwnershipCheckViewProps> = ({ allDocuments })
                 {result === 'not_found' && (
                     <div className="bg-white p-4 rounded-card shadow-md border-l-4 border-danger animate-fade-in">
                          <h3 className="font-bold text-lg text-danger-strong">Asset Not Found</h3>
-                         <p className="mt-2 text-body text-ink">No asset with this identifier is registered in the $KILL database. The item may be unregistered or the identifier is incorrect. Proceed with caution.</p>
+                         <p className="mt-2 text-body text-ink">No asset with this identifier is registered on Qaribu. The item may be unregistered or the identifier is incorrect. Proceed with caution.</p>
                     </div>
                 )}
             </div>

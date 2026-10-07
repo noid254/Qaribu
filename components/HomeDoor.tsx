@@ -36,7 +36,24 @@ const prefersReducedMotion = () =>
 const hiRes = (url: string, width = 1000) =>
     url.includes('images.unsplash.com') ? url.replace(/([?&])w=\d+/, `$1w=${width}`).replace(/q=\d+/, 'q=85') : url;
 
-type BannerFrame = { kind: 'wordmark' } | { kind: 'location'; area: string } | { kind: 'tagline' } | { kind: 'highlight'; provider: ServiceProvider };
+// A frame-4+ card, normalized from either a provider's own profile or one of their catalogue
+// listings — "featured products" per the brief means both: a service on someone's profile is just
+// as much a listing as a phone in their catalogue. `onOpen` is baked in per-item so the view stays
+// purely presentational.
+interface Highlight {
+    key: string;
+    kind: 'provider' | 'product';
+    image: string;
+    title: string;
+    subtitle: string;
+    location: string;
+    verified: boolean;
+    createdAt?: string;
+    ctaLabel: string;
+    onOpen: () => void;
+}
+
+type BannerFrame = { kind: 'wordmark' } | { kind: 'location'; area: string } | { kind: 'tagline' } | { kind: 'highlight'; item: Highlight };
 
 // The banner's opening sequence: logo+"Qaribu" -> logo+area -> logo+tagline -> an ongoing loop of
 // recent, nearby listings with no logo, full-bleed, one every 3s. Stops advancing (but keeps frame 1
@@ -50,7 +67,7 @@ const INTRO_MS = WORDMARK_MS + LOCATION_MS + TAGLINE_MS;
 // Derives the current frame from wall-clock elapsed time rather than chained timers, so a single
 // setInterval "tick" (at a much finer grain than any one frame) always lands on the mathematically
 // correct frame — it can't silently stall if a browser throttles timers on a backgrounded/inactive tab.
-function useBannerStages(area: string | undefined, highlights: ServiceProvider[]): BannerFrame {
+function useBannerStages(area: string | undefined, highlights: Highlight[]): BannerFrame {
     const [, forceTick] = useState(0);
     const startedAt = useRef(Date.now());
     const reduced = useRef(prefersReducedMotion()).current;
@@ -69,7 +86,7 @@ function useBannerStages(area: string | undefined, highlights: ServiceProvider[]
     if (elapsed < INTRO_MS) return { kind: 'tagline' };
     if (highlights.length === 0) return { kind: 'tagline' };
     const idx = Math.floor((elapsed - INTRO_MS) / HIGHLIGHT_MS) % highlights.length;
-    return { kind: 'highlight', provider: highlights[idx] };
+    return { kind: 'highlight', item: highlights[idx] };
 }
 
 interface HomeDoorProps {
@@ -107,18 +124,18 @@ const recency = (createdAt?: string): string | null => {
 
 // Frames 1-3 (logo present, white ground) and 4+ (no logo, full-bleed recent listing) of the banner's
 // opening sequence. Each frame owns its own fade/rise-in via a remounting `key`.
-const BannerStageView: React.FC<{ stage: BannerFrame; onSelect: (p: ServiceProvider) => void }> = ({ stage, onSelect }) => {
+const BannerStageView: React.FC<{ stage: BannerFrame }> = ({ stage }) => {
     if (stage.kind === 'highlight') {
-        const p = stage.provider;
-        const when = recency(p.createdAt);
+        const h = stage.item;
+        const when = recency(h.createdAt);
         return (
             <button
-                key={p.id}
-                onClick={() => onSelect(p)}
+                key={h.key}
+                onClick={h.onOpen}
                 className="rise-in group relative block h-64 w-full overflow-hidden rounded-hero text-left shadow-float"
             >
                 <img
-                    src={hiRes(p.coverImageUrl)}
+                    src={hiRes(h.image)}
                     alt=""
                     className="h-full w-full object-cover transition-transform duration-700 group-active:scale-105"
                     onError={e => { e.currentTarget.style.opacity = '0'; }}
@@ -126,19 +143,22 @@ const BannerStageView: React.FC<{ stage: BannerFrame; onSelect: (p: ServiceProvi
                 <div className="absolute inset-0 bg-gradient-to-t from-night via-night/25 to-transparent" />
                 <div className="absolute left-0 right-0 top-3 flex justify-between px-4">
                     {when && <span className="badge bg-white/90 text-brand-navy backdrop-blur">{when}</span>}
-                    {p.isVerified && (
-                        <span className="badge bg-night/70 text-chain backdrop-blur">
-                            <Ico d={I.shield} className="h-3 w-3" /> Verified
-                        </span>
-                    )}
+                    <div className="flex gap-1.5">
+                        {h.kind === 'product' && <span className="badge bg-night/70 text-brand-gold backdrop-blur">Listed</span>}
+                        {h.verified && (
+                            <span className="badge bg-night/70 text-chain backdrop-blur">
+                                <Ico d={I.shield} className="h-3 w-3" /> Verified
+                            </span>
+                        )}
+                    </div>
                 </div>
                 <div className="absolute inset-x-0 bottom-0 p-4">
                     <p className="flex items-center gap-1 text-caption font-semibold text-white/70">
-                        <Ico d={I.pin} className="h-3.5 w-3.5" /> {p.location}
+                        <Ico d={I.pin} className="h-3.5 w-3.5" /> {h.location}
                     </p>
-                    <p className="mt-0.5 truncate font-serif text-title text-white">{p.name}</p>
-                    <p className="truncate text-body text-white/80">{p.service}</p>
-                    <span className="btn-accent btn-sm mt-3 inline-flex">View profile <Ico d={I.arrow} className="h-3.5 w-3.5" /></span>
+                    <p className="mt-0.5 truncate font-serif text-title text-white">{h.title}</p>
+                    <p className="truncate text-body text-white/80">{h.subtitle}</p>
+                    <span className="btn-accent btn-sm mt-3 inline-flex">{h.ctaLabel} <Ico d={I.arrow} className="h-3.5 w-3.5" /></span>
                 </div>
             </button>
         );
@@ -207,15 +227,50 @@ const Home: React.FC<HomeDoorProps> = ({
         return seen.size > 0 ? Array.from(seen).slice(0, 5) : ['Nairobi'];
     }, [providers]);
 
-    // Frame 4+ pool: "recent" filters to listings with a real post date, "in the area" sorts what's
-    // left by distance. Falls back to all providers only if none have a post date yet.
-    const recentNearby = useMemo(() => {
-        const dated = providers.filter(p => p.createdAt);
-        const pool = dated.length > 0 ? dated : providers;
-        return [...pool].sort((a, b) => a.distanceKm - b.distanceKm).slice(0, 6);
-    }, [providers]);
+    // Frame 4+ pool: provider profiles AND their catalogue listings, both count as "featured
+    // products" — a service on a profile is a listing just as much as an item in someone's catalogue.
+    // "Recent" filters to a real post date, "in the area" sorts by distance (a catalogue item borrows
+    // its own provider's distance, since items don't carry location themselves). Falls back to
+    // everything, still distance-sorted, only if nothing has a post date yet.
+    const recentHighlights = useMemo((): Highlight[] => {
+        const fromProviders: (Highlight & { distanceKm: number })[] = providers.map(p => ({
+            key: `p-${p.id}`,
+            kind: 'provider',
+            image: p.coverImageUrl,
+            title: p.name,
+            subtitle: p.service,
+            location: p.location,
+            verified: p.isVerified,
+            createdAt: p.createdAt,
+            distanceKm: p.distanceKm,
+            ctaLabel: 'View profile',
+            onOpen: () => onSelectProvider(p),
+        }));
 
-    const bannerStage = useBannerStages(areas[0], recentNearby);
+        const fromCatalogue: (Highlight & { distanceKm: number })[] = catalogueItems.map(item => {
+            const provider = providers.find(p => p.id === item.providerId);
+            return {
+                key: `c-${item.id}`,
+                kind: 'product',
+                image: item.imageUrls?.[0] || provider?.coverImageUrl || '',
+                title: item.title,
+                subtitle: provider ? `by ${provider.name}` : item.category,
+                location: provider?.location || 'Nairobi',
+                verified: item.isVerified,
+                createdAt: item.createdAt,
+                distanceKm: provider?.distanceKm ?? 999,
+                ctaLabel: 'View listing',
+                onOpen: () => (provider ? onSelectProvider(provider) : onNavigate('tukosoko')),
+            };
+        });
+
+        const pool = [...fromProviders, ...fromCatalogue];
+        const dated = pool.filter(h => h.createdAt);
+        const base = dated.length > 0 ? dated : pool;
+        return base.sort((a, b) => a.distanceKm - b.distanceKm).slice(0, 8);
+    }, [providers, catalogueItems, onSelectProvider, onNavigate]);
+
+    const bannerStage = useBannerStages(areas[0], recentHighlights);
 
     const goProfile = () => (currentUser && isAuthenticated ? onSelectProvider(currentUser) : onAuthClick());
 
@@ -261,7 +316,7 @@ const Home: React.FC<HomeDoorProps> = ({
                 </header>
 
                 <div className="relative z-10 mx-auto max-w-md px-6 pb-6 pt-3 text-center">
-                    <BannerStageView stage={bannerStage} onSelect={onSelectProvider} />
+                    <BannerStageView stage={bannerStage} />
 
                     <div className="rise-in-3 mt-4 flex items-center rounded-full border border-line bg-surface p-1.5 shadow-card">
                         <div className="flex flex-1 items-center gap-2 px-3 text-ink-faint">
