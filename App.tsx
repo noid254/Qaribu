@@ -9,7 +9,7 @@ import {
 import AuthModal from './components/AuthModal';
 import SideMenu from './components/SideMenu';
 import HomeDoor from './components/HomeDoor';
-import ServiceMarketplace from './components/ServiceMarketplace';
+import ServiceMarketplace, { ParentCategory } from './components/ServiceMarketplace';
 import MyPlaces from './components/MyPlaces';
 import GatePass from './components/GatePass';
 import JourneyPage from './components/JourneyPage';
@@ -74,6 +74,7 @@ function App() {
   const [selectedPremise, setSelectedPremise] = useState<Premise | null>(null);
   const [manageOrderData, setManageOrderData] = useState<OrderData | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [marketplaceCategory, setMarketplaceCategory] = useState<ParentCategory>('HOME'); // lets Home's "Boda & Taxi" tile open Services pre-filtered to TRANSPORT
   const [scanResult, setScanResult] = useState<{ allowed: boolean; message: string; request?: QaRibuRequest, user?: ServiceProvider, accessDetails?: { purpose: string, duration: string, role: string } } | null>(null);
   
   // Door Profile State
@@ -385,6 +386,7 @@ function App() {
             onAuthClick={() => setIsAuthModalOpen(true)}
             onSelectProvider={handleSelectProvider}
             onNavigate={setCurrentPage}
+            onOpenTransport={() => { setMarketplaceCategory('TRANSPORT'); setCurrentPage('services'); }}
           />
         );
       case 'services':
@@ -393,10 +395,11 @@ function App() {
             providers={providers}
             specialBanners={specialBanners}
             onSelectProvider={handleSelectProvider}
-            onBack={() => setCurrentPage('home')}
+            onBack={() => { setMarketplaceCategory('HOME'); setCurrentPage('home'); }}
             onMessagesClick={() => setCurrentPage('messages')}
             hasNewMessages={inboxMessages.length > 0}
             onNavigate={setCurrentPage}
+            initialParent={marketplaceCategory}
           />
         );
       case 'tukosoko':

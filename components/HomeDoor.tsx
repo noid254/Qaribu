@@ -21,6 +21,9 @@ const I = {
     box: ['M21 8l-9-5-9 5v8l9 5 9-5V8z', 'M3 8l9 5 9-5M12 13v8'],
     home: 'M4 11l8-7 8 7v8a1 1 0 01-1 1h-4v-6H9v6H5a1 1 0 01-1-1v-8z',
     doc: ['M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z', 'M14 3v5h5M9 13h6M9 17h4'],
+    // Same glyph as InvoiceHub/MyDocumentsView elsewhere in the app, for a consistent "invoice" mark.
+    invoice: ['M7 3h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z', 'M9 12h6M9 16h6'],
+    moto: ['M3 17a2 2 0 104 0 2 2 0 00-4 0', 'M15 17a2 2 0 104 0 2 2 0 00-4 0', 'M5 17h6l2-6h4M11 11h3l2 4'],
     compass: ['M12 21a9 9 0 100-18 9 9 0 000 18z', 'M15.5 8.5l-2 5-5 2 2-5 5-2z'],
     wallet: ['M4 7a2 2 0 012-2h11v4', 'M4 7v10a2 2 0 002 2h13a1 1 0 001-1v-8a1 1 0 00-1-1H6a2 2 0 01-2-2z', 'M16 14h.01'],
     user: ['M12 12a4 4 0 100-8 4 4 0 000 8z', 'M4 20a8 8 0 0116 0'],
@@ -104,6 +107,7 @@ interface HomeDoorProps {
     onAuthClick: () => void;
     onSelectProvider: (provider: ServiceProvider) => void;
     onNavigate: (page: CurrentPage) => void;
+    onOpenTransport: () => void; // opens Services pre-filtered to the Boda & Taxi (TRANSPORT) category
 }
 
 // The mark: Qaribu's own pin+keyhole "Q" — your door in, glowing.
@@ -189,7 +193,7 @@ const BannerStageView: React.FC<{ stage: BannerFrame }> = ({ stage }) => {
 const Home: React.FC<HomeDoorProps> = ({
     providers, catalogueItems, documents, premises, currentUser, isAuthenticated,
     searchTerm, setSearchTerm, hasNewMessages, onOpenMenu, onMessagesClick, onAuthClick,
-    onSelectProvider, onNavigate,
+    onSelectProvider, onNavigate, onOpenTransport,
 }) => {
     const firstName = currentUser?.name?.split(' ')[0];
 
@@ -274,11 +278,14 @@ const Home: React.FC<HomeDoorProps> = ({
 
     const goProfile = () => (currentUser && isAuthenticated ? onSelectProvider(currentUser) : onAuthClick());
 
-    const actions: { label: string; hint: string; icon: string | string[]; page: CurrentPage; tone: string }[] = [
-        { label: 'Tokenize', hint: 'Turn it into an asset', icon: I.spark, page: 'registerAsset', tone: 'bg-glow text-night' },
-        { label: 'Exchange', hint: 'Buy & sell', icon: I.swap, page: 'tukosoko', tone: 'bg-night-raised text-glow' },
-        { label: 'Verify', hint: 'Check ownership', icon: I.shield, page: 'ownershipCheck', tone: 'bg-night-raised text-chain' },
-        { label: 'Gate Pass', hint: 'Free entry codes', icon: I.key, page: 'qaribu', tone: 'bg-night-raised text-white' },
+    // The four tiles featured on the landing page. Tokenize/Exchange/Verify aren't gone — they're
+    // still reachable via "Bring anything in", "On the exchange" and "Buying property? Check first"
+    // below, and Tokenize is also the bottom tab bar's centre button.
+    const actions: { label: string; hint: string; icon: string | string[]; onClick: () => void; tone: string }[] = [
+        { label: 'Gate Pass', hint: 'Free entry codes', icon: I.key, onClick: () => onNavigate('qaribu'), tone: 'bg-night-raised text-white' },
+        { label: 'My Invoice', hint: 'Bill & get paid', icon: I.invoice, onClick: () => onNavigate('invoices'), tone: 'bg-night-raised text-glow' },
+        { label: 'Boda & Taxi', hint: 'Get moving', icon: I.moto, onClick: onOpenTransport, tone: 'bg-glow text-night' },
+        { label: 'My Places', hint: 'Homes & property', icon: I.home, onClick: () => onNavigate('myplaces'), tone: 'bg-night-raised text-chain' },
     ];
 
     const kinds: { label: string; blurb: string; icon: string | string[]; page: CurrentPage }[] = [
@@ -340,7 +347,7 @@ const Home: React.FC<HomeDoorProps> = ({
             <section className="mx-auto max-w-md px-5 pt-1">
                 <div className="grid grid-cols-4 gap-2.5">
                     {actions.map(a => (
-                        <button key={a.label} onClick={() => onNavigate(a.page)} className="group flex flex-col items-center gap-2 rounded-card p-1 text-center">
+                        <button key={a.label} onClick={a.onClick} className="group flex flex-col items-center gap-2 rounded-card p-1 text-center">
                             <span className={`flex h-14 w-14 items-center justify-center rounded-card shadow-raised transition-transform group-active:scale-95 ${a.tone}`}>
                                 <Ico d={a.icon} />
                             </span>

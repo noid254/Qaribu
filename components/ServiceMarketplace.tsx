@@ -41,7 +41,7 @@ const serviceFilters = {
     }
 };
 
-type ParentCategory = keyof typeof serviceFilters;
+export type ParentCategory = keyof typeof serviceFilters;
 
 interface ServiceMarketplaceProps {
     providers: ServiceProvider[];
@@ -51,10 +51,11 @@ interface ServiceMarketplaceProps {
     onMessagesClick: () => void;
     hasNewMessages: boolean;
     onNavigate: (page: CurrentPage) => void;
+    initialParent?: ParentCategory; // e.g. opened from Home's "Boda & Taxi" tile, pre-filtered to TRANSPORT
 }
 
-const ServiceMarketplace: React.FC<ServiceMarketplaceProps> = ({ providers, specialBanners, onSelectProvider, onBack, onMessagesClick, hasNewMessages }) => {
-    const [activeParent, setActiveParent] = useState<ParentCategory>('HOME');
+const ServiceMarketplace: React.FC<ServiceMarketplaceProps> = ({ providers, specialBanners, onSelectProvider, onBack, onMessagesClick, hasNewMessages, initialParent }) => {
+    const [activeParent, setActiveParent] = useState<ParentCategory>(initialParent || 'HOME');
     const [activeChild, setActiveChild] = useState<string>('All');
     const [isSearchActive, setIsSearchActive] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
