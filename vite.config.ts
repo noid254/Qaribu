@@ -8,6 +8,10 @@ export default defineConfig(({ mode }) => {
       server: {
         port: 3000,
         host: '0.0.0.0',
+        // Same as nginx on the server: /api/x is served by the backend at /x.
+        proxy: {
+          '/api': { target: 'http://localhost:3100', rewrite: (p: string) => p.replace(/^\/api/, '') },
+        },
       },
       plugins: [react()],
       define: {

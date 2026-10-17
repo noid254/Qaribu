@@ -33,10 +33,42 @@ const apiFetch = (endpoint: string, options: RequestInit = {}) => {
     return fetch(`${API_BASE_URL}${endpoint}`, { ...options, headers }).then(handleResponse);
 };
 
-// --- Auth API ---
-export const sendOtp = (phone: string): Promise<{ success: boolean }> => 
-    new Promise(res => setTimeout(() => res({ success: true }), 500));
+// --- Auth API (the real backend: phone OTP, then a signed session token) ---
+const ERROR_TEXT: Record<string, string> = {
+    sign_in_unavailable: 'Sign-in is not available right now.',
+    invalid_phone: 'Enter a valid phone number.',
+    too_many_requests: 'Too many tries. Wait a few minutes and try again.',
+    invalid_code: 'That code is not right, or it has expired.',
+    too_many_attempts: 'Too many wrong codes. Ask for a new one.',
+    sign_in_required: 'Please sign in again.',
+    premise_not_found: 'That premise was not found.',
+};
 
+export class ApiError extends Error {
+    constructor(public status: number, message: string) {
+        super(message);
+    }
+}
+
+// Calls the backend and turns its error codes into plain messages. A 401 clears a stale session token.
+const call = async (path: string, options: RequestInit = {}) => {
+    const token = getToken();
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+        if (response.status === 401 && token) clearToken();
+        throw new ApiError(response.status, data.message || ERROR_TEXT[data.error] || `Something went wrong (${response.status}).`);
+    }
+    return data;
+};
+
+// phone is digits with the country code, for example 254722123456.
+export const sendOtp = async (phone: string): Promise<{ success: boolean }> => {
+    await call('/auth/otp/request', { method: 'POST', body: JSON.stringify({ phone: `+${phone}` }) });
+    return { success: true };
+};
 
 export interface VerifyOtpResponse {
     success: boolean;
@@ -45,43 +77,67 @@ export interface VerifyOtpResponse {
     token: string;
 }
 
-export const verifyOtp = (phone: string, otp: string): Promise<VerifyOtpResponse> => 
-    new Promise((resolve, reject) => {
-        setTimeout(() => {
-            const isSuperAdminLogin = phone === '254723119356' && otp === '3232';
+// Real accounts are not the prototype's mock providers, so user is a minimal profile built from the
+// account, and nobody is a super admin on this app (that comes from server configuration, section 7).
+export const verifyOtp = async (phone: string, otp: string): Promise<VerifyOtpResponse> => {
+    const data = await call('/auth/otp/verify', { method: 'POST', body: JSON.stringify({ phone: `+${phone}`, code: otp }) });
+    return { success: true, user: profileFromAccount(data.account), isSuperAdmin: false, token: data.token };
+};
 
-            // Allow superadmin login with specific OTP, or any non-empty OTP for other users for testing.
-            if (isSuperAdminLogin || (phone !== '254723119356' && otp.length > 0)) {
-                const existingUser = mockProviders.find(p => p.phone === phone);
-                resolve({
-                    success: true,
-                    user: existingUser || null,
-                    isSuperAdmin: isSuperAdminLogin, // isSuperAdmin is true only on superadmin login
-                    token: 'mock-token-for-' + phone
-                });
-            } else {
-                reject(new Error('Invalid OTP. Please try again.'));
-            }
-        }, 500);
-    });
+interface Account { id: string; phone: string; name: string; }
 
-export const getMyProfile = (): Promise<ServiceProvider> => 
-    new Promise((resolve, reject) => {
-        setTimeout(() => {
-            const token = getToken();
-            if (token && token.startsWith('mock-token-for-')) {
-                const phone = token.replace('mock-token-for-', '');
-                const user = mockProviders.find(p => p.phone === phone);
-                if (user) {
-                    resolve(user);
-                } else {
-                    reject(new Error("User not found for token"));
-                }
-            } else {
-                 reject(new Error("No valid token"));
-            }
-        }, 300);
-    });
+const profileFromAccount = (account: Account): ServiceProvider => ({
+    id: account.id,
+    name: account.name || 'Member',
+    phone: account.phone.replace('+', ''),
+    service: '',
+    avatarUrl: '',
+    coverImageUrl: '',
+    rating: 0,
+    distanceKm: 0,
+    hourlyRate: 0,
+    rateType: 'per hour',
+    currency: 'KES',
+    isVerified: false,
+    about: '',
+    works: [],
+    category: '',
+    location: '',
+    isOnline: false,
+    accountType: 'individual',
+    flagCount: 0,
+    views: 0,
+    cta: [],
+} as ServiceProvider);
+
+export interface HostPremise { id: string; slug: string; name: string; role: string; }
+
+export const getMe = (): Promise<{ account: Account; premises: HostPremise[] }> => call('/me');
+
+export const getMyProfile = async (): Promise<ServiceProvider> => {
+    if (!getToken()) throw new Error('No valid token');
+    const me = await getMe();
+    return profileFromAccount(me.account);
+};
+
+export interface CreatedInvite {
+    pass_url: string;
+    key: string;
+    expires_at: string;
+    visitor_phone: string;
+    message: string;
+    sms_link: string;
+    whatsapp_link: string;
+}
+
+// The host's gate pass invite. The visitor's ID is never part of it; the gateman records it at the gate.
+export const createInvite = (input: {
+    premise: string;
+    visitor_name: string;
+    visitor_phone: string;
+    purpose: string;
+    host_label?: string;
+}): Promise<CreatedInvite> => call('/host/passes', { method: 'POST', body: JSON.stringify(input) });
 
 // --- Data Fetching (GET) ---
 export const getProviders = (): Promise<ServiceProvider[]> => Promise.resolve(mockProviders);

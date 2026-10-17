@@ -12,6 +12,7 @@ import NikoSoko from './components/NikoSoko';
 import ServiceMarketplace from './components/ServiceMarketplace';
 import MyPlaces from './components/MyPlaces';
 import GatePass from './components/GatePass';
+import InviteVisitor from './components/InviteVisitor';
 import JourneyPage from './components/JourneyPage';
 import InvoiceHub from './components/InvoiceHub';
 import InvoiceGenerator from './components/InvoiceGenerator';
@@ -101,30 +102,15 @@ function App() {
             }
         }
 
-        // Auto-login logic for Super Admin as default if no session
-        if (!token) {
-            try {
-                // Attempt to auto-login as super admin
-                const res = await api.verifyOtp('254723119356', '3232');
-                if (res.token && res.user) {
-                    api.setToken(res.token);
-                    token = res.token;
-                    setCurrentUser(res.user);
-                    setIsAuthenticated(true);
-                    setIsSuperAdmin(res.isSuperAdmin);
-                }
-            } catch (e) {
-                console.warn("Auto-login failed:", e);
-            }
-        } else {
-             // Check Auth and update state if token exists
+        // Restore a real session if the browser holds a valid token. Nobody is signed in by default, and
+        // nobody is a super admin from the app (that comes from server configuration, architecture section 7).
+        if (token) {
             const user = await api.getMyProfile().catch(() => null);
             if (user) {
               setCurrentUser(user);
               setIsAuthenticated(true);
-              if (user.phone === '254723119356') setIsSuperAdmin(true);
             } else {
-                api.clearToken(); // Invalid token
+                api.clearToken(); // Expired or invalid token
             }
         }
 
@@ -187,15 +173,8 @@ function App() {
     if (data.success && data.user) {
         setCurrentUser(data.user);
         setIsAuthenticated(true);
-        setIsSuperAdmin(data.isSuperAdmin);
+        setIsSuperAdmin(false);
         api.setToken(data.token);
-        setIsAuthModalOpen(false);
-    } else if (data.success && !data.user) {
-        // New user
-        setIsAuthenticated(true); // Partially authenticated for setup
-        api.setToken(data.token);
-        setCurrentUser({ phone } as any); // Temporary user object
-        setCurrentPage('addService'); // Redirect to create profile
         setIsAuthModalOpen(false);
     }
   };
@@ -427,6 +406,14 @@ function App() {
             providers={providers}
             onSelectProvider={handleSelectProvider}
             onNavigate={setCurrentPage}
+          />
+        );
+      case 'invite':
+        return (
+          <InviteVisitor
+            isAuthenticated={isAuthenticated}
+            onSignIn={() => setIsAuthModalOpen(true)}
+            onBack={() => setCurrentPage('home')}
           />
         );
       case 'qaribu':
