@@ -394,6 +394,20 @@ function App() {
             onNavigate={setCurrentPage}
           />
         );
+      case 'bodaTaxi':
+        return (
+          <ServiceMarketplace
+            key="bodaTaxi"
+            providers={providers}
+            specialBanners={specialBanners}
+            onSelectProvider={handleSelectProvider}
+            onBack={() => setCurrentPage('home')}
+            onMessagesClick={() => setCurrentPage('messages')}
+            hasNewMessages={inboxMessages.length > 0}
+            onNavigate={setCurrentPage}
+            initialCategory="TRANSPORT"
+          />
+        );
       case 'tukosoko':
         return (
           <Tukosoko
@@ -732,6 +746,7 @@ function App() {
                 { label: 'Qaribu', icon: <span>🔑</span>, page: 'qaribu' },
                 { label: 'Invoices', icon: <span>📄</span>, page: 'invoices' },
                 { label: 'My Places', icon: <span>📍</span>, page: 'myplaces' },
+                { label: 'Boda & Taxi', icon: <span>🏍️</span>, page: 'bodaTaxi' },
                 { label: 'Services', icon: <span>🛠️</span>, page: 'services' },
                 { label: 'Market', icon: <span>🛒</span>, page: 'tukosoko' },
                 { label: 'Journey', icon: <span>🚀</span>, page: 'journey' },

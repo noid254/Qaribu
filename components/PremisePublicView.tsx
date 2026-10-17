@@ -234,7 +234,7 @@ const PremisePublicView: React.FC<PremisePublicViewProps> = ({ premise, tenants,
                 <div className="absolute bottom-0 left-0 right-0 p-6 z-10 text-center flex flex-col items-center pointer-events-none">
                      <div className="relative w-20 h-20 bg-white rounded-2xl shadow-xl p-1 mb-4 group/logo pointer-events-auto transform translate-y-2">
                         <img 
-                            src={isEditing ? editData.logoUrl : (premise.logoUrl || 'https://via.placeholder.com/150')} 
+                            src={isEditing ? editData.logoUrl : (premise.logoUrl || 'https://placehold.co/150')} 
                             className="w-full h-full object-contain rounded-xl" 
                         />
                         {isEditing && (

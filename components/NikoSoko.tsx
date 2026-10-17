@@ -11,16 +11,14 @@ const BellIcon = ({ hasNotification, className = "h-7 w-7" }: { hasNotification:
         {hasNotification && <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></div>}
     </div>
 );
-const SearchIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>;
+const SearchIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>;
 const QRIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6.5 6.5v-1m-6.5-13L5.5 1m-4 4.5h1m13.5 6.5l-1-1M5.5 12.5v1m13.5-6.5L18 5m-1 6.5v-1m-6.5 6.5L5.5 18m13.5-6.5h-1M10 14v-4m-2 4h4" /></svg>;
 
 // Toolkit Icons
 const GatePassIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11.536 9.636a6 6 0 111.414-1.414l1.236 2.236A6 6 0 0119 9a2 2 0 01-2-2zM7.53 12.53l.223.223A2 2 0 009.5 13h2a2 2 0 002-2V9a2 2 0 00-1.767.77l-.223.223 1.768 1.768z" /></svg>;
 const InvoiceIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>;
 const PlacesIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>;
-const ProsIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>;
-const MarketIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>;
-const JourneyIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>;
+const BodaTaxiIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="5.5" cy="17" r="3" strokeWidth={1.5} /><circle cx="18.5" cy="17" r="3" strokeWidth={1.5} /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.5 17h5l2.5-6h-4l-2-3H7m9 3l2.5 6M14 5h2.5l1 3" /></svg>;
 
 interface NikoSokoProps {
     providers: ServiceProvider[];
@@ -86,7 +84,7 @@ const NikoSoko: React.FC<NikoSokoProps> = ({ providers, onSelectProvider, search
         return [
             "https://images.unsplash.com/photo-1592345279419-959d784e8aad?q=80&w=800", // Nairobi Skyline / KICC
             "https://images.unsplash.com/photo-1626544827763-d516dce335e2?q=80&w=800", // Nairobi Expressway / Traffic
-            "https://images.unsplash.com/photo-1583095117911-379d2b274299?q=80&w=800", // Nairobi National Park / Nature
+            "https://images.unsplash.com/photo-1516426122078-c23e76319801?q=80&w=800", // Nairobi National Park / Nature
         ];
     }, []);
 
@@ -121,18 +119,18 @@ const NikoSoko: React.FC<NikoSokoProps> = ({ providers, onSelectProvider, search
     );
 
     const SearchBar = ({ compact = false }: { compact?: boolean }) => (
-         <div className={`bg-white rounded-full flex items-center p-1 transition-all ${compact ? 'border border-gray-200' : 'shadow-lg'}`}>
-            <div className="flex-1 flex items-center px-3 gap-2">
-                <SearchIcon />
-                <input 
-                    className="w-full outline-none text-sm text-gray-700 placeholder-gray-400 bg-transparent" 
-                    placeholder={compact ? "Search..." : "What are you looking for?"}
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-            </div>
-            <button onClick={() => onNavigate('qrScan')} className="bg-brand-gold px-4 py-2 rounded-full flex items-center gap-1 text-xs font-bold text-brand-navy hover:bg-amber-500 transition-colors shadow-sm">
+         <div className={`bg-white rounded-full flex items-center p-1 gap-1 transition-all ${compact ? 'border border-gray-200' : 'shadow-lg'}`}>
+            <button onClick={() => onNavigate('qrScan')} className="bg-brand-gold px-3 py-2 rounded-full flex items-center gap-1 text-xs font-bold text-brand-navy hover:bg-amber-500 transition-colors shadow-sm shrink-0">
                 <QRIcon /> Scan
+            </button>
+            <input 
+                className="flex-1 min-w-0 px-2 outline-none text-sm text-gray-700 placeholder-gray-400 bg-transparent" 
+                placeholder={compact ? "Search..." : "What are you looking for?"}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <button aria-label="Search" className="w-9 h-9 rounded-full bg-brand-navy flex items-center justify-center shrink-0 hover:opacity-90 transition-opacity">
+                <SearchIcon />
             </button>
         </div>
     );
@@ -160,25 +158,25 @@ const NikoSoko: React.FC<NikoSokoProps> = ({ providers, onSelectProvider, search
 
             {/* --- Themed Hero Section --- */}
             <div className="pt-0">
-                <div ref={heroRef} className="relative w-full h-64 rounded-b-[2rem] shadow-xl overflow-hidden bg-brand-navy">
+                <div ref={heroRef} className="relative w-full h-72 rounded-b-[2rem] shadow-xl overflow-hidden bg-brand-navy">
                     {heroImages.map((img, index) => (
                         <img 
                             key={index}
                             src={img} 
                             alt="Hero Highlight" 
-                            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${currentHeroIndex === index ? 'opacity-60' : 'opacity-0'}`} 
+                            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${currentHeroIndex === index ? 'opacity-100' : 'opacity-0'}`} 
                         />
                     ))}
                     {/* Gradient Overlay matching app theme */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-brand-navy/90 via-brand-navy/70 to-brand-gold/20"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-brand-navy/40 to-brand-navy/80"></div>
                     
-                    {/* Top Overlay Nav (Floating) */}
-                    <div className="absolute top-0 left-0 right-0 p-4 flex justify-between items-center z-20 mt-safe">
-                        <button onClick={onBack} className="p-2 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition active:scale-95 cursor-pointer">
-                            <MenuIcon className="h-6 w-6 text-brand-gold" />
+                    {/* Menu + bell float on top of the hero image */}
+                    <div className="absolute top-0 left-0 right-0 px-4 pb-4 flex justify-between items-center z-20" style={{ paddingTop: 'max(1rem, env(safe-area-inset-top))' }}>
+                        <button onClick={onBack} aria-label="Open menu" className="w-11 h-11 flex items-center justify-center bg-black/25 backdrop-blur-md border border-white/20 rounded-full shadow-lg hover:bg-black/40 transition active:scale-95">
+                            <MenuIcon className="h-6 w-6 text-white" />
                         </button>
-                        <button onClick={onMessagesClick} className="p-2 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition active:scale-95 cursor-pointer">
-                            <BellIcon hasNotification={hasNewMessages} className="h-6 w-6 text-brand-gold" />
+                        <button onClick={onMessagesClick} aria-label="Notifications" className="w-11 h-11 flex items-center justify-center bg-black/25 backdrop-blur-md border border-white/20 rounded-full shadow-lg hover:bg-black/40 transition active:scale-95">
+                            <BellIcon hasNotification={hasNewMessages} className="h-6 w-6 text-white" />
                         </button>
                     </div>
 
@@ -200,13 +198,11 @@ const NikoSoko: React.FC<NikoSokoProps> = ({ providers, onSelectProvider, search
             {/* --- Compact Toolkit --- */}
             <div className="px-4 -mt-4 relative z-10">
                 <div className="bg-white rounded-2xl py-4 px-2 shadow-lg border border-gray-100">
-                    <div className="grid grid-cols-3 gap-y-3">
-                        <ToolkitItem label="Qaribu" icon={<GatePassIcon />} onClick={() => onNavigate('qaribu')} />
-                        <ToolkitItem label="Invoices" icon={<InvoiceIcon />} onClick={() => onNavigate('invoices')} />
+                    <div className="grid grid-cols-4 gap-y-3">
+                        <ToolkitItem label="Gatepass" icon={<GatePassIcon />} onClick={() => onNavigate('qaribu')} />
+                        <ToolkitItem label="My Invoice" icon={<InvoiceIcon />} onClick={() => onNavigate('invoices')} />
+                        <ToolkitItem label="Boda & Taxi" icon={<BodaTaxiIcon />} onClick={() => onNavigate('bodaTaxi')} />
                         <ToolkitItem label="My Places" icon={<PlacesIcon />} onClick={() => onNavigate('myplaces')} />
-                        <ToolkitItem label="NikoSoko" icon={<ProsIcon />} onClick={() => onNavigate('services')} />
-                        <ToolkitItem label="Tukosoko" icon={<MarketIcon />} onClick={() => onNavigate('tukosoko')} />
-                        <ToolkitItem label="Journey" icon={<JourneyIcon />} onClick={() => onNavigate('journey')} />
                     </div>
                 </div>
             </div>

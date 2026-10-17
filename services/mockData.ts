@@ -10,7 +10,7 @@ export const mockProviders: ServiceProvider[] = [
         whatsapp: '254712345678',
         service: 'Expert Electrician',
         avatarUrl: 'https://i.pravatar.cc/150?img=1',
-        coverImageUrl: 'https://images.unsplash.com/photo-1517994112540-009c477df7a0?q=80&w=800',
+        coverImageUrl: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=800',
         rating: 4.8,
         distanceKm: 2.5,
         hourlyRate: 1500,
@@ -20,8 +20,8 @@ export const mockProviders: ServiceProvider[] = [
         about: 'Certified electrician with 10+ years of experience in residential and commercial wiring. I handle everything from new installations to troubleshooting and repairs. Safety and quality are my top priorities.',
         works: [
             'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=400',
-            'https://images.unsplash.com/photo-1487813293616-a29f03b5a04a?q=80&w=400',
-            'https://images.unsplash.com/photo-1581092921442-fd6f891b9896?q=80&w=400',
+            'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=400',
+            'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?q=80&w=400',
         ],
         skills: [
             { id: 'sk1', name: 'Wireman Grade I', iconUrl: 'https://picsum.photos/seed/skill1/100', isVerified: true, verifier: { type: 'institution', name: 'NITA', details: 'National Industrial Training Authority Certification for artisans.' } }
@@ -123,7 +123,7 @@ export const mockProviders: ServiceProvider[] = [
         phone: '254767890123',
         service: 'Boda Boda Rider',
         avatarUrl: 'https://i.pravatar.cc/150?img=6',
-        coverImageUrl: 'https://images.unsplash.com/photo-1620796363648-7553f7c97529?q=80&w=800',
+        coverImageUrl: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=800',
         rating: 4.6,
         distanceKm: 0.8,
         hourlyRate: 300,
@@ -146,7 +146,7 @@ export const mockProviders: ServiceProvider[] = [
         phone: '254778901234',
         service: 'City Courier',
         avatarUrl: 'https://i.pravatar.cc/150?img=7',
-        coverImageUrl: 'https://images.unsplash.com/photo-1615904523321-f045c22a31d2?q=80&w=800',
+        coverImageUrl: 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?q=80&w=800',
         rating: 4.8,
         distanceKm: 5.0,
         hourlyRate: 500,
@@ -173,7 +173,7 @@ export const mockProviders: ServiceProvider[] = [
         phone: '254711223344',
         service: 'Gourmet Restaurant',
         avatarUrl: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=200',
-        coverImageUrl: 'https://images.unsplash.com/photo-1514362545857-3bc16549766b?q=80&w=800',
+        coverImageUrl: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=800',
         rating: 4.9,
         distanceKm: 1.2,
         hourlyRate: 1500, // Avg meal price
@@ -194,7 +194,7 @@ export const mockProviders: ServiceProvider[] = [
         premiseId: 'p1',
         role: 'TenantAdmin',
         bundles: [
-            { id: 'b1', title: 'Morning Glory', description: 'Kickstart your day with energy.', items: ['Artisan Coffee', 'Avocado Toast', 'Fruit Bowl'], price: 850, originalPrice: 1100, availableTime: '07:00 - 10:00', imageUrl: 'https://images.unsplash.com/photo-1533089862017-5f8335585a30?q=80&w=600' },
+            { id: 'b1', title: 'Morning Glory', description: 'Kickstart your day with energy.', items: ['Artisan Coffee', 'Avocado Toast', 'Fruit Bowl'], price: 850, originalPrice: 1100, availableTime: '07:00 - 10:00', imageUrl: 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?q=80&w=600' },
             { id: 'b2', title: 'Power Lunch', description: 'Quick, delicious, and filling.', items: ['Grilled Chicken Salad', 'Iced Tea'], price: 1200, originalPrice: 1500, availableTime: '12:00 - 14:00', imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600' },
             { id: 'b3', title: 'Lazy Brunch', description: 'For those slow, easy weekends.', items: ['Eggs Benedict', 'Mimosa', 'Pancakes'], price: 1800, originalPrice: 2200, availableTime: '10:00 - 14:00', imageUrl: 'https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?q=80&w=600' },
             { id: 'b4', title: 'Dinner Date', description: 'The perfect evening setup for two.', items: ['2x Steaks', 'Red Wine Bottle', 'Dessert Platter'], price: 4500, originalPrice: 5500, availableTime: '18:00 - 22:00', imageUrl: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=600' },
@@ -202,20 +202,20 @@ export const mockProviders: ServiceProvider[] = [
         menu: [
             { id: 'm1', name: 'Signature Burger', description: 'Double beef patty, cheddar cheese, caramelized onions, and our secret sauce.', price: 1200, category: 'Mains', images: ['https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=400', 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?q=80&w=400'], relatedItemIds: ['m3', 'm4'] },
             { id: 'm2', name: 'Grilled Salmon', description: 'Fresh Atlantic salmon served with asparagus and lemon butter sauce.', price: 2200, category: 'Mains', images: ['https://images.unsplash.com/photo-1485921325833-c519f76c4927?q=80&w=400'], relatedItemIds: ['m5'] },
-            { id: 'm3', name: 'Truffle Fries', description: 'Crispy fries tossed in truffle oil and parmesan.', price: 600, category: 'Sides', images: ['https://images.unsplash.com/photo-1573080496987-8198cb147a71?q=80&w=400'], isVegetarian: true },
+            { id: 'm3', name: 'Truffle Fries', description: 'Crispy fries tossed in truffle oil and parmesan.', price: 600, category: 'Sides', images: ['https://images.unsplash.com/photo-1573080496219-bb080dd4f877?q=80&w=400'], isVegetarian: true },
             { id: 'm4', name: 'Classic Mojito', description: 'White rum, sugar, lime juice, soda water, and mint.', price: 850, category: 'Drinks', images: ['https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=400'] },
-            { id: 'm5', name: 'Cheesecake', description: 'New York style cheesecake with berry compote.', price: 750, category: 'Desserts', images: ['https://images.unsplash.com/photo-1524351199678-941a58a3df26?q=80&w=400'], isVegetarian: true },
+            { id: 'm5', name: 'Cheesecake', description: 'New York style cheesecake with berry compote.', price: 750, category: 'Desserts', images: ['https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=400'], isVegetarian: true },
             { id: 'm6', name: 'Spicy Chicken Wings', description: '6pcs wings tossed in hot honey glaze.', price: 900, category: 'Starters', images: ['https://images.unsplash.com/photo-1527477396000-e27163b481c2?q=80&w=400'], isSpicy: true, relatedItemIds: ['m4'] },
             { id: 'm7', name: 'Pasta Carbonara', description: 'Authentic Italian pasta with guanciale, egg yolk, and pecorino cheese.', price: 1400, category: 'Mains', images: ['https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=400'], relatedItemIds: ['m4'] },
-            { id: 'm8', name: 'Avocado Toast', description: 'Sourdough bread topped with smashed avocado, poached egg, and chili flakes.', price: 850, category: 'Breakfast', images: ['https://images.unsplash.com/photo-1588137372308-15f75323ca8f?q=80&w=400'], isVegetarian: true },
-            { id: 'm9', name: 'Full English Breakfast', description: 'Eggs, sausages, bacon, beans, mushrooms, and toast.', price: 1100, category: 'Breakfast', images: ['https://images.unsplash.com/photo-1533089862017-5f8335585a30?q=80&w=400'] },
+            { id: 'm8', name: 'Avocado Toast', description: 'Sourdough bread topped with smashed avocado, poached egg, and chili flakes.', price: 850, category: 'Breakfast', images: ['https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?q=80&w=400'], isVegetarian: true },
+            { id: 'm9', name: 'Full English Breakfast', description: 'Eggs, sausages, bacon, beans, mushrooms, and toast.', price: 1100, category: 'Breakfast', images: ['https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?q=80&w=400'] },
         ],
         events: [
             {
                 id: 'evt1',
                 title: 'Sunset Happy Hour',
                 description: 'Enjoy 50% off all cocktails and free bitings. Live jazz music starting at 7 PM.',
-                imageUrl: 'https://images.unsplash.com/photo-1514362545857-3bc16549766b?q=80&w=800',
+                imageUrl: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=800',
                 date: new Date().toISOString(),
                 startTime: '18:00',
                 endTime: '21:00',
@@ -294,8 +294,8 @@ export const mockProviders: ServiceProvider[] = [
 
 // FIX: Add missing 'isVerified' property to all catalogue items.
 export const mockCatalogueItems: CatalogueItem[] = [
-    { id: 'cat1', providerId: '1', title: 'Full House Wiring Inspection', category: 'Professional Service', description: 'A complete safety inspection of your home\'s electrical wiring.', price: 'Ksh 4,500', imageUrls: ['https://images.unsplash.com/photo-1581092921442-fd6f891b9896?q=80&w=400'], duration: 'Approx. 2 hours', isVerified: true },
-    { id: 'cat4', providerId: '7', title: 'Used iPhone 12 Pro', category: 'Product', description: 'Great condition, 128GB, unlocked. Comes with original box.', price: 'Ksh 75,000', imageUrls: ['https://images.unsplash.com/photo-1607936854259-c2b71bda8158?q=80&w=400'], isVerified: true },
+    { id: 'cat1', providerId: '1', title: 'Full House Wiring Inspection', category: 'Professional Service', description: 'A complete safety inspection of your home\'s electrical wiring.', price: 'Ksh 4,500', imageUrls: ['https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?q=80&w=400'], duration: 'Approx. 2 hours', isVerified: true },
+    { id: 'cat4', providerId: '7', title: 'Used iPhone 12 Pro', category: 'Product', description: 'Great condition, 128GB, unlocked. Comes with original box.', price: 'Ksh 75,000', imageUrls: ['https://images.unsplash.com/photo-1592750475338-74b7b21085ab?q=80&w=400'], isVerified: true },
     // Courses for institutions
     { id: 'course1', providerId: '3', title: 'Diploma in Web Development', category: 'Professional Service', description: 'A comprehensive 12-month course covering front-end and back-end technologies. Prepares you for a career as a full-stack developer.', price: 'Ksh 120,000', imageUrls: ['https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=400'], externalLink: 'https://example.edu/web-dev', duration: '12 Months', isVerified: true },
     { id: 'course2', providerId: '3', title: 'Certificate in Graphic Design', category: 'Professional Service', description: 'Learn the fundamentals of design, typography, and branding using industry-standard tools like Adobe Photoshop and Illustrator.', price: 'Ksh 65,000', imageUrls: ['https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=400'], externalLink: 'https://example.edu/graphic-design', duration: '6 Months', isVerified: true },
@@ -306,7 +306,7 @@ export const mockDocuments: Document[] = [
     {
         id: 'asset1', type: 'Receipt', number: 'ASSET-98765', issuerName: 'Carrefour', date: '2023-09-01T12:00:00Z', amount: 35000, currency: 'Ksh', paymentStatus: 'Paid', isAsset: true, ownerPhone: '254712345678',
         items: [{ description: 'Samsung 32" TV', quantity: 1, price: 35000, serial: 'SN-ABC123XYZ' }],
-        productImages: ['https://images.unsplash.com/photo-1593784944633-c288b2a1f33f?q=80&w=400'],
+        productImages: ['https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?q=80&w=400'],
         verificationStatus: 'Verified',
     }
 ];
@@ -371,7 +371,7 @@ export const mockQaRibuRequests: QaRibuRequest[] = [
 export const mockTickets: Ticket[] = [];
 
 export const mockGigs: Gig[] = [
-    { id: 'gig1', providerId: '1', title: 'Fix Leaky Kitchen Sink', category: 'Plumbing', description: 'My kitchen sink has been dripping for a week. Need a plumber to fix it urgently.', budget: 1500, budgetType: 'fixed', currency: 'Ksh', location: 'Kilimani, Nairobi', imageUrl: 'https://images.unsplash.com/photo-1600585152220-029e78b1e354?q=80&w=400' },
+    { id: 'gig1', providerId: '1', title: 'Fix Leaky Kitchen Sink', category: 'Plumbing', description: 'My kitchen sink has been dripping for a week. Need a plumber to fix it urgently.', budget: 1500, budgetType: 'fixed', currency: 'Ksh', location: 'Kilimani, Nairobi', imageUrl: 'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?q=80&w=400' },
     { id: 'gig2', providerId: '3', title: 'Office Relocation', category: 'Moving', description: 'We are moving our office of 10 people from Westlands to Upper Hill. Need a reliable moving company.', budget: 25000, budgetType: 'fixed', currency: 'Ksh', location: 'Westlands, Nairobi', imageUrl: 'https://images.unsplash.com/photo-1507207611509-ec012433ff52?q=80&w=400' },
 ];
 
