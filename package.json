@@ -1,20 +1,25 @@
-
 {
   "name": "niko-soko-pwa",
   "private": true,
   "version": "1.2.4",
   "description": "A PWA to find and connect with essential service providers near you. This project is ready for local development and export.",
   "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "start": "http-server .",
     "install-server": "npm install http-server"
   },
   "dependencies": {
+    "http-server": "^14.1.1",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "http-server": "^14.1.1"
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0"
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4"
   }
 }
