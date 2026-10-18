@@ -3,7 +3,7 @@
 export const ROLE_LABEL: Record<string, string> = {
   owner: 'Owner',
   manager: 'Manager',
-  tenant_admin: 'Tenant admin',
+  caretaker: 'Caretaker',
   tenant: 'Tenant',
   gateman: 'Gateman',
   staff: 'Staff',

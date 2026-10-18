@@ -4,6 +4,7 @@ import ExpectedTab from './visitors/ExpectedTab';
 import GateTab from './visitors/GateTab';
 import InviteTab from './visitors/InviteTab';
 import ManageTab from './visitors/ManageTab';
+import MyDetails from './visitors/MyDetails';
 import { fieldClass, roleLabel } from './visitors/shared';
 
 interface VisitorsHubProps {
@@ -26,6 +27,7 @@ const tabsFor = (m: api.Membership): { key: TabKey; label: string }[] => {
 
 const VisitorsHub: React.FC<VisitorsHubProps> = ({ isAuthenticated, onSignIn, onBack }) => {
   const [memberships, setMemberships] = useState<api.Membership[]>([]);
+  const [account, setAccount] = useState<{ phone: string; name: string } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [loadError, setLoadError] = useState('');
   const [slug, setSlug] = useState('');
@@ -35,6 +37,7 @@ const VisitorsHub: React.FC<VisitorsHubProps> = ({ isAuthenticated, onSignIn, on
     api
       .getMe()
       .then((me) => {
+        setAccount({ phone: me.account.phone, name: me.account.name });
         setMemberships(me.memberships);
         setSlug((current) => (me.memberships.some((m) => m.slug === current) ? current : me.memberships[0]?.slug ?? ''));
       })
@@ -68,6 +71,8 @@ const VisitorsHub: React.FC<VisitorsHubProps> = ({ isAuthenticated, onSignIn, on
           </div>
         )}
 
+        {isAuthenticated && account && !isLoading && <MyDetails account={account} onSaved={(a) => setAccount(a)} />}
+
         {isAuthenticated && isLoading && <p className="text-center text-gray-500">Loading…</p>}
         {isAuthenticated && loadError && <p className="text-center text-red-500">{loadError}</p>}
 
@@ -95,8 +100,10 @@ const VisitorsHub: React.FC<VisitorsHubProps> = ({ isAuthenticated, onSignIn, on
             )}
 
             {tabs.length === 0 ? (
-              <div className="bg-white rounded-xl shadow p-6 text-center text-gray-700">
-                Gate pass is switched off for this premise. Ask the owner or manager to turn it on.
+              <div data-testid="no-actions" className="bg-white rounded-xl shadow p-6 text-center text-gray-700">
+                {premise.gate_pass_enabled
+                  ? 'Your role on this premise has nothing to do here yet.'
+                  : 'Gate pass is switched off for this premise. Ask the owner or manager to turn it on.'}
               </div>
             ) : (
               <div className="flex bg-gray-200 rounded-lg p-1" role="tablist">
