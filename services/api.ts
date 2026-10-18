@@ -38,6 +38,7 @@ const ERROR_TEXT: Record<string, string> = {
     sign_in_unavailable: 'Sign-in is not available right now.',
     invalid_phone: 'Enter a valid phone number.',
     too_many_requests: 'Too many tries. Wait a few minutes and try again.',
+    too_many_invites: 'You have sent a lot of invites. Wait a while and try again.',
     invalid_code: 'That code is not right, or it has expired.',
     too_many_attempts: 'Too many wrong codes. Ask for a new one.',
     sign_in_required: 'Please sign in again.',
@@ -55,7 +56,8 @@ const call = async (path: string, options: RequestInit = {}) => {
     const token = getToken();
     const headers: Record<string, string> = { 'Content-Type': 'application/json' };
     if (token) headers['Authorization'] = `Bearer ${token}`;
-    const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
+    // cache: 'no-store' because these answers are about one signed-in person and change as visitors arrive.
+    const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers, cache: 'no-store' });
     const data = await response.json().catch(() => ({}));
     if (!response.ok) {
         if (response.status === 401 && token) clearToken();
@@ -110,7 +112,7 @@ const profileFromAccount = (account: Account): ServiceProvider => ({
     cta: [],
 } as ServiceProvider);
 
-export interface HostPremise { id: string; slug: string; name: string; role: string; }
+export interface HostPremise { id: string; slug: string; name: string; role: string; log_times: boolean; }
 
 export const getMe = (): Promise<{ account: Account; premises: HostPremise[] }> => call('/me');
 
@@ -120,7 +122,12 @@ export const getMyProfile = async (): Promise<ServiceProvider> => {
     return profileFromAccount(me.account);
 };
 
+// How the invite SMS went: Qaribu sent it, the provider refused it, or SMS is not set up on the server.
+export type SmsStatus = 'sent' | 'failed' | 'not_configured';
+
 export interface CreatedInvite {
+    id: string;
+    sms: SmsStatus;
     pass_url: string;
     key: string;
     expires_at: string;
@@ -129,6 +136,26 @@ export interface CreatedInvite {
     sms_link: string;
     whatsapp_link: string;
 }
+
+export type VisitStatus = 'waiting' | 'arrived' | 'left' | 'expired' | 'cancelled';
+
+export interface PassRow {
+    id: string;
+    visitor_name: string;
+    visitor_phone: string;
+    purpose: string;
+    host_label: string;
+    status: VisitStatus;
+    key: string | null; // only while the pass can still be used
+    created_at: string;
+    expires_at: string | null;
+    arrived_at: string | null; // check-in and check-out times only when the premise records them
+    left_at: string | null;
+}
+
+// The host's expected visitors for one premise. An owner or manager sees every invite; others see their own.
+export const getPasses = (premise: string): Promise<{ premise: { slug: string; name: string; log_times: boolean }; passes: PassRow[] }> =>
+    call(`/host/passes?premise=${encodeURIComponent(premise)}`);
 
 // The host's gate pass invite. The visitor's ID is never part of it; the gateman records it at the gate.
 export const createInvite = (input: {

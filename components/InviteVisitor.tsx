@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as api from '../services/api';
+import { nineDigitPhone } from '../services/phone';
 
 interface InviteVisitorProps {
   isAuthenticated: boolean;
@@ -7,10 +8,35 @@ interface InviteVisitorProps {
   onBack: () => void;
 }
 
-// A host invites a visitor. Qaribu writes the message and gives links that open the host's own SMS app and
-// WhatsApp with it ready to send; the host taps Send. Nothing here asks for the visitor's ID: the gateman
-// records it at the gate.
+type Tab = 'invite' | 'expected';
+
+const STATUS_LABEL: Record<api.VisitStatus, string> = {
+  waiting: 'Waiting',
+  arrived: 'Arrived',
+  left: 'Left',
+  expired: 'Expired',
+  cancelled: 'Cancelled',
+};
+
+const STATUS_STYLE: Record<api.VisitStatus, string> = {
+  waiting: 'bg-amber-100 text-amber-800',
+  arrived: 'bg-green-100 text-green-800',
+  left: 'bg-gray-200 text-gray-700',
+  expired: 'bg-red-100 text-red-700',
+  cancelled: 'bg-gray-200 text-gray-600',
+};
+
+const clock = (iso: string | null) =>
+  iso ? new Date(iso).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Africa/Nairobi' }) : '';
+
+// Contact picking is a browser feature (Chrome on Android, over HTTPS); elsewhere the host types the number.
+const canPickContacts = () => typeof navigator !== 'undefined' && 'contacts' in navigator && typeof window !== 'undefined' && 'ContactsManager' in window;
+
+// A host invites a visitor and sees who is expected. Qaribu sends the invite by SMS from its server and says
+// plainly whether that worked; if it did not, the host can send the same message from their own phone.
+// Nothing here asks for the visitor's ID: the gateman records it at the gate.
 const InviteVisitor: React.FC<InviteVisitorProps> = ({ isAuthenticated, onSignIn, onBack }) => {
+  const [tab, setTab] = useState<Tab>('invite');
   const [premises, setPremises] = useState<api.HostPremise[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loadError, setLoadError] = useState('');
@@ -25,6 +51,10 @@ const InviteVisitor: React.FC<InviteVisitorProps> = ({ isAuthenticated, onSignIn
   const [invite, setInvite] = useState<api.CreatedInvite | null>(null);
   const [copied, setCopied] = useState(false);
 
+  const [expected, setExpected] = useState<{ log_times: boolean; passes: api.PassRow[] } | null>(null);
+  const [expectedLoading, setExpectedLoading] = useState(false);
+  const [expectedError, setExpectedError] = useState('');
+
   useEffect(() => {
     if (!isAuthenticated) return;
     setIsLoading(true);
@@ -38,6 +68,37 @@ const InviteVisitor: React.FC<InviteVisitorProps> = ({ isAuthenticated, onSignIn
       .catch((err: Error) => setLoadError(err.message))
       .finally(() => setIsLoading(false));
   }, [isAuthenticated]);
+
+  const loadExpected = () => {
+    if (!premise) return;
+    setExpectedLoading(true);
+    setExpectedError('');
+    api
+      .getPasses(premise)
+      .then((res) => setExpected({ log_times: res.premise.log_times, passes: res.passes }))
+      .catch((err: Error) => setExpectedError(err.message))
+      .finally(() => setExpectedLoading(false));
+  };
+
+  useEffect(() => {
+    if (isAuthenticated && tab === 'expected') loadExpected();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, tab, premise]);
+
+  const pickContact = async () => {
+    setError('');
+    try {
+      const [contact] = await (navigator as any).contacts.select(['name', 'tel'], { multiple: false });
+      if (!contact) return;
+      const name = (contact.name?.[0] ?? '').trim();
+      const phone = (contact.tel ?? []).map(nineDigitPhone).find((p: string | null) => p !== null) as string | undefined;
+      if (name) setVisitorName(name);
+      if (phone) setVisitorPhone(phone);
+      else setError('That contact has no Kenyan mobile number. Type the number instead.');
+    } catch {
+      // The host closed the picker, or the browser refused: they can still type the details.
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,10 +125,9 @@ const InviteVisitor: React.FC<InviteVisitorProps> = ({ isAuthenticated, onSignIn
     }
   };
 
-  const handleCopy = async () => {
-    if (!invite) return;
+  const handleCopy = async (text: string) => {
     try {
-      await navigator.clipboard.writeText(invite.message);
+      await navigator.clipboard.writeText(text);
       setCopied(true);
     } catch {
       setError('Could not copy. Select the message and copy it by hand.');
@@ -83,18 +143,34 @@ const InviteVisitor: React.FC<InviteVisitorProps> = ({ isAuthenticated, onSignIn
   };
 
   const field = 'mt-1 block w-full px-3 py-3 bg-gray-100 rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-brand-gold sm:text-sm';
+  const hasPremises = isAuthenticated && !isLoading && !loadError && premises.length > 0;
+  const premiseName = premises.find((p) => p.slug === premise)?.name ?? '';
+
+  const premisePicker =
+    premises.length > 1 ? (
+      <div>
+        <label htmlFor="premise" className="block text-sm font-medium text-gray-700">Premise</label>
+        <select id="premise" value={premise} onChange={(e) => setPremise(e.target.value)} className={field}>
+          {premises.map((p) => (
+            <option key={p.slug} value={p.slug}>{p.name}</option>
+          ))}
+        </select>
+      </div>
+    ) : (
+      <p className="text-sm text-gray-600">Premise: <span className="font-semibold">{premiseName}</span></p>
+    );
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="bg-brand-navy text-white px-4 py-4 flex items-center">
         <button onClick={onBack} className="mr-3 text-xl" aria-label="Back">&larr;</button>
-        <h1 className="text-lg font-bold">Invite a visitor</h1>
+        <h1 className="text-lg font-bold">Visitors</h1>
       </div>
 
       <div className="max-w-md mx-auto p-4">
         {!isAuthenticated && (
           <div className="bg-white rounded-xl shadow p-6 text-center">
-            <p className="text-gray-700 mb-4">Sign in to send a gate pass key to your visitor.</p>
+            <p className="text-gray-700 mb-4">Sign in to invite visitors and see who is expected.</p>
             <button onClick={onSignIn} className="w-full bg-brand-gold text-brand-navy font-bold py-2 px-4 rounded-lg active-scale">
               Sign in
             </button>
@@ -110,21 +186,31 @@ const InviteVisitor: React.FC<InviteVisitorProps> = ({ isAuthenticated, onSignIn
           </div>
         )}
 
-        {isAuthenticated && !isLoading && premises.length > 0 && !invite && (
+        {hasPremises && (
+          <div className="flex bg-gray-200 rounded-lg p-1 mb-4" role="tablist">
+            {(['invite', 'expected'] as Tab[]).map((t) => (
+              <button
+                key={t}
+                role="tab"
+                aria-selected={tab === t}
+                onClick={() => setTab(t)}
+                className={`flex-1 py-2 rounded-md text-sm font-semibold ${tab === t ? 'bg-white shadow text-brand-navy' : 'text-gray-600'}`}
+              >
+                {t === 'invite' ? 'Invite' : 'Expected'}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {hasPremises && tab === 'invite' && !invite && (
           <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow p-5 space-y-4">
             {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+            {premisePicker}
 
-            {premises.length > 1 ? (
-              <div>
-                <label htmlFor="premise" className="block text-sm font-medium text-gray-700">Premise</label>
-                <select id="premise" value={premise} onChange={(e) => setPremise(e.target.value)} className={field}>
-                  {premises.map((p) => (
-                    <option key={p.slug} value={p.slug}>{p.name}</option>
-                  ))}
-                </select>
-              </div>
-            ) : (
-              <p className="text-sm text-gray-600">Premise: <span className="font-semibold">{premises[0]?.name}</span></p>
+            {canPickContacts() && (
+              <button type="button" onClick={pickContact} className="w-full border border-brand-gold text-brand-navy font-semibold py-2 px-4 rounded-lg">
+                Choose from contacts
+              </button>
             )}
 
             <div>
@@ -160,13 +246,26 @@ const InviteVisitor: React.FC<InviteVisitorProps> = ({ isAuthenticated, onSignIn
             </div>
 
             <button type="submit" disabled={isSending} className="w-full bg-brand-gold text-brand-navy font-bold py-3 px-4 rounded-lg disabled:bg-gray-400 active-scale">
-              {isSending ? 'Creating…' : 'Create invite'}
+              {isSending ? 'Sending…' : 'Send invite'}
             </button>
           </form>
         )}
 
-        {invite && (
+        {hasPremises && tab === 'invite' && invite && (
           <div className="bg-white rounded-xl shadow p-5 space-y-4">
+            {invite.sms === 'sent' ? (
+              <p data-testid="sms-status" className="bg-green-50 text-green-800 text-sm rounded-lg p-3 text-center">
+                Invite sent by SMS to {invite.visitor_phone}.
+              </p>
+            ) : (
+              <p data-testid="sms-status" className="bg-amber-50 text-amber-800 text-sm rounded-lg p-3 text-center">
+                {invite.sms === 'failed'
+                  ? 'We could not send the SMS to ' + invite.visitor_phone + '.'
+                  : 'SMS sending is not set up yet.'}{' '}
+                The invite is ready. Send it from your phone with a button below.
+              </p>
+            )}
+
             <p className="text-center text-sm text-gray-600">Gate pass key for {invite.visitor_phone}</p>
             <p className="text-center text-4xl font-bold tracking-widest">{invite.key}</p>
             <p className="text-center text-xs text-gray-500">
@@ -176,18 +275,60 @@ const InviteVisitor: React.FC<InviteVisitorProps> = ({ isAuthenticated, onSignIn
             <p className="bg-gray-100 rounded-lg p-3 text-sm text-gray-700 break-words">{invite.message}</p>
             {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
-            <a href={invite.sms_link} className="block w-full text-center bg-brand-gold text-brand-navy font-bold py-3 px-4 rounded-lg active-scale">
-              Send by SMS
-            </a>
-            <a href={invite.whatsapp_link} target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-green-600 text-white font-bold py-3 px-4 rounded-lg active-scale">
-              Send by WhatsApp
-            </a>
-            <button onClick={handleCopy} className="block w-full text-center border border-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg">
+            <p className="text-xs text-gray-500 text-center">{invite.sms === 'sent' ? 'Send it again from your phone:' : 'Send it yourself:'}</p>
+            <div className="grid grid-cols-2 gap-2">
+              <a href={invite.sms_link} className="block text-center bg-brand-gold text-brand-navy font-bold py-3 px-2 rounded-lg active-scale">
+                My SMS
+              </a>
+              <a href={invite.whatsapp_link} target="_blank" rel="noopener noreferrer" className="block text-center bg-green-600 text-white font-bold py-3 px-2 rounded-lg active-scale">
+                WhatsApp
+              </a>
+            </div>
+            <button onClick={() => handleCopy(invite.message)} className="block w-full text-center border border-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg">
               {copied ? 'Copied' : 'Copy message'}
             </button>
             <button onClick={reset} className="block w-full text-center text-sm text-blue-600 hover:underline">
               Invite another visitor
             </button>
+          </div>
+        )}
+
+        {hasPremises && tab === 'expected' && (
+          <div className="space-y-3">
+            {premisePicker}
+            <button onClick={loadExpected} disabled={expectedLoading} className="text-sm text-blue-600 hover:underline">
+              {expectedLoading ? 'Refreshing…' : 'Refresh'}
+            </button>
+            {expectedError && <p className="text-red-500 text-sm">{expectedError}</p>}
+
+            {expected && expected.passes.length === 0 && !expectedLoading && (
+              <div className="bg-white rounded-xl shadow p-6 text-center text-gray-600">No visitors in the last 7 days.</div>
+            )}
+
+            {expected?.passes.map((p) => (
+              <div key={p.id} data-testid="expected-row" className="bg-white rounded-xl shadow p-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="font-semibold text-gray-900">{p.visitor_name}</p>
+                    <p className="text-xs text-gray-500">{p.visitor_phone}</p>
+                  </div>
+                  <span className={`text-xs font-semibold px-2 py-1 rounded-full ${STATUS_STYLE[p.status]}`}>{STATUS_LABEL[p.status]}</span>
+                </div>
+                <p className="text-sm text-gray-700 mt-2">{p.purpose}</p>
+                {p.host_label && <p className="text-xs text-gray-500">Invited by {p.host_label}</p>}
+                {expected.log_times && (p.arrived_at || p.left_at) && (
+                  <p className="text-xs text-gray-600 mt-2">
+                    {p.arrived_at && <>In {clock(p.arrived_at)}</>}
+                    {p.left_at && <> · Out {clock(p.left_at)}</>}
+                  </p>
+                )}
+                {p.key && (
+                  <p className="text-xs text-gray-600 mt-2">
+                    Key <span className="font-bold tracking-widest">{p.key}</span> · valid until {clock(p.expires_at)}
+                  </p>
+                )}
+              </div>
+            ))}
           </div>
         )}
       </div>
