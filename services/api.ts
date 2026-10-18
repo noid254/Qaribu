@@ -40,9 +40,13 @@ const ERROR_TEXT: Record<string, string> = {
     too_many_requests: 'Too many tries. Wait a few minutes and try again.',
     too_many_invites: 'You have sent a lot of invites. Wait a while and try again.',
     invalid_code: 'That code is not right, or it has expired.',
-    too_many_attempts: 'Too many wrong codes. Ask for a new one.',
     sign_in_required: 'Please sign in again.',
     premise_not_found: 'That premise was not found.',
+    not_allowed: 'Your role does not allow that.',
+    gate_pass_off: 'Gate pass is switched off for this premise.',
+    pass_not_found: 'No pass found for that code.',
+    not_checked_in: 'That visitor is not checked in.',
+    too_many_attempts: 'Too many wrong codes. Wait a few minutes, then try again.',
 };
 
 export class ApiError extends Error {
@@ -114,7 +118,21 @@ const profileFromAccount = (account: Account): ServiceProvider => ({
 
 export interface HostPremise { id: string; slug: string; name: string; role: string; log_times: boolean; }
 
-export const getMe = (): Promise<{ account: Account; premises: HostPremise[] }> => call('/me');
+// One premise the account belongs to, and what its role (or roles) lets them do there. The server checks the
+// role again on every call; these flags only decide which screens to offer.
+export interface Membership {
+    slug: string;
+    name: string;
+    roles: string[];
+    gate_pass_enabled: boolean;
+    log_times: boolean;
+    can_invite: boolean;
+    can_manage: boolean;
+    can_run_gate: boolean;
+    assignable_roles: string[];
+}
+
+export const getMe = (): Promise<{ account: Account; premises: HostPremise[]; memberships: Membership[] }> => call('/me');
 
 export const getMyProfile = async (): Promise<ServiceProvider> => {
     if (!getToken()) throw new Error('No valid token');
@@ -165,6 +183,50 @@ export const createInvite = (input: {
     purpose: string;
     host_label?: string;
 }): Promise<CreatedInvite> => call('/host/passes', { method: 'POST', body: JSON.stringify(input) });
+
+// --- Premise owners and managers ---
+export interface TeamMember { id: string; phone: string; name: string; role: string; since: string; }
+
+export interface ManagedPremise {
+    premise: { slug: string; name: string };
+    gate_pass: { enabled: boolean; log_times: boolean };
+    guard_link: string | null; // a shared secret link for a gate phone; replace it if the phone is lost
+    assignable_roles: string[];
+    team: TeamMember[];
+}
+
+const premisePath = (slug: string) => `/manage/${encodeURIComponent(slug)}`;
+
+export const getManaged = (slug: string): Promise<ManagedPremise> => call(premisePath(slug));
+
+export const setGatePass = (slug: string, change: { enabled?: boolean; log_times?: boolean }) =>
+    call(`${premisePath(slug)}/gate-pass`, { method: 'PUT', body: JSON.stringify(change) });
+
+export const rotateGuardLink = (slug: string): Promise<{ guard_link: string }> =>
+    call(`${premisePath(slug)}/guard-link/rotate`, { method: 'POST', body: '{}' });
+
+export const addTeamMember = (slug: string, member: { phone: string; name?: string; role: string }): Promise<TeamMember> =>
+    call(`${premisePath(slug)}/team`, { method: 'POST', body: JSON.stringify(member) });
+
+export const removeTeamMember = (slug: string, id: string): Promise<{ ok: boolean }> =>
+    call(`${premisePath(slug)}/team/${encodeURIComponent(id)}`, { method: 'DELETE' });
+
+// --- The gateman, signed in: verify a pass, admit with the ID they read from the visitor's ID, check out ---
+export interface GateVisitor { name: string; purpose: string; host_label: string; expires_at: string | null; }
+export type PassState = 'valid' | 'used' | 'expired' | 'unavailable';
+export interface InsideVisitor { id: string; visitor_name: string; purpose: string; host_label: string; arrived_at: string; }
+
+export const getGate = (slug: string): Promise<{ premise: { slug: string; name: string; log_times: boolean }; inside: InsideVisitor[] | null }> =>
+    call(`/gate/${encodeURIComponent(slug)}`);
+
+export const gateCheck = (slug: string, code: string): Promise<{ state: PassState; can_admit: boolean; visitor: GateVisitor }> =>
+    call(`/gate/${encodeURIComponent(slug)}/check`, { method: 'POST', body: JSON.stringify({ code }) });
+
+export const gateAdmit = (slug: string, code: string, idNumber: string): Promise<{ admitted: boolean; state: PassState; visitor: GateVisitor }> =>
+    call(`/gate/${encodeURIComponent(slug)}/admit`, { method: 'POST', body: JSON.stringify({ code, id_number: idNumber }) });
+
+export const gateCheckout = (slug: string, visitor: string): Promise<{ ok: boolean; visitor_name: string }> =>
+    call(`/gate/${encodeURIComponent(slug)}/checkout`, { method: 'POST', body: JSON.stringify({ visitor }) });
 
 // --- Data Fetching (GET) ---
 export const getProviders = (): Promise<ServiceProvider[]> => Promise.resolve(mockProviders);

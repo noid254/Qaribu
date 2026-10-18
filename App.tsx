@@ -12,7 +12,7 @@ import NikoSoko from './components/NikoSoko';
 import ServiceMarketplace from './components/ServiceMarketplace';
 import MyPlaces from './components/MyPlaces';
 import GatePass from './components/GatePass';
-import InviteVisitor from './components/InviteVisitor';
+import VisitorsHub from './components/VisitorsHub';
 import JourneyPage from './components/JourneyPage';
 import InvoiceHub from './components/InvoiceHub';
 import InvoiceGenerator from './components/InvoiceGenerator';
@@ -410,7 +410,7 @@ function App() {
         );
       case 'invite':
         return (
-          <InviteVisitor
+          <VisitorsHub
             isAuthenticated={isAuthenticated}
             onSignIn={() => setIsAuthModalOpen(true)}
             onBack={() => setCurrentPage('home')}
