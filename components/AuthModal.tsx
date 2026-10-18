@@ -23,7 +23,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose, onLogin }) => {
   const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError('');
     const input = e.target.value.replace(/\D/g, '');
-    setOtp(input.slice(0, 4));
+    setOtp(input.slice(0, 6));
   };
 
   const handleContinue = async (e: React.FormEvent) => {
@@ -46,8 +46,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose, onLogin }) => {
   
   const handleConfirm = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (otp.length < 4) {
-        setError("Please enter the 4-digit OTP.");
+    if (otp.length < 6) {
+        setError("Please enter the 6-digit code.");
         return;
     }
     setIsLoading(true);
@@ -61,17 +61,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose, onLogin }) => {
     } finally {
         setIsLoading(false);
     }
-  };
-
-  const handleDemoGatemanLogin = () => {
-      setPhone('711111111');
-      setOtp('1234');
-      setStep(2);
-      // Auto-submit slightly delayed to allow UI to update
-      setTimeout(() => {
-          const fullPhone = '254711111111';
-          api.verifyOtp(fullPhone, '1234').then(response => onLogin(response, fullPhone));
-      }, 300);
   };
 
   return (
@@ -106,32 +95,25 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose, onLogin }) => {
             <button type="submit" disabled={isLoading} className="w-full bg-brand-gold text-brand-navy font-bold py-2 px-4 rounded-lg hover:opacity-90 transition-colors disabled:bg-gray-400 active-scale">
               {isLoading ? 'Sending...' : 'Continue'}
             </button>
-            
-            <div className="mt-4 pt-4 border-t border-gray-100">
-                <button type="button" onClick={handleDemoGatemanLogin} className="w-full text-xs text-blue-600 font-semibold hover:underline">
-                    Demo: Login as Security Guard
-                </button>
-            </div>
           </form>
         )}
 
         {step === 2 && (
           <form onSubmit={handleConfirm}>
-            <p className="text-gray-600 mb-2">Enter the 4-digit OTP sent to <span className="font-semibold">+254{phone}</span>.</p>
+            <p className="text-gray-600 mb-2">Enter the 6-digit code for <span className="font-semibold">+254{phone}</span>.</p>
             <button type="button" onClick={() => { setStep(1); setError(''); }} className="text-sm text-blue-600 hover:underline mb-4">Change number</button>
             <div className="mb-6">
               <label htmlFor="otp" className="block text-sm font-medium text-gray-700">OTP Code</label>
               <input 
                 type="tel" 
                 id="otp" 
-                maxLength={4} 
+                maxLength={6}
                 value={otp} 
                 onChange={handleOtpChange} 
                 required 
                 autoFocus 
                 className="mt-1 block w-full text-center tracking-[1em] text-lg px-3 py-3 border-0 bg-gray-100 rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-brand-gold sm:text-sm"
               />
-              <p className="text-xs text-center text-gray-500 mt-2">(Superadmin OTP: 3232)</p>
             </div>
             <button type="submit" disabled={isLoading} className="w-full bg-brand-gold text-brand-navy font-bold py-2 px-4 rounded-lg hover:opacity-90 transition-colors disabled:bg-gray-400 active-scale">
                 {isLoading ? 'Verifying...' : 'Confirm & Sign In'}
