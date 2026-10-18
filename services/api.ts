@@ -128,6 +128,7 @@ export interface Membership {
     log_times: boolean;
     can_invite: boolean;
     can_manage: boolean;
+    can_manage_vacancies: boolean;
     can_run_gate: boolean;
     assignable_roles: string[];
 }
@@ -218,6 +219,67 @@ export const addTeamMember = (slug: string, member: { phone: string; name?: stri
 
 export const removeTeamMember = (slug: string, id: string): Promise<{ ok: boolean }> =>
     call(`${premisePath(slug)}/team/${encodeURIComponent(id)}`, { method: 'DELETE' });
+
+// --- Premise sign-up: register a premise and get its page and sticker straight away ---
+export interface PremiseLinks { page: string; sticker: string; qr: string; }
+
+export const registerMyPremise = (details: {
+    name: string;
+    area?: string;
+    county?: string;
+    tagline?: string;
+    about?: string;
+    listed?: boolean;
+}): Promise<{ slug: string; links: PremiseLinks }> => call('/premises', { method: 'POST', body: JSON.stringify(details) });
+
+// --- Vacancies and the people waiting to hear about them (owner, manager, caretaker) ---
+export interface VacancyItem {
+    id: string;
+    title: string;
+    type: string;
+    rent: number | null;
+    available_from: string | null;
+    notes: string;
+    confirmed_at: string;
+    shown_on_page: boolean; // hidden from the public page when not confirmed in the last 14 days
+    timing: 'now' | 'upcoming';
+}
+
+export interface WaitingPerson {
+    id: string;
+    name: string;
+    phone: string;
+    looking_for: string;
+    since: string;
+    sms_link: string | null;
+    whatsapp_link: string | null;
+}
+
+export interface VacanciesView {
+    premise: { slug: string; name: string };
+    links: PremiseLinks | null;
+    vacancies: VacancyItem[];
+    waiting: WaitingPerson[];
+    message: string | null; // what to send the people waiting once a vacancy opens
+}
+
+export interface VacancyFields { title: string; type?: string; rent?: string; available_from?: string; notes?: string; }
+
+const vacPath = (slug: string) => `/vacancies/${encodeURIComponent(slug)}`;
+
+export const getVacancies = (slug: string): Promise<VacanciesView> => call(vacPath(slug));
+export const addVacancy = (slug: string, fields: VacancyFields): Promise<VacancyItem> =>
+    call(vacPath(slug), { method: 'POST', body: JSON.stringify(fields) });
+export const updateVacancy = (slug: string, id: string, fields: VacancyFields): Promise<VacancyItem> =>
+    call(`${vacPath(slug)}/${encodeURIComponent(id)}`, { method: 'PUT', body: JSON.stringify(fields) });
+export const confirmVacancy = (slug: string, id: string): Promise<VacancyItem> =>
+    call(`${vacPath(slug)}/${encodeURIComponent(id)}/confirm`, { method: 'POST', body: '{}' });
+export const removeVacancy = (slug: string, id: string): Promise<{ ok: boolean }> =>
+    call(`${vacPath(slug)}/${encodeURIComponent(id)}`, { method: 'DELETE' });
+export const markWaitingTold = (slug: string, id: string): Promise<{ ok: boolean }> =>
+    call(`${vacPath(slug)}/waiting/${encodeURIComponent(id)}/told`, { method: 'POST', body: '{}' });
+export const removeWaiting = (slug: string, id: string): Promise<{ ok: boolean }> =>
+    call(`${vacPath(slug)}/waiting/${encodeURIComponent(id)}`, { method: 'DELETE' });
 
 // --- The gateman, signed in: verify a pass, admit with the ID they read from the visitor's ID, check out ---
 export interface GateVisitor { name: string; purpose: string; host_label: string; expires_at: string | null; }

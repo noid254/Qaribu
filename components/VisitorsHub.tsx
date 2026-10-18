@@ -5,6 +5,8 @@ import GateTab from './visitors/GateTab';
 import InviteTab from './visitors/InviteTab';
 import ManageTab from './visitors/ManageTab';
 import MyDetails from './visitors/MyDetails';
+import SignUpPremise from './visitors/SignUpPremise';
+import VacanciesTab from './visitors/VacanciesTab';
 import { fieldClass, roleLabel } from './visitors/shared';
 
 interface VisitorsHubProps {
@@ -13,7 +15,7 @@ interface VisitorsHubProps {
   onBack: () => void;
 }
 
-type TabKey = 'invite' | 'expected' | 'gate' | 'manage';
+type TabKey = 'invite' | 'expected' | 'gate' | 'vacancies' | 'manage';
 
 // What a person can do on a premise follows their role there. The server checks the role again on every call;
 // this only decides which tabs to show, so nobody is offered a button that would be refused.
@@ -21,6 +23,7 @@ const tabsFor = (m: api.Membership): { key: TabKey; label: string }[] => {
   const tabs: { key: TabKey; label: string }[] = [];
   if (m.gate_pass_enabled && m.can_invite) tabs.push({ key: 'invite', label: 'Invite' }, { key: 'expected', label: 'Expected' });
   if (m.gate_pass_enabled && m.can_run_gate) tabs.push({ key: 'gate', label: 'Gate' });
+  if (m.can_manage_vacancies) tabs.push({ key: 'vacancies', label: 'Vacancies' });
   if (m.can_manage) tabs.push({ key: 'manage', label: 'Manage' });
   return tabs;
 };
@@ -32,14 +35,19 @@ const VisitorsHub: React.FC<VisitorsHubProps> = ({ isAuthenticated, onSignIn, on
   const [loadError, setLoadError] = useState('');
   const [slug, setSlug] = useState('');
   const [tab, setTab] = useState<TabKey | ''>('');
+  const [registering, setRegistering] = useState(false);
 
-  const refresh = () =>
+  // Reloads who the person is and where they belong. Passing a slug opens that premise (after registering one).
+  const refresh = (open?: string) =>
     api
       .getMe()
       .then((me) => {
         setAccount({ phone: me.account.phone, name: me.account.name });
         setMemberships(me.memberships);
-        setSlug((current) => (me.memberships.some((m) => m.slug === current) ? current : me.memberships[0]?.slug ?? ''));
+        setSlug((current) => {
+          const want = open ?? current;
+          return me.memberships.some((m) => m.slug === want) ? want : me.memberships[0]?.slug ?? '';
+        });
       })
       .catch((err: Error) => setLoadError(err.message));
 
@@ -76,13 +84,28 @@ const VisitorsHub: React.FC<VisitorsHubProps> = ({ isAuthenticated, onSignIn, on
         {isAuthenticated && isLoading && <p className="text-center text-gray-500">Loading…</p>}
         {isAuthenticated && loadError && <p className="text-center text-red-500">{loadError}</p>}
 
-        {isAuthenticated && !isLoading && !loadError && memberships.length === 0 && (
-          <div className="bg-white rounded-xl shadow p-6 text-center text-gray-700">
-            This account is not on a premise yet. Ask the owner or manager of your building to add your phone number.
+        {isAuthenticated && !isLoading && !loadError && registering && (
+          <SignUpPremise
+            onCancel={() => setRegistering(false)}
+            onDone={(opened) => {
+              setRegistering(false);
+              setTab('vacancies'); // the next thing a new premise needs is its vacancies
+              void refresh(opened);
+            }}
+          />
+        )}
+
+        {isAuthenticated && !isLoading && !loadError && !registering && memberships.length === 0 && (
+          <div className="bg-white rounded-xl shadow p-6 text-center text-gray-700 space-y-4">
+            <p>This account is not on a premise yet.</p>
+            <button onClick={() => setRegistering(true)} data-testid="register-premise" className="w-full bg-brand-gold text-brand-navy font-bold py-3 px-4 rounded-lg active-scale">
+              Register a premise
+            </button>
+            <p className="text-xs text-gray-500">Or ask the owner or manager of your building to add your phone number.</p>
           </div>
         )}
 
-        {premise && (
+        {premise && !registering && (
           <>
             {memberships.length > 1 ? (
               <div>
@@ -124,7 +147,12 @@ const VisitorsHub: React.FC<VisitorsHubProps> = ({ isAuthenticated, onSignIn, on
             {activeTab === 'invite' && <InviteTab key={premise.slug} premise={premise} />}
             {activeTab === 'expected' && <ExpectedTab key={premise.slug} premise={premise} />}
             {activeTab === 'gate' && <GateTab key={premise.slug} premise={premise} />}
+            {activeTab === 'vacancies' && <VacanciesTab key={premise.slug} premise={premise} />}
             {activeTab === 'manage' && <ManageTab key={premise.slug} premise={premise} onChanged={() => void refresh()} />}
+
+            <button onClick={() => setRegistering(true)} data-testid="register-another" className="block w-full text-center text-sm text-blue-600 hover:underline pt-2">
+              Register another premise
+            </button>
           </>
         )}
       </div>
