@@ -1,103 +1,68 @@
+// Service worker: keeps the app shell available and nothing else.
+//
+// It must never touch /api/ (answers about one signed-in person that change as visitors arrive) or the link
+// pages /g/, /v/ and /q/ (a pass's state changes when it is used). Those share this origin, and an earlier
+// version cached every GET, which served stale lists and could show one person another person's answer.
+// So only the shell and the hashed build assets are handled here; every other request goes straight to the
+// network and is never stored.
 
-const CACHE_NAME = 'niko-soko-cache-v6';
-// This list should include all the static assets that make up the app shell.
-const urlsToCache = [
-  '/',
-  '/index.html',
-  '/index.tsx',
-  '/config.ts',
-  '/App.tsx',
-  '/types.ts',
-  '/services/api.ts',
-  '/services/mockData.ts',
-  // API Mocks
-  '/api/providers',
-  '/api/catalogue',
-  '/api/documents',
-  '/api/invitations',
-  '/api/gigs',
-  '/api/categories',
-  '/api/banners',
-  '/api/messages',
-  // Components
-  '/components/AddServiceCardView.tsx',
-  '/components/AuthModal.tsx',
-  '/components/BusinessAssets.tsx',
-  '/components/CatalogueItemDetailModal.tsx',
-  '/components/CatalogueView.tsx',
-  '/components/DoorProfile.tsx',
-  '/components/DocumentDetailView.tsx',
-  '/components/GatePass.tsx',
-  '/components/GigCard.tsx',
-  '/components/InvoiceGenerator.tsx',
-  '/components/InvoiceHub.tsx',
-  '/components/LoadingSpinner.tsx',
-  '/components/MyDocumentsView.tsx',
-  '/components/ProfileView.tsx',
-  '/components/QuoteGenerator.tsx',
-  '/components/ReceiptGenerator.tsx',
-  '/components/ScanDocumentView.tsx',
-  '/components/ServiceCard.tsx',
-  '/components/SuperAdminDashboard.tsx',
-  '/components/NikoSoko.tsx',
-  '/components/Tukosoko.tsx',
-  '/components/GigsPage.tsx',
-  '/components/MyToolkit.tsx',
-  '/components/WorkshopSetup.tsx',
-  '/components/PremisePublicView.tsx',
-  '/components/CheckInRequestModal.tsx',
-  '/components/admin/AnalyticsPage.tsx',
-  '/components/admin/AppearancePage.tsx',
-  '/components/admin/BroadcastPage.tsx',
-  '/components/admin/CategoriesPage.tsx',
-  '/components/admin/DashboardPage.tsx',
-  '/components/admin/OrganizationsPage.tsx',
-  '/components/admin/UsersPage.tsx',
-  // External assets
-  'https://cdn.tailwindcss.com',
-  'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js'
-];
+const CACHE_NAME = 'qaribu-shell-v7';
+const SHELL = ['/', '/index.html', '/manifest.json'];
 
-self.addEventListener('install', event => {
+self.addEventListener('install', (event) => {
   self.skipWaiting();
+  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(SHELL).catch(() => undefined)));
+});
+
+// Deleting every other cache also clears whatever the old version stored, including old API answers.
+self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('Opened cache');
-        const requests = urlsToCache.map(url => new Request(url, { cache: 'reload' }));
-        return cache.addAll(requests).catch(err => {
-            console.error('Failed to cache all URLs:', err);
-        });
-      })
+    caches
+      .keys()
+      .then((names) => Promise.all(names.filter((name) => name !== CACHE_NAME).map((name) => caches.delete(name))))
+      .then(() => self.clients.claim()),
   );
 });
 
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    }).then(() => self.clients.claim())
-  );
-});
+// What this worker may serve: the shell and the content-hashed files under /assets/.
+const handles = (url) =>
+  url.origin === self.location.origin &&
+  (SHELL.includes(url.pathname) || url.pathname.startsWith('/assets/'));
 
-self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
-  
+self.addEventListener('fetch', (event) => {
+  const request = event.request;
+  if (request.method !== 'GET') return;
+  const url = new URL(request.url);
+  if (!handles(url)) return; // the browser handles it normally: not cached, not intercepted
+
+  if (url.pathname.startsWith('/assets/')) {
+    // Hashed file names never change content, so the cached copy is always right.
+    event.respondWith(
+      caches.match(request).then(
+        (cached) =>
+          cached ||
+          fetch(request).then((response) => {
+            if (response.ok) {
+              const copy = response.clone();
+              caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+            }
+            return response;
+          }),
+      ),
+    );
+    return;
+  }
+
+  // The shell: the network first, so a new deploy shows at once; the cached copy only when offline.
   event.respondWith(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.match(event.request).then(response => {
-        const fetchPromise = fetch(event.request).then(networkResponse => {
-            cache.put(event.request, networkResponse.clone());
-            return networkResponse;
-        });
-        return response || fetchPromise;
-      });
-    })
+    fetch(request)
+      .then((response) => {
+        if (response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+        }
+        return response;
+      })
+      .catch(() => caches.match(request).then((cached) => cached || Response.error())),
   );
 });
