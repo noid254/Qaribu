@@ -132,7 +132,15 @@ export interface Membership {
     assignable_roles: string[];
 }
 
-export const getMe = (): Promise<{ account: Account; premises: HostPremise[]; memberships: Membership[] }> => call('/me');
+// The person profile: the Nikosoko lens on this same account. A name is all it needs.
+export interface PersonProfile { id: string; name: string; visibility: string; }
+
+export const getMe = (): Promise<{ account: Account; profile: PersonProfile | null; premises: HostPremise[]; memberships: Membership[] }> =>
+    call('/me');
+
+// The person sets their own name; their profile follows. One account serves Qaribu and Nikosoko.
+export const setMyName = (name: string): Promise<{ account: Account; profile: PersonProfile | null }> =>
+    call('/me/profile', { method: 'PUT', body: JSON.stringify({ name }) });
 
 export const getMyProfile = async (): Promise<ServiceProvider> => {
     if (!getToken()) throw new Error('No valid token');
