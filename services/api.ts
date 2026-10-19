@@ -344,7 +344,7 @@ export const createGig = (gigData: Omit<Gig, 'id' | 'providerId'>): Promise<Gig>
     
 export const addDocument = (docData: Omit<Document, 'id'>): Promise<Document> =>
     new Promise(resolve => {
-        const newDoc: Document = { ...docData, id: `doc_${Date.now()}` };
+        const newDoc: Document = { ...docData, id: `doc_${Date.now()}_${Math.random().toString(36).slice(2, 7)}` };
         mockDocuments.push(newDoc);
         resolve(newDoc);
     });
