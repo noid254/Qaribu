@@ -9,7 +9,9 @@ interface BrandKitFormProps {
   onCancel?: () => void;
 }
 
-const STEPS = ['Business', 'Contact', 'How you get paid', 'Review'];
+const STEPS = ['Business', 'Contact', 'Payment and receipts', 'Review'];
+
+const DEFAULT_RECEIPT_NOTE = 'Goods once sold cannot be re-accepted.';
 
 // The brand kit set-up, in the four steps the earlier app's "My Workshop" used: business, contact, how you get
 // paid, review. The business name, address and phone are needed, and so are the terms (accepted once). The rest
@@ -23,6 +25,8 @@ const BrandKitForm: React.FC<BrandKitFormProps> = ({ initial, onSaved, onCancel 
   const [taxPin, setTaxPin] = useState(initial?.tax_pin ?? '');
   const [tagline, setTagline] = useState(initial?.tagline ?? '');
   const [paymentDetails, setPaymentDetails] = useState(initial?.payment_details ?? '');
+  // The note starts as the usual returns line, also for a brand kit saved before receipts had a note.
+  const [receiptNote, setReceiptNote] = useState(initial?.receipt_note || DEFAULT_RECEIPT_NOTE);
   const [agreed, setAgreed] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -51,6 +55,7 @@ const BrandKitForm: React.FC<BrandKitFormProps> = ({ initial, onSaved, onCancel 
         tax_pin: taxPin,
         tagline,
         payment_details: paymentDetails,
+        receipt_note: receiptNote,
         accept_terms: termsDone ? undefined : agreed,
       });
       onSaved(kit);
@@ -156,6 +161,11 @@ const BrandKitForm: React.FC<BrandKitFormProps> = ({ initial, onSaved, onCancel 
             />
             <p className="text-xs text-gray-500 mt-1">Printed on your invoices and quotes, exactly as you write it.</p>
           </div>
+          <div>
+            <label htmlFor="bkNote" className="block text-sm font-medium text-gray-700">Note at the bottom of your receipts <span className="text-gray-400">(optional)</span></label>
+            <input id="bkNote" value={receiptNote} onChange={(e) => setReceiptNote(e.target.value)} maxLength={160} className={fieldClass} />
+            <p className="text-xs text-gray-500 mt-1">For example your returns policy. Change it to suit your shop.</p>
+          </div>
           <div className="flex gap-2">
             <button type="button" onClick={back} className="shrink-0 border border-gray-300 text-gray-700 font-semibold py-3 px-4 rounded-lg">Back</button>
             <button type="submit" className={primaryButton}>Review</button>
@@ -173,6 +183,7 @@ const BrandKitForm: React.FC<BrandKitFormProps> = ({ initial, onSaved, onCancel 
             {row('KRA PIN', taxPin)}
             {row('One line', tagline)}
             {row('How you get paid', paymentDetails)}
+            {row('Receipt note', receiptNote)}
           </div>
           {termsDone ? (
             <p className="text-xs text-gray-500">
