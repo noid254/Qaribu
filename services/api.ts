@@ -675,6 +675,7 @@ export interface BrandKit {
     tax_pin: string;
     tagline: string;
     payment_details: string;
+    receipt_note: string; // printed at the foot of every receipt
     terms_accepted_at: string; // empty until the terms are accepted
     complete: boolean;
 }
@@ -689,13 +690,31 @@ export const saveBrandKit = (input: {
     tax_pin?: string;
     tagline?: string;
     payment_details?: string;
+    receipt_note?: string;
     accept_terms?: boolean;
 }): Promise<BrandKit> => call('/me/brand-kit', { method: 'PUT', body: JSON.stringify(input) });
+
+// One line of a receipt, as the shop types it (strings, as typed) and as the server returns it.
+export interface ReceiptLineInput {
+    description: string;
+    qty: string;
+    unit_price: string;
+    serial?: string;
+}
+
+export interface ReceiptLine {
+    description: string;
+    qty: number;
+    unit_price: number;
+    total: number;
+    serial: string;
+}
 
 export interface CreatedReceipt {
     id: string;
     number: string;
     amount: number;
+    items: ReceiptLine[];
     receipt_url: string;
     customer_phone: string;
     message: string;
@@ -703,17 +722,23 @@ export interface CreatedReceipt {
     whatsapp_link: string;
 }
 
-export const issueReceipt = (input: { customer_phone: string; amount: string; purpose?: string }): Promise<CreatedReceipt> =>
+export const issueReceipt = (input: { customer_phone: string; items: ReceiptLineInput[] }): Promise<CreatedReceipt> =>
     call('/receipts', { method: 'POST', body: JSON.stringify(input) });
 
 export interface ReceiptItem {
     id: string;
     number: string;
     amount: number;
-    purpose: string;
+    item_count: number;
+    first_item: string;
     customer_name: string;
     customer_phone: string;
     issued_at: string;
+    // Null when the link has been switched off.
+    receipt_url: string | null;
+    message: string | null;
+    sms_link: string | null;
+    whatsapp_link: string | null;
 }
 
 export const getReceipts = (): Promise<{ receipts: ReceiptItem[] }> => call('/receipts');
