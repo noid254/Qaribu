@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as api from '../../services/api';
+import ClaimPanel from './ClaimPanel';
 
 interface ReceiptPreviewProps {
   id: string;
@@ -8,13 +9,16 @@ interface ReceiptPreviewProps {
   // Only the shop that issued it can send the link again; a customer looking at their own receipt has no such buttons.
   smsLink?: string | null;
   whatsappLink?: string | null;
+  // A receipt issued to me: any serial-numbered items on it can be claimed as my assets (architecture section 24).
+  claimable?: boolean;
+  onOpenAssets?: () => void;
   onClose: () => void;
 }
 
 // A receipt, shown as the customer sees it: the real receipt page, fetched signed in and put in a frame. The
 // customer's own link is never opened for this, because it opens only once, and nothing is drawn twice, so what is
 // previewed is what the customer gets. A receipt cannot be edited or deleted, so there is no such button here.
-const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ id, number, kind = 'receipt', smsLink, whatsappLink, onClose }) => {
+const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ id, number, kind = 'receipt', smsLink, whatsappLink, claimable = false, onOpenAssets, onClose }) => {
   const [html, setHtml] = useState<string | null>(null);
   const [error, setError] = useState('');
   const frame = useRef<HTMLIFrameElement>(null);
@@ -47,6 +51,8 @@ const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ id, number, kind = 'rec
           <iframe ref={frame} title={`Receipt ${number}`} srcDoc={html} sandbox="allow-same-origin allow-modals" className="w-full h-full bg-white" />
         )}
       </div>
+
+      {html !== null && claimable && <ClaimPanel receiptId={id} onOpenAssets={onOpenAssets} />}
 
       {html !== null && (
         <div className="bg-white border-t p-3 max-w-md w-full mx-auto">

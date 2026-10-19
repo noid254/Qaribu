@@ -9,6 +9,8 @@ interface DocumentsHubProps {
   isAuthenticated: boolean;
   onSignIn: () => void;
   onBack: () => void;
+  // The way to My assets, offered after an item is claimed from a receipt.
+  onOpenAssets?: () => void;
   // Where to open: issuing a receipt, an invoice or a quote, or the brand kit itself.
   start: 'receipt' | 'invoice' | 'quote' | 'brandKit';
 }
@@ -31,7 +33,7 @@ const KINDS: { key: 'receipt' | 'invoice' | 'quote'; label: string }[] = [
 // Business documents. Anyone signed in can look at what has been issued to their number. To make a document a person
 // first sets up their brand kit (the owner's rule, architecture section 23); until they have, Issue and Issued show
 // the set-up and nothing else. The server refuses to issue without one as well.
-const DocumentsHub: React.FC<DocumentsHubProps> = ({ isAuthenticated, onSignIn, onBack, start }) => {
+const DocumentsHub: React.FC<DocumentsHubProps> = ({ isAuthenticated, onSignIn, onBack, onOpenAssets, start }) => {
   const [kit, setKit] = useState<api.BrandKit | null>(null);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState('');
@@ -95,7 +97,7 @@ const DocumentsHub: React.FC<DocumentsHubProps> = ({ isAuthenticated, onSignIn, 
             {tab === 'received' && (
               <>
                 <p className="text-xs text-gray-500">Receipts, invoices and quotes issued to your phone number. Every one has its own ID, and none can be edited or deleted.</p>
-                <DocumentList mode="received" refreshKey={listKey} />
+                <DocumentList mode="received" refreshKey={listKey} onOpenAssets={onOpenAssets} />
               </>
             )}
 

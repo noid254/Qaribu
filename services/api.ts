@@ -831,3 +831,68 @@ export const getIssuedDocuments = (kind: DocumentKind | '' = '', search: Receipt
 // Everything issued to this person's phone number.
 export const getReceivedDocuments = (kind: DocumentKind | '' = '', search: ReceiptSearch = { q: '', from: '', to: '' }): Promise<{ documents: ReceiptItem[] }> =>
     call(`/me/documents${kindQuery(kind, search)}`);
+
+// --- The asset ledger (architecture section 24): items with one owner per serial number, and a history ---
+
+export type AssetKind = 'vehicle' | 'tool' | 'electronics' | 'other';
+
+export interface LedgerAsset {
+    id: string;
+    kind: AssetKind;
+    name: string;
+    make_model: string;
+    year: string;
+    serial: string; // a serial number, or a vehicle's registration plate
+    notes: string;
+    verification: 'unverified' | 'verified';
+    source: 'self' | 'receipt';
+    created_at: string;
+}
+
+export interface LedgerEvent {
+    event: string; // registered, claimed_from_receipt, transferred
+    at: string;
+    from: string; // the other person, as the last digits of their phone
+    to: string;
+    receipt_number: string;
+    shop_name: string;
+}
+
+export interface AssetInput {
+    kind: AssetKind;
+    name: string;
+    make_model?: string;
+    year?: string;
+    serial: string;
+    notes?: string;
+}
+
+export const getLedgerAssets = (): Promise<{ assets: LedgerAsset[] }> => call('/assets');
+
+export const registerLedgerAsset = (input: AssetInput): Promise<{ asset: LedgerAsset }> =>
+    call('/assets', { method: 'POST', body: JSON.stringify(input) });
+
+export const getLedgerAsset = (id: string): Promise<{ asset: LedgerAsset; history: LedgerEvent[] }> => call(`/assets/${encodeURIComponent(id)}`);
+
+export interface OwnershipResult {
+    registered: boolean;
+    matches: { kind: AssetKind; name: string; verification: 'unverified' | 'verified'; owner: string; since: string }[];
+}
+
+// Before buying: is this serial number or plate registered, and to whom (the last digits of their phone only)?
+export const checkOwnership = (serial: string): Promise<OwnershipResult> => call(`/assets/check?serial=${encodeURIComponent(serial)}`);
+
+export type ClaimStatus = 'claimable' | 'yours' | 'from_seller' | 'registered';
+
+export interface ReceiptClaims {
+    receipt_id: string;
+    number: string;
+    shop_name: string;
+    items: { serial: string; description: string; status: ClaimStatus; asset_id: string | null }[];
+}
+
+// The serial numbers on a receipt issued to me, and what claiming each would do.
+export const getReceiptClaims = (receiptId: string): Promise<ReceiptClaims> => call(`/documents/${encodeURIComponent(receiptId)}/claims`);
+
+export const claimAsset = (input: { receipt_id: string; serial: string; kind: AssetKind }): Promise<{ asset: LedgerAsset; outcome: 'claimed' | 'transferred' }> =>
+    call('/assets/claim', { method: 'POST', body: JSON.stringify(input) });
