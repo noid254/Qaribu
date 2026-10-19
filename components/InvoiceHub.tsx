@@ -2,7 +2,7 @@
 import React from 'react';
 
 // Added 'scanDocument' to HubView to allow direct navigation to the scanning interface.
-type HubView = 'myDocuments' | 'quoteGenerator' | 'invoiceGenerator' | 'brandKit' | 'receiptGenerator' | 'scanDocument';
+type HubView = 'myDocuments' | 'quoteGenerator' | 'invoiceGenerator' | 'brandKit' | 'receiptGenerator' | 'scanDocument' | 'assetRegistry';
 
 interface InvoiceHubProps {
     onNavigate: (view: HubView) => void;
@@ -86,9 +86,9 @@ const InvoiceHub: React.FC<InvoiceHubProps> = ({ onNavigate, onBack }) => {
                         onClick={() => onNavigate('receiptGenerator')} 
                     />
                     <ActionCard 
-                        title="Scan Asset" 
+                        title="My Assets" 
                         icon={<ScanIcon/>} 
-                        onClick={() => onNavigate('scanDocument')} 
+                        onClick={() => onNavigate('assetRegistry')} 
                     />
                 </div>
             </section>

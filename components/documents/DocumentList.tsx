@@ -5,6 +5,7 @@ import { formatKsh } from './LineEditor';
 import ReceiptPreview from './ReceiptPreview';
 
 interface DocumentListProps {
+  onOpenAssets?: () => void;
   // 'issued': what this person's business has issued. 'received': what has been issued to this person's number.
   mode: 'issued' | 'received';
   refreshKey: number;
@@ -23,7 +24,7 @@ const dayText = (ymd: string) => new Date(`${ymd}T00:00:00Z`).toLocaleDateString
 // Every receipt, invoice and quote, newest first, found by the person's name, a phone number, a number or ID (or the
 // shop's name, for what you received), by kind, and by day. They are history: they can be opened and searched, never
 // edited or deleted, so nothing here does either.
-const DocumentList: React.FC<DocumentListProps> = ({ mode, refreshKey }) => {
+const DocumentList: React.FC<DocumentListProps> = ({ mode, refreshKey, onOpenAssets }) => {
   const [typed, setTyped] = useState<api.ReceiptSearch>(EMPTY);
   const [applied, setApplied] = useState<api.ReceiptSearch>(EMPTY);
   const [kind, setKind] = useState<api.DocumentKind | ''>('');
@@ -133,7 +134,7 @@ const DocumentList: React.FC<DocumentListProps> = ({ mode, refreshKey }) => {
         </button>
       ))}
 
-      {open && <ReceiptPreview id={open.id} number={open.number} kind={open.kind} smsLink={open.sms_link} whatsappLink={open.whatsapp_link} onClose={() => setOpen(null)} />}
+      {open && <ReceiptPreview id={open.id} number={open.number} kind={open.kind} smsLink={open.sms_link} whatsappLink={open.whatsapp_link} claimable={mode === 'received' && open.kind === 'receipt'} onOpenAssets={onOpenAssets} onClose={() => setOpen(null)} />}
     </div>
   );
 };

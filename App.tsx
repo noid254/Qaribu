@@ -16,6 +16,7 @@ import VisitorsHub from './components/VisitorsHub';
 import JourneyPage from './components/JourneyPage';
 import InvoiceHub from './components/InvoiceHub';
 import DocumentsHub from './components/documents/DocumentsHub';
+import AssetsHub from './components/assets/AssetsHub';
 import MyDocumentsView from './components/MyDocumentsView';
 import ScanDocumentView from './components/ScanDocumentView';
 import Tukosoko from './components/Tukosoko';
@@ -485,6 +486,7 @@ function App() {
             start={currentPage === 'invoiceGenerator' ? 'invoice' : currentPage === 'quoteGenerator' ? 'quote' : 'receipt'}
             isAuthenticated={isAuthenticated}
             onSignIn={() => setIsAuthModalOpen(true)}
+            onOpenAssets={() => setCurrentPage('assetRegistry')}
             onBack={() => setCurrentPage('invoices')}
           />
         );
@@ -666,26 +668,18 @@ function App() {
       case 'messages':
         return <MessageCenterView onBack={() => setCurrentPage('home')} />;
       case 'assetRegistry':
-        return (
-          <AssetRegistryView
-            documents={documents}
-            currentUser={currentUser}
-            onNavigate={setCurrentPage}
-            onSelectDocument={(doc) => { setSelectedDocument(doc); setCurrentPage('documentDetail'); }}
-          />
-        );
       case 'registerAsset':
-        return (
-          <RegisterAssetView
-            onBack={() => setCurrentPage('assetRegistry')}
-            // The owner is whoever is signed in. My Garage lists the assets whose owner is the signed-in phone, so an
-            // asset saved without one was kept but never shown.
-            onSave={async (doc) => { const newDoc = await api.addDocument({ ...doc, ownerPhone: currentUser?.phone }); setDocuments(prev => [newDoc, ...prev]); setCurrentPage('assetRegistry'); }}
-          />
-        );
       case 'ownershipCheck':
-        return <OwnershipCheckView allDocuments={documents} />;
-      case 'brandKit':
+        // The asset ledger, kept on the server (architecture section 24): one owner per serial number, a history, and a
+        // check before you buy. The earlier prototype screens kept assets only in the page.
+        return (
+          <AssetsHub
+            start={currentPage === 'registerAsset' ? 'register' : currentPage === 'ownershipCheck' ? 'check' : 'mine'}
+            isAuthenticated={isAuthenticated}
+            onSignIn={() => setIsAuthModalOpen(true)}
+            onBack={() => setCurrentPage('invoices')}
+          />
+        );      case 'brandKit':
         // The brand kit is saved on the server, on the account. The merchandise studio that used to live here is
         // phase 9 (see docs/earlier-version-review.md in qaribu-platform).
         return (
