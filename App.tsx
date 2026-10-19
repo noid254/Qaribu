@@ -514,7 +514,8 @@ function App() {
         return (
           <ScanDocumentView
             onBack={() => setCurrentPage('myDocuments')}
-            onSave={async (doc) => { const newDoc = await api.addDocument(doc); setDocuments(prev => [newDoc, ...prev]); setCurrentPage('assetRegistry'); }}
+            // A scanned receipt with serial numbers is an asset, and its owner is whoever is signed in (see Register).
+            onSave={async (doc) => { const newDoc = await api.addDocument(doc.isAsset ? { ...doc, ownerPhone: currentUser?.phone } : doc); setDocuments(prev => [newDoc, ...prev]); setCurrentPage('assetRegistry'); }}
           />
         );
       case 'profile':
@@ -677,7 +678,9 @@ function App() {
         return (
           <RegisterAssetView
             onBack={() => setCurrentPage('assetRegistry')}
-            onSave={async (doc) => { const newDoc = await api.addDocument(doc); setDocuments(prev => [newDoc, ...prev]); setCurrentPage('assetRegistry'); }}
+            // The owner is whoever is signed in. My Garage lists the assets whose owner is the signed-in phone, so an
+            // asset saved without one was kept but never shown.
+            onSave={async (doc) => { const newDoc = await api.addDocument({ ...doc, ownerPhone: currentUser?.phone }); setDocuments(prev => [newDoc, ...prev]); setCurrentPage('assetRegistry'); }}
           />
         );
       case 'ownershipCheck':
