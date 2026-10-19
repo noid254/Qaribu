@@ -727,7 +727,12 @@ export const issueReceipt = (input: { customer_phone: string; customer_name?: st
     call('/receipts', { method: 'POST', body: JSON.stringify(input) });
 
 // A receipt in a list. A receipt can never be edited or deleted, so there is nothing here that does either.
+export type DocumentKind = 'receipt' | 'invoice' | 'quote';
+
 export interface ReceiptItem {
+    kind: DocumentKind;
+    due_date: string; // invoices
+    valid_until: string; // quotes
     id: string;
     uid: string; // unique across Qaribu
     number: string; // the shop's own running number
@@ -778,3 +783,51 @@ export const getReceiptPage = async (id: string): Promise<string> => {
     }
     return response.text();
 };
+
+// --- Invoices and quotes (architecture section 25) ---
+
+// What the shop typed for an invoice or a quote. Money and rates go as typed; the server works the sums out.
+export interface DocumentInput {
+    customer_phone: string;
+    customer_name: string;
+    customer_details?: string;
+    items: ReceiptLineInput[];
+    discount?: string;
+    tax_rate?: string; // left out: 16 for a business with a KRA PIN, else none
+    shipping?: string;
+    deposit?: string; // invoices only
+    due_date?: string; // invoices
+    valid_until?: string; // quotes
+    notes?: string;
+}
+
+export interface CreatedDocument {
+    id: string;
+    uid: string;
+    kind: 'invoice' | 'quote';
+    number: string;
+    amount: number; // the total
+    balance_due: number;
+    date: string; // the due date, or the last day a quote is valid
+    customer_phone: string;
+    message: string;
+    sms_link: string;
+    whatsapp_link: string;
+}
+
+export const issueDocument = (kind: 'invoice' | 'quote', input: DocumentInput): Promise<CreatedDocument> =>
+    call(kind === 'invoice' ? '/invoices' : '/quotes', { method: 'POST', body: JSON.stringify(input) });
+
+const kindQuery = (kind: DocumentKind | '', s: ReceiptSearch): string => {
+    const query = searchQuery(s);
+    if (!kind) return query;
+    return query ? `${query}&kind=${kind}` : `?kind=${kind}`;
+};
+
+// Every receipt, invoice and quote this person's business issued; kind narrows it.
+export const getIssuedDocuments = (kind: DocumentKind | '' = '', search: ReceiptSearch = { q: '', from: '', to: '' }): Promise<{ documents: ReceiptItem[] }> =>
+    call(`/documents${kindQuery(kind, search)}`);
+
+// Everything issued to this person's phone number.
+export const getReceivedDocuments = (kind: DocumentKind | '' = '', search: ReceiptSearch = { q: '', from: '', to: '' }): Promise<{ documents: ReceiptItem[] }> =>
+    call(`/me/documents${kindQuery(kind, search)}`);

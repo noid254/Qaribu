@@ -4,6 +4,7 @@ import * as api from '../../services/api';
 interface ReceiptPreviewProps {
   id: string;
   number: string;
+  kind?: 'receipt' | 'invoice' | 'quote';
   // Only the shop that issued it can send the link again; a customer looking at their own receipt has no such buttons.
   smsLink?: string | null;
   whatsappLink?: string | null;
@@ -13,7 +14,7 @@ interface ReceiptPreviewProps {
 // A receipt, shown as the customer sees it: the real receipt page, fetched signed in and put in a frame. The
 // customer's own link is never opened for this, because it opens only once, and nothing is drawn twice, so what is
 // previewed is what the customer gets. A receipt cannot be edited or deleted, so there is no such button here.
-const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ id, number, smsLink, whatsappLink, onClose }) => {
+const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ id, number, kind = 'receipt', smsLink, whatsappLink, onClose }) => {
   const [html, setHtml] = useState<string | null>(null);
   const [error, setError] = useState('');
   const frame = useRef<HTMLIFrameElement>(null);
@@ -35,7 +36,7 @@ const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ id, number, smsLink, wh
     <div data-testid="receipt-preview" className="fixed inset-0 z-50 bg-gray-100 flex flex-col" role="dialog" aria-label={`Receipt ${number}`}>
       <div className="bg-brand-navy text-white px-4 py-3 flex items-center">
         <button onClick={onClose} className="mr-3 text-xl" aria-label="Close preview" data-testid="receipt-preview-close">&larr;</button>
-        <h2 className="text-lg font-bold">Receipt {number}</h2>
+        <h2 className="text-lg font-bold">{kind[0]!.toUpperCase() + kind.slice(1)} {number}</h2>
       </div>
 
       <div className="flex-1 overflow-hidden max-w-md w-full mx-auto">
