@@ -32,6 +32,7 @@ const lineTotal = (l: Line): number => {
 const IssueReceipt: React.FC<{ onIssued: () => void }> = ({ onIssued }) => {
   const [lines, setLines] = useState<Line[]>([newLine()]);
   const [phone, setPhone] = useState(''); // 9 digits after +254
+  const [customerName, setCustomerName] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState('');
   const [receipt, setReceipt] = useState<api.CreatedReceipt | null>(null);
@@ -66,6 +67,7 @@ const IssueReceipt: React.FC<{ onIssued: () => void }> = ({ onIssued }) => {
     try {
       const made = await api.issueReceipt({
         customer_phone: `+254${phone}`,
+        customer_name: customerName.trim() || undefined,
         items: lines.map((l) => ({
           description: l.description,
           qty: l.hasSerial ? '1' : l.qty,
@@ -97,6 +99,7 @@ const IssueReceipt: React.FC<{ onIssued: () => void }> = ({ onIssued }) => {
     setShowPreview(false);
     setLines([newLine()]);
     setPhone('');
+    setCustomerName('');
     setError('');
   };
 
@@ -105,6 +108,7 @@ const IssueReceipt: React.FC<{ onIssued: () => void }> = ({ onIssued }) => {
       <div data-testid="receipt-issued" className="bg-white rounded-xl shadow p-5 space-y-4">
         <p className="bg-green-50 text-green-800 text-sm rounded-lg p-3 text-center">
           Receipt {receipt.number} for {formatKsh(receipt.amount)} is ready for {receipt.customer_phone}.
+          <span className="block text-xs text-green-700 mt-1">ID {receipt.uid}. It cannot be edited or deleted.</span>
         </p>
         <button onClick={() => setShowPreview(true)} data-testid="view-issued" className={primaryButton}>View the receipt</button>
         <p className="bg-gray-100 rounded-lg p-3 text-sm text-gray-700 break-words">{receipt.message}</p>
@@ -117,10 +121,10 @@ const IssueReceipt: React.FC<{ onIssued: () => void }> = ({ onIssued }) => {
         <button onClick={() => copy(receipt.message)} className="block w-full text-center border border-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg">
           {copied ? 'Copied' : 'Copy message'}
         </button>
-        <a href={receipt.receipt_url} target="_blank" rel="noopener noreferrer" className="block text-center text-sm text-blue-600 hover:underline">Open the receipt link</a>
+        <p className="text-xs text-gray-500 text-center">The link opens once for your customer, then asks for a code. Look at it here, not through the link.</p>
         <button onClick={reset} className="block w-full text-center text-sm text-blue-600 hover:underline">Issue another receipt</button>
         {showPreview && (
-          <ReceiptPreview number={receipt.number} url={receipt.receipt_url} smsLink={receipt.sms_link} whatsappLink={receipt.whatsapp_link} onClose={() => setShowPreview(false)} />
+          <ReceiptPreview id={receipt.id} number={receipt.number} smsLink={receipt.sms_link} whatsappLink={receipt.whatsapp_link} onClose={() => setShowPreview(false)} />
         )}
       </div>
     );
@@ -222,6 +226,10 @@ const IssueReceipt: React.FC<{ onIssued: () => void }> = ({ onIssued }) => {
       </div>
 
       <div className="bg-white rounded-xl shadow p-4 space-y-3">
+        <div>
+          <label htmlFor="rcName" className="block text-sm font-medium text-gray-700">Customer’s name <span className="text-gray-400">(optional)</span></label>
+          <input id="rcName" value={customerName} onChange={(e) => setCustomerName(e.target.value)} maxLength={80} placeholder="Printed as ‘Received from’" className={fieldClass} />
+        </div>
         {canPickContacts() && (
           <button type="button" onClick={pickContact} className="w-full border border-brand-gold text-brand-navy font-semibold py-2 px-4 rounded-lg">
             Choose customer from contacts

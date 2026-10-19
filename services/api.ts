@@ -712,6 +712,7 @@ export interface ReceiptLine {
 
 export interface CreatedReceipt {
     id: string;
+    uid: string;
     number: string;
     amount: number;
     items: ReceiptLine[];
@@ -722,23 +723,58 @@ export interface CreatedReceipt {
     whatsapp_link: string;
 }
 
-export const issueReceipt = (input: { customer_phone: string; items: ReceiptLineInput[] }): Promise<CreatedReceipt> =>
+export const issueReceipt = (input: { customer_phone: string; customer_name?: string; items: ReceiptLineInput[] }): Promise<CreatedReceipt> =>
     call('/receipts', { method: 'POST', body: JSON.stringify(input) });
 
+// A receipt in a list. A receipt can never be edited or deleted, so there is nothing here that does either.
 export interface ReceiptItem {
     id: string;
-    number: string;
+    uid: string; // unique across Qaribu
+    number: string; // the shop's own running number
+    shop_name: string;
     amount: number;
     item_count: number;
     first_item: string;
     customer_name: string;
     customer_phone: string;
     issued_at: string;
-    // Null when the link has been switched off.
-    receipt_url: string | null;
+    // Only in the shop's own list: the message to send the link again. Never in a customer's list.
     message: string | null;
     sms_link: string | null;
     whatsapp_link: string | null;
 }
 
-export const getReceipts = (): Promise<{ receipts: ReceiptItem[] }> => call('/receipts');
+// What the person typed in the search boxes: a name, a phone number, a receipt number or ID (or a shop name), and days.
+export interface ReceiptSearch { q: string; from: string; to: string; }
+
+const searchQuery = (s: ReceiptSearch): string => {
+    const params = new URLSearchParams();
+    if (s.q.trim()) params.set('q', s.q.trim());
+    if (s.from) params.set('from', s.from);
+    if (s.to) params.set('to', s.to);
+    const text = params.toString();
+    return text ? `?${text}` : '';
+};
+
+// The receipts this person issued.
+export const getReceipts = (search: ReceiptSearch = { q: '', from: '', to: '' }): Promise<{ receipts: ReceiptItem[] }> =>
+    call(`/receipts${searchQuery(search)}`);
+
+// The receipts issued to this person's phone number. No brand kit is needed to look.
+export const getMyReceipts = (search: ReceiptSearch = { q: '', from: '', to: '' }): Promise<{ receipts: ReceiptItem[] }> =>
+    call(`/me/receipts${searchQuery(search)}`);
+
+// One receipt as the page the customer sees, fetched signed in. This is how a receipt is previewed in the app: the
+// customer's link is never opened for it, because the link opens only once.
+export const getReceiptPage = async (id: string): Promise<string> => {
+    const token = getToken();
+    const response = await fetch(`${API_BASE_URL}/receipts/${encodeURIComponent(id)}/page`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        cache: 'no-store',
+    });
+    if (!response.ok) {
+        if (response.status === 401 && token) clearToken();
+        throw new ApiError(response.status, response.status === 401 ? ERROR_TEXT.sign_in_required : 'Could not load that receipt.');
+    }
+    return response.text();
+};
