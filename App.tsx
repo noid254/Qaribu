@@ -17,8 +17,7 @@ import JourneyPage from './components/JourneyPage';
 import InvoiceHub from './components/InvoiceHub';
 import InvoiceGenerator from './components/InvoiceGenerator';
 import QuoteGenerator from './components/QuoteGenerator';
-import ReceiptGenerator from './components/ReceiptGenerator';
-import BrandKitView from './components/BusinessAssets';
+import DocumentsHub from './components/documents/DocumentsHub';
 import MyDocumentsView from './components/MyDocumentsView';
 import ScanDocumentView from './components/ScanDocumentView';
 import Tukosoko from './components/Tukosoko';
@@ -469,14 +468,8 @@ function App() {
           />
         );
       case 'invoices':
-        if (!businessAssets) {
-            return (
-                <WorkshopSetup 
-                    onSetupComplete={handleBusinessSetupComplete}
-                    onBack={() => setCurrentPage('home')}
-                />
-            );
-        }
+        // The hub opens for everyone. Receipts and the brand kit are real and kept on the server (their own screens
+        // check the brand kit). Invoices and quotes still use the old on-device set-up until their turn.
         return (
           <InvoiceHub
             onNavigate={setCurrentPage}
@@ -512,13 +505,12 @@ function App() {
           />
         );
       case 'receiptGenerator':
-        if (!businessAssets) {
-             return <WorkshopSetup onSetupComplete={(assets) => { handleBusinessSetupComplete(assets); }} onBack={() => setCurrentPage('invoices')} />;
-        }
+        // Real receipts: the brand kit comes first, then issuing (architecture sections 22 and 23).
         return (
-          <ReceiptGenerator
-            assets={businessAssets}
-            onSave={async (doc) => { const newDoc = await api.addDocument(doc); setDocuments(prev => [newDoc, ...prev]); setCurrentPage('myDocuments'); }}
+          <DocumentsHub
+            start="receipts"
+            isAuthenticated={isAuthenticated}
+            onSignIn={() => setIsAuthModalOpen(true)}
             onBack={() => setCurrentPage('invoices')}
           />
         );
@@ -717,13 +709,14 @@ function App() {
       case 'ownershipCheck':
         return <OwnershipCheckView allDocuments={documents} />;
       case 'brandKit':
+        // The brand kit is saved on the server, on the account. The merchandise studio that used to live here is
+        // phase 9 (see docs/earlier-version-review.md in qaribu-platform).
         return (
-          <BrandKitView
-            assets={{ name: currentUser?.name || '', address: currentUser?.location || '', logo: currentUser?.avatarUrl || null }}
-            currentUser={currentUser}
-            onSave={() => {}}
-            onOrder={() => {}}
-            onAddToCatalogue={() => {}}
+          <DocumentsHub
+            start="brandKit"
+            isAuthenticated={isAuthenticated}
+            onSignIn={() => setIsAuthModalOpen(true)}
+            onBack={() => setCurrentPage('invoices')}
           />
         );
       case 'mytoolkit':

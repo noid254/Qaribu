@@ -47,6 +47,8 @@ const ERROR_TEXT: Record<string, string> = {
     pass_not_found: 'No pass found for that code.',
     not_checked_in: 'That visitor is not checked in.',
     too_many_attempts: 'Too many wrong codes. Wait a few minutes, then try again.',
+    brand_kit_required: 'Set up your brand kit first: your business name, address and phone.',
+    too_many_receipts: 'You have issued a lot of receipts. Wait a while and try again.',
 };
 
 export class ApiError extends Error {
@@ -661,3 +663,57 @@ export const sendShiftReport = (premiseId: string, stats: any): Promise<void> =>
         // Mock email sending delay
         setTimeout(resolve, 1500);
     });
+
+// --- Brand kit and receipts (architecture sections 22 and 23) ---
+
+// The name, address and details a business puts on its documents. Nothing can be issued until it is complete.
+export interface BrandKit {
+    business_name: string;
+    address: string;
+    phone: string; // +254..., may start as the account's own number
+    email: string;
+    tax_pin: string;
+    tagline: string;
+    payment_details: string;
+    terms_accepted_at: string; // empty until the terms are accepted
+    complete: boolean;
+}
+
+export const getBrandKit = (): Promise<BrandKit> => call('/me/brand-kit');
+
+export const saveBrandKit = (input: {
+    business_name: string;
+    address: string;
+    phone?: string;
+    email?: string;
+    tax_pin?: string;
+    tagline?: string;
+    payment_details?: string;
+    accept_terms?: boolean;
+}): Promise<BrandKit> => call('/me/brand-kit', { method: 'PUT', body: JSON.stringify(input) });
+
+export interface CreatedReceipt {
+    id: string;
+    number: string;
+    amount: number;
+    receipt_url: string;
+    customer_phone: string;
+    message: string;
+    sms_link: string;
+    whatsapp_link: string;
+}
+
+export const issueReceipt = (input: { customer_phone: string; amount: string; purpose?: string }): Promise<CreatedReceipt> =>
+    call('/receipts', { method: 'POST', body: JSON.stringify(input) });
+
+export interface ReceiptItem {
+    id: string;
+    number: string;
+    amount: number;
+    purpose: string;
+    customer_name: string;
+    customer_phone: string;
+    issued_at: string;
+}
+
+export const getReceipts = (): Promise<{ receipts: ReceiptItem[] }> => call('/receipts');
