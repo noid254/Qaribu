@@ -15,8 +15,6 @@ import GatePass from './components/GatePass';
 import VisitorsHub from './components/VisitorsHub';
 import JourneyPage from './components/JourneyPage';
 import InvoiceHub from './components/InvoiceHub';
-import InvoiceGenerator from './components/InvoiceGenerator';
-import QuoteGenerator from './components/QuoteGenerator';
 import DocumentsHub from './components/documents/DocumentsHub';
 import MyDocumentsView from './components/MyDocumentsView';
 import ScanDocumentView from './components/ScanDocumentView';
@@ -478,37 +476,13 @@ function App() {
           />
         );
       case 'invoiceGenerator':
-        if (!businessAssets) {
-             return <WorkshopSetup onSetupComplete={(assets) => { handleBusinessSetupComplete(assets); }} onBack={() => setCurrentPage('invoices')} />;
-        }
-        return (
-          <InvoiceGenerator
-            assets={businessAssets}
-            onSave={async (doc) => { 
-                const newDoc = await api.addDocument(doc); 
-                setDocuments(prev => [newDoc, ...prev]); 
-                // Do not navigate immediately, let the component handle the "Share" step
-            }}
-            onBack={() => setCurrentPage('invoices')}
-            onComplete={() => setCurrentPage('myDocuments')} // New prop for final navigation
-          />
-        );
       case 'quoteGenerator':
-        if (!businessAssets) {
-             return <WorkshopSetup onSetupComplete={(assets) => { handleBusinessSetupComplete(assets); }} onBack={() => setCurrentPage('invoices')} />;
-        }
-        return (
-          <QuoteGenerator
-            assets={businessAssets}
-            onSave={async (doc) => { const newDoc = await api.addDocument(doc); setDocuments(prev => [newDoc, ...prev]); setCurrentPage('myDocuments'); }}
-            onBack={() => setCurrentPage('invoices')}
-          />
-        );
       case 'receiptGenerator':
-        // Real receipts: the brand kit comes first, then issuing (architecture sections 22 and 23).
+        // Real documents, kept on the server: the brand kit comes first, then issuing (architecture sections 22, 23
+        // and 25). The old on-device invoice and quote generators are no longer used.
         return (
           <DocumentsHub
-            start="receipts"
+            start={currentPage === 'invoiceGenerator' ? 'invoice' : currentPage === 'quoteGenerator' ? 'quote' : 'receipt'}
             isAuthenticated={isAuthenticated}
             onSignIn={() => setIsAuthModalOpen(true)}
             onBack={() => setCurrentPage('invoices')}

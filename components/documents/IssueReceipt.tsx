@@ -2,32 +2,11 @@ import React, { useState } from 'react';
 import * as api from '../../services/api';
 import { nineDigitPhone } from '../../services/phone';
 import { canPickContacts, fieldClass, isKenyanMobile, PHONE_HELP, primaryButton } from '../visitors/shared';
+import LineEditor, { formatKsh, newLine, sumLines, toInputs } from './LineEditor';
+import type { Line } from './LineEditor';
 import ReceiptPreview from './ReceiptPreview';
 
-export const formatKsh = (amount: number) => `KES ${amount.toLocaleString('en-US', { minimumFractionDigits: amount % 1 === 0 ? 0 : 2, maximumFractionDigits: 2 })}`;
-
-interface Line {
-  key: number;
-  description: string;
-  qty: string;
-  price: string;
-  hasSerial: boolean;
-  serial: string;
-}
-
-let nextKey = 1;
-const newLine = (): Line => ({ key: nextKey++, description: '', qty: '1', price: '', hasSerial: false, serial: '' });
-
-// The same sum the server does, to the cent, so the shop sees the total while typing. The server works it out
-// again and its answer is the one on the receipt.
-const lineTotal = (l: Line): number => {
-  const qty = Number(l.qty);
-  const price = Number(l.price.replace(/,/g, ''));
-  return Number.isFinite(qty) && Number.isFinite(price) && qty > 0 && price > 0 ? Math.round(qty * price * 100) / 100 : 0;
-};
-
-// A shop issues a receipt: the items (each with a quantity and a unit price, and a serial number for items that
-// have one, keyed in before issuing) and the customer's phone. The customer gets a link to the receipt page.
+// A shop issues a receipt: the items and the customer's phone. The customer gets a link to the receipt page.
 // Qaribu does not send SMS yet, so the shop sends it from their own phone with the buttons shown afterwards.
 const IssueReceipt: React.FC<{ onIssued: () => void }> = ({ onIssued }) => {
   const [lines, setLines] = useState<Line[]>([newLine()]);
@@ -39,9 +18,7 @@ const IssueReceipt: React.FC<{ onIssued: () => void }> = ({ onIssued }) => {
   const [showPreview, setShowPreview] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const total = lines.reduce((sum, l) => sum + lineTotal(l), 0);
-
-  const setLine = (key: number, patch: Partial<Line>) => setLines((ls) => ls.map((l) => (l.key === key ? { ...l, ...patch } : l)));
+  const total = sumLines(lines);
 
   const pickContact = async () => {
     setError('');
@@ -65,16 +42,7 @@ const IssueReceipt: React.FC<{ onIssued: () => void }> = ({ onIssued }) => {
     setIsSending(true);
     setError('');
     try {
-      const made = await api.issueReceipt({
-        customer_phone: `+254${phone}`,
-        customer_name: customerName.trim() || undefined,
-        items: lines.map((l) => ({
-          description: l.description,
-          qty: l.hasSerial ? '1' : l.qty,
-          unit_price: l.price,
-          serial: l.hasSerial ? l.serial : undefined,
-        })),
-      });
+      const made = await api.issueReceipt({ customer_phone: `+254${phone}`, customer_name: customerName.trim() || undefined, items: toInputs(lines) });
       setReceipt(made);
       setCopied(false);
       onIssued();
@@ -134,91 +102,7 @@ const IssueReceipt: React.FC<{ onIssued: () => void }> = ({ onIssued }) => {
     <form onSubmit={submit} className="space-y-4">
       {error && <p data-testid="receipt-error" className="text-red-500 text-sm text-center bg-white rounded-xl shadow p-3">{error}</p>}
 
-      <div className="space-y-3">
-        {lines.map((l, i) => (
-          <div key={l.key} data-testid="receipt-line" className="bg-white rounded-xl shadow p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <p className="text-xs uppercase tracking-wide text-gray-500">Item {i + 1}</p>
-              {lines.length > 1 && (
-                <button type="button" onClick={() => setLines((ls) => ls.filter((x) => x.key !== l.key))} className="text-sm text-red-500" aria-label={`Remove item ${i + 1}`}>Remove</button>
-              )}
-            </div>
-            <input
-              aria-label={`Item ${i + 1} description`}
-              value={l.description}
-              onChange={(e) => setLine(l.key, { description: e.target.value })}
-              required
-              minLength={2}
-              maxLength={80}
-              placeholder="What was sold"
-              className={fieldClass}
-            />
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-xs text-gray-500">Quantity</label>
-                <input
-                  aria-label={`Item ${i + 1} quantity`}
-                  inputMode="decimal"
-                  value={l.hasSerial ? '1' : l.qty}
-                  disabled={l.hasSerial}
-                  onChange={(e) => setLine(l.key, { qty: e.target.value })}
-                  required
-                  className={fieldClass}
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-gray-500">Unit price (KES)</label>
-                <input
-                  aria-label={`Item ${i + 1} unit price`}
-                  inputMode="decimal"
-                  value={l.price}
-                  onChange={(e) => setLine(l.key, { price: e.target.value })}
-                  required
-                  placeholder="0"
-                  className={fieldClass}
-                />
-              </div>
-            </div>
-            <label className="flex items-center gap-2 text-sm text-gray-700">
-              <input
-                type="checkbox"
-                checked={l.hasSerial}
-                onChange={(e) => setLine(l.key, { hasSerial: e.target.checked, serial: e.target.checked ? l.serial : '' })}
-                className="h-4 w-4"
-                aria-label={`Item ${i + 1} has a serial number`}
-              />
-              This item has a serial number
-            </label>
-            {l.hasSerial && (
-              <div>
-                <input
-                  aria-label={`Item ${i + 1} serial number`}
-                  value={l.serial}
-                  onChange={(e) => setLine(l.key, { serial: e.target.value.toUpperCase() })}
-                  required
-                  minLength={3}
-                  maxLength={40}
-                  placeholder="Serial number, as printed on the item"
-                  className={fieldClass}
-                />
-                <p className="text-xs text-gray-500 mt-1">One serial number means one item, so the quantity is 1. For two, add two items.</p>
-              </div>
-            )}
-            <p className="text-right text-sm text-gray-600">
-              Line total <span data-testid="line-total" className="font-semibold text-gray-900">{formatKsh(lineTotal(l))}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-
-      <button
-        type="button"
-        onClick={() => setLines((ls) => [...ls, newLine()])}
-        disabled={lines.length >= 30}
-        className="w-full border border-brand-gold text-brand-navy font-semibold py-2 px-4 rounded-lg"
-      >
-        + Add another item
-      </button>
+      <LineEditor lines={lines} setLines={setLines} />
 
       <div className="bg-white rounded-xl shadow p-4 flex justify-between items-baseline">
         <span className="text-sm font-semibold uppercase tracking-wide text-gray-600">Total</span>
