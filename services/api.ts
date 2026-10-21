@@ -730,6 +730,7 @@ export const issueReceipt = (input: { customer_phone: string; customer_name?: st
 export type DocumentKind = 'receipt' | 'invoice' | 'quote';
 
 export interface ReceiptItem {
+    balance_due: number | null; // invoices: what is still to pay
     kind: DocumentKind;
     due_date: string; // invoices
     valid_until: string; // quotes
@@ -896,3 +897,26 @@ export const getReceiptClaims = (receiptId: string): Promise<ReceiptClaims> => c
 
 export const claimAsset = (input: { receipt_id: string; serial: string; kind: AssetKind }): Promise<{ asset: LedgerAsset; outcome: 'claimed' | 'transferred' }> =>
     call('/assets/claim', { method: 'POST', body: JSON.stringify(input) });
+
+// --- Payments against an invoice (architecture section 25) ---
+
+export type PayMethod = 'cash' | 'mpesa' | 'bank' | 'card' | 'other';
+
+export interface CreatedPayment {
+    id: string; // the receipt that was issued
+    uid: string;
+    number: string;
+    amount: number;
+    invoice_number: string;
+    balance_due: number; // what is still to pay after this payment
+    paid_in_full: boolean;
+    customer_phone: string;
+    message: string;
+    sms_link: string;
+    whatsapp_link: string;
+}
+
+// The shop records a payment against an invoice it issued. That issues a receipt linked to the invoice, and the
+// invoice's balance goes down. An empty amount is the whole balance.
+export const recordPayment = (invoiceId: string, input: { amount?: string; method: PayMethod; reference?: string }): Promise<CreatedPayment> =>
+    call(`/invoices/${encodeURIComponent(invoiceId)}/payments`, { method: 'POST', body: JSON.stringify(input) });
