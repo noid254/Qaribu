@@ -888,7 +888,44 @@ export interface OpenTransfer {
     whatsapp_link?: string;
 }
 
-export const getLedgerAsset = (id: string): Promise<{ asset: LedgerAsset; history: LedgerEvent[]; transfer: OpenTransfer | null }> => call(`/assets/${encodeURIComponent(id)}`);
+// A photo taken in the app. The date is the server's, set when the photo arrived.
+export type PhotoKind = 'item' | 'serial' | 'receipt';
+export interface AssetPhoto {
+    id: string;
+    kind: PhotoKind;
+    size: number;
+    taken_at: string;
+}
+
+export const getLedgerAsset = (id: string): Promise<{ asset: LedgerAsset; history: LedgerEvent[]; transfer: OpenTransfer | null; photos: AssetPhoto[] }> => call(`/assets/${encodeURIComponent(id)}`);
+
+// Sends one photo taken with the camera. There is no way to send a file from the gallery: the app only has the camera.
+export const uploadAssetPhoto = async (assetId: string, kind: PhotoKind, photo: Blob): Promise<AssetPhoto> => {
+    const token = getToken();
+    const response = await fetch(`${API_BASE_URL}/assets/${encodeURIComponent(assetId)}/photos?kind=${kind}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'image/jpeg', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        body: photo,
+        cache: 'no-store',
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+        if (response.status === 401 && token) clearToken();
+        throw new ApiError(response.status, data.message || (response.status === 413 ? 'That photo is too large. Take it again.' : `Could not save the photo (${response.status}).`));
+    }
+    return data.photo as AssetPhoto;
+};
+
+// One photo's picture, for an <img>. The route needs the sign-in, so it is fetched and shown from a local address.
+export const getAssetPhotoUrl = async (photoId: string): Promise<string> => {
+    const token = getToken();
+    const response = await fetch(`${API_BASE_URL}/assets/photos/${encodeURIComponent(photoId)}/image`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        cache: 'no-store',
+    });
+    if (!response.ok) throw new ApiError(response.status, 'Could not load that photo.');
+    return URL.createObjectURL(await response.blob());
+};
 
 export interface OwnershipResult {
     registered: boolean;
