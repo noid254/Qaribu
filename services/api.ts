@@ -866,6 +866,8 @@ export interface AssetInput {
     year?: string;
     serial: string;
     notes?: string;
+    // The owner agrees that their name (a nickname is fine) is shown to people who check this item.
+    consent_show_name: boolean;
 }
 
 export const getLedgerAssets = (): Promise<{ assets: LedgerAsset[] }> => call('/assets');
@@ -873,11 +875,25 @@ export const getLedgerAssets = (): Promise<{ assets: LedgerAsset[] }> => call('/
 export const registerLedgerAsset = (input: AssetInput): Promise<{ asset: LedgerAsset }> =>
     call('/assets', { method: 'POST', body: JSON.stringify(input) });
 
-export const getLedgerAsset = (id: string): Promise<{ asset: LedgerAsset; history: LedgerEvent[] }> => call(`/assets/${encodeURIComponent(id)}`);
+// A transfer the item has open: waiting for the seller's own code, or sent and waiting for the buyer.
+export interface OpenTransfer {
+    id: string;
+    status: 'pending' | 'in_progress';
+    buyer: string; // the buyer's phone, last digits only
+    expires_at: string;
+    // Once sent: the buyer's link and the message, to send again by hand.
+    link?: string;
+    message?: string;
+    sms_link?: string;
+    whatsapp_link?: string;
+}
+
+export const getLedgerAsset = (id: string): Promise<{ asset: LedgerAsset; history: LedgerEvent[]; transfer: OpenTransfer | null }> => call(`/assets/${encodeURIComponent(id)}`);
 
 export interface OwnershipResult {
     registered: boolean;
-    matches: { kind: AssetKind; name: string; verification: 'unverified' | 'verified'; owner: string; since: string }[];
+    // `verified` is the tick. `owner` is the owner's name or nickname when they agreed to it being shown, else empty.
+    matches: { kind: AssetKind; name: string; verified: boolean; owner: string; since: string }[];
 }
 
 // Before buying: is this serial number or plate registered, and to whom (the last digits of their phone only)?
@@ -895,7 +911,7 @@ export interface ReceiptClaims {
 // The serial numbers on a receipt issued to me, and what claiming each would do.
 export const getReceiptClaims = (receiptId: string): Promise<ReceiptClaims> => call(`/documents/${encodeURIComponent(receiptId)}/claims`);
 
-export const claimAsset = (input: { receipt_id: string; serial: string; kind: AssetKind }): Promise<{ asset: LedgerAsset; outcome: 'claimed' | 'transferred' }> =>
+export const claimAsset = (input: { receipt_id: string; serial: string; kind: AssetKind; consent_show_name: boolean }): Promise<{ asset: LedgerAsset; outcome: 'claimed' | 'transferred' }> =>
     call('/assets/claim', { method: 'POST', body: JSON.stringify(input) });
 
 // --- Payments against an invoice (architecture section 25) ---
@@ -920,3 +936,25 @@ export interface CreatedPayment {
 // invoice's balance goes down. An empty amount is the whole balance.
 export const recordPayment = (invoiceId: string, input: { amount?: string; method: PayMethod; reference?: string }): Promise<CreatedPayment> =>
     call(`/invoices/${encodeURIComponent(invoiceId)}/payments`, { method: 'POST', body: JSON.stringify(input) });
+
+// --- Transferring an item: the seller starts it and confirms with a code to their own phone, then the buyer accepts with a
+// code to theirs, on the page their message links to (architecture section 24) ---
+
+export const startTransfer = (assetId: string, buyerPhone: string): Promise<{ transfer: { id: string; status: 'pending'; buyer: string; expires_at: string }; code_sent: boolean }> =>
+    call(`/assets/${encodeURIComponent(assetId)}/transfer`, { method: 'POST', body: JSON.stringify({ buyer_phone: buyerPhone }) });
+
+export const resendTransferCode = (id: string): Promise<{ code_sent: boolean }> => call(`/transfers/${encodeURIComponent(id)}/code`, { method: 'POST', body: '{}' });
+
+export interface SentTransfer {
+    status: 'in_progress';
+    link: string;
+    message: string;
+    sms: SmsStatus;
+    sms_link: string;
+    whatsapp_link: string;
+}
+
+export const confirmTransfer = (id: string, code: string): Promise<SentTransfer> =>
+    call(`/transfers/${encodeURIComponent(id)}/confirm`, { method: 'POST', body: JSON.stringify({ code }) });
+
+export const cancelTransfer = (id: string): Promise<{ status: 'cancelled' }> => call(`/transfers/${encodeURIComponent(id)}/cancel`, { method: 'POST', body: '{}' });

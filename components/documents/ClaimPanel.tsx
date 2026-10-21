@@ -21,6 +21,7 @@ const ClaimPanel: React.FC<{ receiptId: string; onOpenAssets?: () => void }> = (
   const [claims, setClaims] = useState<api.ReceiptClaims | null>(null);
   const [kinds, setKinds] = useState<Record<string, api.AssetKind>>({});
   const [busy, setBusy] = useState('');
+  const [consent, setConsent] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
@@ -41,7 +42,7 @@ const ClaimPanel: React.FC<{ receiptId: string; onOpenAssets?: () => void }> = (
     setError('');
     setMessage('');
     try {
-      const done = await api.claimAsset({ receipt_id: receiptId, serial, kind: kinds[serial] ?? 'other' });
+      const done = await api.claimAsset({ receipt_id: receiptId, serial, kind: kinds[serial] ?? 'other', consent_show_name: consent });
       setMessage(done.outcome === 'transferred' ? `${done.asset.name} has passed to you.` : `${done.asset.name} is now yours, and verified.`);
       await load();
     } catch (err: any) {
@@ -61,6 +62,10 @@ const ClaimPanel: React.FC<{ receiptId: string; onOpenAssets?: () => void }> = (
         </p>
       )}
       {error && <p data-testid="claim-error" className="text-red-500 text-xs">{error}</p>}
+      <label className="flex items-start gap-2 text-xs text-gray-700">
+        <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} data-testid="claim-consent" className="h-4 w-4 mt-0.5" />
+        <span>I agree that the name on my account (a nickname is fine) is shown to people who check these items.</span>
+      </label>
       {claims.items.map((it) => (
         <div key={it.serial} data-testid="claim-item" className="border border-gray-200 rounded-lg p-2 space-y-1">
           <p className="text-sm text-gray-900">{it.description}</p>
@@ -82,7 +87,7 @@ const ClaimPanel: React.FC<{ receiptId: string; onOpenAssets?: () => void }> = (
               )}
               <button
                 onClick={() => claim(it.serial)}
-                disabled={busy === it.serial}
+                disabled={busy === it.serial || !consent}
                 className="flex-1 bg-brand-gold text-brand-navy font-bold text-sm py-2 rounded-lg disabled:bg-gray-300"
                 aria-label={`Claim ${it.serial}`}
               >
