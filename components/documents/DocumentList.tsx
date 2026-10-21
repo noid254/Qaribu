@@ -31,14 +31,17 @@ const DocumentList: React.FC<DocumentListProps> = ({ mode, refreshKey, onOpenAss
   const [items, setItems] = useState<api.ReceiptItem[] | null>(null);
   const [error, setError] = useState('');
   const [open, setOpen] = useState<api.ReceiptItem | null>(null);
+  const [paidKey, setPaidKey] = useState(0);
 
   useEffect(() => {
     setError('');
     (mode === 'issued' ? api.getIssuedDocuments(kind, applied) : api.getReceivedDocuments(kind, applied))
       .then((res) => setItems(res.documents))
       .catch((err: Error) => setError(err.message));
-  }, [mode, applied, kind, refreshKey]);
+  }, [mode, applied, kind, refreshKey, paidKey]);
 
+  // The open document, as the refreshed list now has it (after a payment its balance has changed).
+  const current = open ? (items?.find((i) => i.id === open.id) ?? open) : null;
   const filtered = Boolean(applied.q || applied.from || applied.to || kind);
   const who = (r: api.ReceiptItem) => (mode === 'issued' ? r.customer_name || r.customer_phone : r.shop_name);
   const when = (r: api.ReceiptItem) =>
@@ -120,7 +123,12 @@ const DocumentList: React.FC<DocumentListProps> = ({ mode, refreshKey, onOpenAss
               </p>
               <p className="text-xs text-gray-500">{r.number} · {r.uid}</p>
             </div>
-            <p className="font-bold text-brand-navy shrink-0">{formatKsh(r.amount)}</p>
+            <div className="text-right shrink-0">
+              <p className="font-bold text-brand-navy">{formatKsh(r.amount)}</p>
+              {r.kind === 'invoice' && r.balance_due !== null && (
+                <p className={`text-xs font-semibold ${r.balance_due <= 0 ? 'text-green-700' : 'text-amber-700'}`}>{r.balance_due <= 0 ? 'Paid' : `Balance ${formatKsh(r.balance_due)}`}</p>
+              )}
+            </div>
           </div>
           <p className="text-sm text-gray-700 mt-2 truncate">
             {r.first_item}
@@ -134,7 +142,7 @@ const DocumentList: React.FC<DocumentListProps> = ({ mode, refreshKey, onOpenAss
         </button>
       ))}
 
-      {open && <ReceiptPreview id={open.id} number={open.number} kind={open.kind} smsLink={open.sms_link} whatsappLink={open.whatsapp_link} claimable={mode === 'received' && open.kind === 'receipt'} onOpenAssets={onOpenAssets} onClose={() => setOpen(null)} />}
+      {current && <ReceiptPreview id={current.id} number={current.number} kind={current.kind} smsLink={current.sms_link} whatsappLink={current.whatsapp_link} claimable={mode === 'received' && current.kind === 'receipt'} onOpenAssets={onOpenAssets} payable={mode === 'issued' && current.kind === 'invoice' && (current.balance_due ?? 0) > 0 ? { balance: current.balance_due ?? 0 } : undefined} onPaid={() => setPaidKey((n) => n + 1)} onClose={() => setOpen(null)} />}
     </div>
   );
 };
