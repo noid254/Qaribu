@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as api from '../../services/api';
 import { nineDigitPhone } from '../../services/phone';
 import { fieldClass, isKenyanMobile, PHONE_HELP, primaryButton } from '../visitors/shared';
@@ -9,12 +9,11 @@ interface BrandKitFormProps {
   onCancel?: () => void;
 }
 
-const STEPS = ['Business', 'Contact', 'Payment and receipts', 'Review'];
+const STEPS = ['Business', 'Contact', 'Payment and receipts', 'Look', 'Review'];
 
 const DEFAULT_RECEIPT_NOTE = 'Goods once sold cannot be re-accepted.';
 
-// The brand kit set-up, in the four steps the earlier app's "My Workshop" used: business, contact, how you get
-// paid, review. The business name, address and phone are needed, and so are the terms (accepted once). The rest
+// The brand kit set-up: business, contact, how you get paid, the look (logo, colours, font), review. The business name, address and phone are needed, and so are the terms (accepted once). The rest
 // is optional. The server checks all of it again; this only walks the person through.
 const BrandKitForm: React.FC<BrandKitFormProps> = ({ initial, onSaved, onCancel }) => {
   const [step, setStep] = useState(0);
@@ -27,9 +26,72 @@ const BrandKitForm: React.FC<BrandKitFormProps> = ({ initial, onSaved, onCancel 
   const [paymentDetails, setPaymentDetails] = useState(initial?.payment_details ?? '');
   // The note starts as the usual returns line, also for a brand kit saved before receipts had a note.
   const [receiptNote, setReceiptNote] = useState(initial?.receipt_note || DEFAULT_RECEIPT_NOTE);
+  const [color, setColor] = useState(initial?.color ?? '');
+  const [color2, setColor2] = useState(initial?.color2 ?? '');
+  const [font, setFont] = useState(initial?.font ?? '');
+  const [hasLogo, setHasLogo] = useState(initial?.has_logo ?? false);
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [logoBusy, setLogoBusy] = useState(false);
+  const fonts = initial?.fonts ?? [];
   const [agreed, setAgreed] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+
+  // Show the saved logo (the server gives it only to the signed-in owner).
+  useEffect(() => {
+    let url: string | null = null;
+    let live = true;
+    if (hasLogo) {
+      api.fetchLogoUrl().then((u) => {
+        url = u;
+        if (live) setLogoUrl(u);
+      });
+    } else {
+      setLogoUrl(null);
+    }
+    return () => {
+      live = false;
+      if (url) URL.revokeObjectURL(url);
+    };
+  }, [hasLogo]);
+
+  const pickLogo = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    setError('');
+    if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
+      setError('Use a PNG or JPEG picture.');
+      return;
+    }
+    if (file.size > 100 * 1024) {
+      setError('That picture is too large. Use one under 100 KB.');
+      return;
+    }
+    setLogoBusy(true);
+    try {
+      const kit = await api.uploadLogo(file);
+      setHasLogo(kit.has_logo);
+      if (logoUrl) setLogoUrl(null);
+    } catch (err: any) {
+      setError(err.message || 'Could not save the logo.');
+    } finally {
+      setLogoBusy(false);
+    }
+  };
+
+  const dropLogo = async () => {
+    setLogoBusy(true);
+    setError('');
+    try {
+      await api.removeLogo();
+      setHasLogo(false);
+    } catch (err: any) {
+      setError(err.message || 'Could not remove the logo.');
+    } finally {
+      setLogoBusy(false);
+    }
+  };
 
   const termsDone = Boolean(initial?.terms_accepted_at);
 
@@ -56,6 +118,9 @@ const BrandKitForm: React.FC<BrandKitFormProps> = ({ initial, onSaved, onCancel 
         tagline,
         payment_details: paymentDetails,
         receipt_note: receiptNote,
+        color,
+        color2,
+        font,
         accept_terms: termsDone ? undefined : agreed,
       });
       onSaved(kit);
@@ -168,12 +233,63 @@ const BrandKitForm: React.FC<BrandKitFormProps> = ({ initial, onSaved, onCancel 
           </div>
           <div className="flex gap-2">
             <button type="button" onClick={back} className="shrink-0 border border-gray-300 text-gray-700 font-semibold py-3 px-4 rounded-lg">Back</button>
-            <button type="submit" className={primaryButton}>Review</button>
+            <button type="submit" className={primaryButton}>Next</button>
           </div>
         </form>
       )}
 
       {step === 3 && (
+        <form onSubmit={next} className="space-y-4">
+          <p className="text-xs text-gray-500">How your receipts, invoices and quotes look. All optional: leave it and they use Qaribu's own look. A document keeps the look it was made with.</p>
+          <div>
+            <p className="block text-sm font-medium text-gray-700">Logo <span className="text-gray-400">(PNG or JPEG, under 100 KB)</span></p>
+            <div className="flex items-center gap-3 mt-1">
+              {logoUrl ? <img src={logoUrl} alt="Your logo" className="h-14 w-14 object-contain bg-gray-50 rounded border" /> : <div className="h-14 w-14 rounded border border-dashed border-gray-300 flex items-center justify-center text-xs text-gray-400">None</div>}
+              <label className={`text-sm font-semibold border border-gray-300 rounded-lg px-3 py-2 cursor-pointer ${logoBusy ? 'opacity-50' : ''}`}>
+                {hasLogo ? 'Change' : 'Choose picture'}
+                <input type="file" accept="image/png,image/jpeg" onChange={pickLogo} disabled={logoBusy} className="hidden" data-testid="brand-kit-logo" />
+              </label>
+              {hasLogo && <button type="button" onClick={dropLogo} disabled={logoBusy} className="text-sm text-red-600 font-semibold">Remove</button>}
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {([['Main colour', color, setColor], ['Second colour', color2, setColor2]] as const).map(([label, value, set]) => (
+              <div key={label}>
+                <label className="block text-sm font-medium text-gray-700">{label}</label>
+                <div className="flex items-center gap-2 mt-1">
+                  <input type="color" value={value || '#0b4f3a'} onChange={(e) => set(e.target.value)} className="h-10 w-12 p-0 border rounded" aria-label={label} />
+                  {value ? <button type="button" onClick={() => set('')} className="text-xs text-gray-500 underline">Clear</button> : <span className="text-xs text-gray-400">Qaribu's</span>}
+                </div>
+              </div>
+            ))}
+          </div>
+          {fonts.length > 0 && (
+            <div>
+              <p className="block text-sm font-medium text-gray-700">Font</p>
+              <div className="grid grid-cols-2 gap-2 mt-1">
+                {fonts.map((f) => (
+                  <button key={f.key} type="button" onClick={() => setFont(font === f.key ? '' : f.key)} style={{ fontFamily: f.stack }} className={`py-2 rounded-lg border text-sm ${font === f.key ? 'border-brand-gold bg-yellow-50 font-bold' : 'border-gray-300'}`}>{f.label}</button>
+                ))}
+              </div>
+            </div>
+          )}
+          <div className="rounded-lg overflow-hidden border" aria-label="Preview">
+            <div style={{ background: color ? `linear-gradient(135deg,${color},${color2 || color})` : 'linear-gradient(135deg,#0f766e,#0b4f3a)', color: '#fff', fontFamily: fonts.find((f) => f.key === font)?.stack, padding: '14px' }} className="flex items-center gap-3">
+              {logoUrl && <img src={logoUrl} alt="" className="h-10 w-10 object-contain bg-white/90 rounded" />}
+              <div>
+                <p className="font-bold text-lg leading-tight">{businessName || 'Your business'}</p>
+                {tagline && <p className="text-xs opacity-80 italic">{tagline}</p>}
+              </div>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <button type="button" onClick={back} className="shrink-0 border border-gray-300 text-gray-700 font-semibold py-3 px-4 rounded-lg">Back</button>
+            <button type="submit" className={primaryButton}>Review</button>
+          </div>
+        </form>
+      )}
+
+      {step === 4 && (
         <div className="space-y-4">
           <div className="space-y-2">
             {row('Business', businessName)}
@@ -184,6 +300,7 @@ const BrandKitForm: React.FC<BrandKitFormProps> = ({ initial, onSaved, onCancel 
             {row('One line', tagline)}
             {row('How you get paid', paymentDetails)}
             {row('Receipt note', receiptNote)}
+            {row('Look', [hasLogo && 'logo', color && `colours ${color}${color2 ? ` and ${color2}` : ''}`, font && `${fonts.find((f) => f.key === font)?.label ?? font} font`].filter(Boolean).join(', ') || "Qaribu's own")}
           </div>
           {termsDone ? (
             <p className="text-xs text-gray-500">
