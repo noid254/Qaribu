@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import * as api from '../../services/api';
 import { nineDigitPhone } from '../../services/phone';
 import { canPickContacts, fieldClass, isKenyanMobile, PHONE_HELP, primaryButton } from '../visitors/shared';
+import PhotoCapture, { PHOTO_KINDS, photoWhen } from './PhotoCapture';
 
 interface AssetsHubProps {
   isAuthenticated: boolean;
@@ -28,6 +29,7 @@ const EVENT_TEXT: Record<string, (e: api.LedgerEvent) => string> = {
   registered: (e) => `Registered by ${who(e.to, 'its owner')}`,
   claimed_from_receipt: (e) => `Claimed by ${who(e.to, 'its owner')} from receipt ${e.receipt_number}${e.shop_name ? ` from ${e.shop_name}` : ''}`,
   transferred: (e) => `Passed from ${who(e.from, 'the seller')} to ${who(e.to, 'the new owner')}${e.receipt_number ? ` with receipt ${e.receipt_number}` : ''}`,
+  photo_added: () => 'A photo was added',
 };
 
 // The tick. A verified item has one; every other item says plainly that it is unverified.
@@ -108,8 +110,10 @@ const AssetsHub: React.FC<AssetsHubProps> = ({ isAuthenticated, onSignIn, onBack
             )}
             {tab === 'register' && (
               <RegisterAsset
-                onSaved={() => {
+                onSaved={(id) => {
                   load();
+                  // On to the new item, where the next step is its photos.
+                  setOpenId(id);
                   setTab('mine');
                 }}
               />
@@ -157,9 +161,41 @@ const MyAssets: React.FC<{ assets: api.LedgerAsset[] | null; error: string; onOp
   );
 };
 
+// One photo: fetched with the sign-in and shown from a local address, then released.
+const PhotoThumb: React.FC<{ photo: api.AssetPhoto }> = ({ photo }) => {
+  const [src, setSrc] = useState('');
+  useEffect(() => {
+    let alive = true;
+    let url = '';
+    api
+      .getAssetPhotoUrl(photo.id)
+      .then((u) => {
+        url = u;
+        if (alive) setSrc(u);
+        else URL.revokeObjectURL(u);
+      })
+      .catch(() => undefined);
+    return () => {
+      alive = false;
+      if (url) URL.revokeObjectURL(url);
+    };
+  }, [photo.id]);
+  return (
+    <figure data-testid="photo-thumb" className="space-y-1">
+      <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">{src && <img src={src} alt={PHOTO_KINDS.find((k) => k.key === photo.kind)?.label ?? 'Photo'} className="w-full h-full object-cover" />}</div>
+      <figcaption className="text-[11px] text-gray-500 leading-tight">
+        {PHOTO_KINDS.find((k) => k.key === photo.kind)?.label}
+        <br />
+        {photoWhen(photo.taken_at)}
+      </figcaption>
+    </figure>
+  );
+};
+
 const AssetDetail: React.FC<{ id: string; onClose: () => void }> = ({ id, onClose }) => {
-  const [data, setData] = useState<{ asset: api.LedgerAsset; history: api.LedgerEvent[]; transfer: api.OpenTransfer | null } | null>(null);
+  const [data, setData] = useState<{ asset: api.LedgerAsset; history: api.LedgerEvent[]; transfer: api.OpenTransfer | null; photos: api.AssetPhoto[] } | null>(null);
   const [error, setError] = useState('');
+  const [camera, setCamera] = useState(false);
 
   const load = () =>
     api
@@ -173,10 +209,20 @@ const AssetDetail: React.FC<{ id: string; onClose: () => void }> = ({ id, onClos
 
   if (error) return <p className="text-red-500 text-sm">{error}</p>;
   if (!data) return <p className="text-sm text-gray-500">Loading…</p>;
-  const { asset: a, history, transfer } = data;
+  const { asset: a, history, transfer, photos } = data;
   const verified = a.verification === 'verified';
   return (
     <div className="space-y-3">
+      {camera && (
+        <PhotoCapture
+          assetId={a.id}
+          onAdded={() => void load()}
+          onClose={() => {
+            setCamera(false);
+            void load();
+          }}
+        />
+      )}
       <div data-testid="asset-detail" className="bg-white rounded-xl shadow p-5 space-y-4">
         <button onClick={onClose} className="text-sm text-blue-600 hover:underline">&larr; All my assets</button>
         <div className="flex justify-between items-start gap-3">
@@ -197,6 +243,24 @@ const AssetDetail: React.FC<{ id: string; onClose: () => void }> = ({ id, onClos
             ? 'Verified: someone other than you backed this ownership, a Qaribu receipt from the seller or a transfer from an owner whose item was verified.'
             : 'Unverified: you registered this on your own word. You are still its registered owner and can transfer it. Claiming it from a Qaribu receipt would verify it.'}
         </p>
+        <div data-testid="photos">
+          <h3 className="text-xs uppercase tracking-wide text-gray-500 mb-2">Photos</h3>
+          {photos.length === 0 ? (
+            <p data-testid="no-photos" className="text-sm text-amber-700 bg-amber-50 rounded-lg p-3 mb-2">
+              No photos yet. Take a photo of the item and one of its serial number, with the camera. Each is dated when it is saved.
+            </p>
+          ) : (
+            <div className="grid grid-cols-3 gap-2 mb-2">
+              {photos.map((p) => (
+                <PhotoThumb key={p.id} photo={p} />
+              ))}
+            </div>
+          )}
+          <button onClick={() => setCamera(true)} data-testid="photo-open" className="w-full border border-brand-gold text-brand-navy font-semibold py-2 px-4 rounded-lg">
+            {photos.length === 0 ? 'Take photos' : 'Take another photo'}
+          </button>
+          <p className="text-xs text-gray-400 mt-1">Photos come from the camera only. They stay with the item when it changes hands and cannot be deleted.</p>
+        </div>
         <div>
           <h3 className="text-xs uppercase tracking-wide text-gray-500 mb-2">History</h3>
           <ol className="space-y-2 border-l-2 border-gray-200 pl-3">
@@ -371,7 +435,7 @@ const TransferPanel: React.FC<{ assetId: string; assetName: string; verified: bo
   );
 };
 
-const RegisterAsset: React.FC<{ onSaved: () => void }> = ({ onSaved }) => {
+const RegisterAsset: React.FC<{ onSaved: (id: string) => void }> = ({ onSaved }) => {
   const [kind, setKind] = useState<api.AssetKind>('tool');
   const [name, setName] = useState('');
   const [makeModel, setMakeModel] = useState('');
@@ -402,8 +466,8 @@ const RegisterAsset: React.FC<{ onSaved: () => void }> = ({ onSaved }) => {
     setError('');
     try {
       if (nick.trim() && nick.trim() !== accountName) await api.setMyName(nick.trim());
-      await api.registerLedgerAsset({ kind, name, make_model: makeModel, year, serial, notes, consent_show_name: consent });
-      onSaved();
+      const { asset } = await api.registerLedgerAsset({ kind, name, make_model: makeModel, year, serial, notes, consent_show_name: consent });
+      onSaved(asset.id);
     } catch (err: any) {
       setError(err.message || 'Could not register the item.');
     } finally {
@@ -454,7 +518,7 @@ const RegisterAsset: React.FC<{ onSaved: () => void }> = ({ onSaved }) => {
           <span>I agree that this name will be shown to people who check this item.</span>
         </label>
       </div>
-      <p className="text-xs text-gray-500">It shows as unverified until it is backed by a Qaribu receipt. You are still its registered owner. Photos are coming later.</p>
+      <p className="text-xs text-gray-500">It shows as unverified until it is backed by a Qaribu receipt. You are still its registered owner. Next you take photos of it with the camera.</p>
       <button type="submit" disabled={saving || !consent} className={primaryButton}>{saving ? 'Saving…' : 'Register item'}</button>
     </form>
   );
