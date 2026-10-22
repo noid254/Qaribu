@@ -200,7 +200,7 @@ const NikoSoko: React.FC<NikoSokoProps> = ({ providers, onSelectProvider, search
                 <div className="bg-white rounded-2xl py-4 px-2 shadow-lg border border-gray-100">
                     <div className="grid grid-cols-4 gap-y-3">
                         <ToolkitItem label="Gatepass" icon={<GatePassIcon />} onClick={() => onNavigate('invite')} />
-                        <ToolkitItem label="My Invoice" icon={<InvoiceIcon />} onClick={() => onNavigate('invoices')} />
+                        <ToolkitItem label="My Documents" icon={<InvoiceIcon />} onClick={() => onNavigate('invoices')} />
                         <ToolkitItem label="Boda & Taxi" icon={<BodaTaxiIcon />} onClick={() => onNavigate('bodaTaxi')} />
                         <ToolkitItem label="My Places" icon={<PlacesIcon />} onClick={() => onNavigate('myplaces')} />
                     </div>

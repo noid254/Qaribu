@@ -12,7 +12,7 @@ interface DocumentsHubProps {
   // The way to My assets, offered after an item is claimed from a receipt.
   onOpenAssets?: () => void;
   // Where to open: issuing a receipt, an invoice or a quote, or the brand kit itself.
-  start: 'receipt' | 'invoice' | 'quote' | 'brandKit';
+  start: 'received' | 'receipt' | 'invoice' | 'quote' | 'brandKit';
 }
 
 type TabKey = 'received' | 'issue' | 'issued' | 'brandKit';
@@ -37,7 +37,7 @@ const DocumentsHub: React.FC<DocumentsHubProps> = ({ isAuthenticated, onSignIn, 
   const [kit, setKit] = useState<api.BrandKit | null>(null);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState('');
-  const [tab, setTab] = useState<TabKey>(start === 'brandKit' ? 'brandKit' : 'issue');
+  const [tab, setTab] = useState<TabKey>(start === 'brandKit' ? 'brandKit' : start === 'received' ? 'received' : 'issue');
   const [kind, setKind] = useState<'receipt' | 'invoice' | 'quote'>(start === 'invoice' || start === 'quote' ? start : 'receipt');
   const [listKey, setListKey] = useState(0);
 
@@ -64,7 +64,7 @@ const DocumentsHub: React.FC<DocumentsHubProps> = ({ isAuthenticated, onSignIn, 
     <div className="min-h-screen bg-gray-50">
       <div className="bg-brand-navy text-white px-4 py-4 flex items-center">
         <button onClick={onBack} className="mr-3 text-xl" aria-label="Back">&larr;</button>
-        <h1 className="text-lg font-bold">Documents</h1>
+        <h1 className="text-lg font-bold">My Documents</h1>
       </div>
 
       <div className="max-w-md mx-auto p-4 space-y-4">
