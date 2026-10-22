@@ -49,7 +49,7 @@ const MessageCenterView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             setMessages(prev => [...prev, {
                 id: Date.now(),
                 sender: 'team',
-                text: "You've received a new invoice from Roki Samuna. You can view it in 'My Workshop' > 'My Documents'.",
+                text: "You've received a new invoice from Roki Samuna. You can view it in 'My Documents' > 'Received'.",
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             }]);
             playNotificationSound();

@@ -13,10 +13,8 @@ import ServiceMarketplace from './components/ServiceMarketplace';
 import MyPlaces from './components/MyPlaces';
 import GatePass from './components/GatePass';
 import VisitorsHub from './components/VisitorsHub';
-import InvoiceHub from './components/InvoiceHub';
 import DocumentsHub from './components/documents/DocumentsHub';
 import AssetsHub from './components/assets/AssetsHub';
-import MyDocumentsView from './components/MyDocumentsView';
 import ScanDocumentView from './components/ScanDocumentView';
 import Tukosoko from './components/Tukosoko';
 import MyContactsView from './components/MyContactsView';
@@ -33,7 +31,6 @@ import RegisterAssetView from './components/RegisterAssetView';
 import OwnershipCheckView from './components/OwnershipCheckView';
 import DocumentDetailView from './components/DocumentDetailView';
 import MyToolkit from './components/MyToolkit';
-import WorkshopSetup from './components/WorkshopSetup';
 import QRScannerView from './components/QRScannerView';
 import HostSetup from './components/HostSetup';
 import ManageOrderView from './components/ManageOrderView';
@@ -457,13 +454,16 @@ function App() {
           />
         );
       case 'invoices':
-        // The hub opens for everyone. Receipts and the brand kit are real and kept on the server (their own screens
-        // check the brand kit). Invoices and quotes still use the old on-device set-up until their turn.
+      case 'myDocuments':
+        // "My Documents": one page with Received, Issue, Issued and Brand kit, all real and kept on the server. It
+        // replaces the earlier "My Workshop" page, whose items (assets, documents, brand kit) were duplicates.
         return (
-          <InvoiceHub
-            onNavigate={setCurrentPage}
+          <DocumentsHub
+            start="received"
+            isAuthenticated={isAuthenticated}
+            onSignIn={() => setIsAuthModalOpen(true)}
+            onOpenAssets={() => setCurrentPage('assetRegistry')}
             onBack={() => setCurrentPage('home')}
-            onEditBusiness={() => setBusinessAssets(null)}
           />
         );
       case 'invoiceGenerator':
@@ -477,16 +477,6 @@ function App() {
             isAuthenticated={isAuthenticated}
             onSignIn={() => setIsAuthModalOpen(true)}
             onOpenAssets={() => setCurrentPage('assetRegistry')}
-            onBack={() => setCurrentPage('invoices')}
-          />
-        );
-      case 'myDocuments':
-        return (
-          <MyDocumentsView
-            documents={documents}
-            onScan={() => setCurrentPage('scanDocument')}
-            onSelectDocument={(doc) => { setSelectedDocument(doc); setCurrentPage('documentDetail'); }}
-            currentUser={currentUser}
             onBack={() => setCurrentPage('invoices')}
           />
         );
@@ -667,7 +657,7 @@ function App() {
             start={currentPage === 'registerAsset' ? 'register' : currentPage === 'ownershipCheck' ? 'check' : 'mine'}
             isAuthenticated={isAuthenticated}
             onSignIn={() => setIsAuthModalOpen(true)}
-            onBack={() => setCurrentPage('invoices')}
+            onBack={() => setCurrentPage('home')}
           />
         );      case 'brandKit':
         // The brand kit is saved on the server, on the account. The merchandise studio that used to live here is
@@ -685,7 +675,7 @@ function App() {
           <MyToolkit
             allTools={[
                 { label: 'Qaribu', icon: <span>🔑</span>, page: 'qaribu' },
-                { label: 'Invoices', icon: <span>📄</span>, page: 'invoices' },
+                { label: 'My Documents', icon: <span>📄</span>, page: 'invoices' },
                 { label: 'My Places', icon: <span>📍</span>, page: 'myplaces' },
                 { label: 'Boda & Taxi', icon: <span>🏍️</span>, page: 'bodaTaxi' },
                 { label: 'Services', icon: <span>🛠️</span>, page: 'services' },
@@ -715,13 +705,6 @@ function App() {
             onBack={() => setCurrentPage('home')}
           />
         ) : null;
-      case 'workshopSetup':
-        return (
-          <WorkshopSetup
-            onSetupComplete={(assets) => { /* Save */ setCurrentPage('home'); }}
-            onBack={() => setCurrentPage('home')}
-          />
-        );
       case 'manage_order':
         return manageOrderData ? (
           <ManageOrderView
