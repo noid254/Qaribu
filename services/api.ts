@@ -733,6 +733,7 @@ export interface ReceiptItem {
     balance_due: number | null; // invoices: what is still to pay (null once cancelled)
     cancelled?: boolean; // cancelled by the shop, with a reason, on its record
     invoiced?: boolean; // a quote that has been made into an invoice
+    decision?: 'accepted' | 'declined' | null; // the customer's answer to a quote
     kind: DocumentKind;
     due_date: string; // invoices
     valid_until: string; // quotes
@@ -980,6 +981,10 @@ export const recordPayment = (invoiceId: string, input: { amount?: string; metho
 // has payments against it cannot be cancelled.
 export const cancelDocument = (id: string, reason: string): Promise<{ id: string; kind: 'invoice' | 'quote'; number: string; cancelled: true; reason: string }> =>
     call(`/documents/${encodeURIComponent(id)}/cancel`, { method: 'POST', body: JSON.stringify({ reason }) });
+
+// The customer answers a quote they were sent: accept or decline, once, and it is final.
+export const respondToQuote = (quoteId: string, decision: 'accept' | 'decline'): Promise<{ id: string; decision: 'accepted' | 'declined' }> =>
+    call(`/documents/${encodeURIComponent(quoteId)}/respond`, { method: 'POST', body: JSON.stringify({ decision }) });
 
 // The shop makes a quote into an invoice: everything is copied from the quote, and it may give a due date and a deposit.
 export const invoiceFromQuote = (quoteId: string, input: { due_date?: string; deposit?: string } = {}): Promise<CreatedDocument> =>
