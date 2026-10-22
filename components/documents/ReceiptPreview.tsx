@@ -3,6 +3,7 @@ import * as api from '../../services/api';
 import ClaimPanel from './ClaimPanel';
 import DocumentActions from './DocumentActions';
 import PaymentPanel from './PaymentPanel';
+import QuoteAnswerPanel from './QuoteAnswerPanel';
 
 interface ReceiptPreviewProps {
   id: string;
@@ -19,6 +20,8 @@ interface ReceiptPreviewProps {
   onPaid?: () => void;
   // An invoice or quote I issued: make a quote an invoice, or cancel one sent in error.
   actions?: { canInvoice: boolean; canCancel: boolean };
+  // A quote sent to me that I have not answered yet: I can accept or decline it.
+  answerable?: boolean;
   onChanged?: () => void;
   onClose: () => void;
 }
@@ -26,7 +29,7 @@ interface ReceiptPreviewProps {
 // A receipt, shown as the customer sees it: the real receipt page, fetched signed in and put in a frame. The
 // customer's own link is never opened for this, because it opens only once, and nothing is drawn twice, so what is
 // previewed is what the customer gets. A receipt cannot be edited or deleted, so there is no such button here.
-const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ id, number, kind = 'receipt', smsLink, whatsappLink, claimable = false, onOpenAssets, payable, onPaid, actions, onChanged, onClose }) => {
+const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ id, number, kind = 'receipt', smsLink, whatsappLink, claimable = false, onOpenAssets, payable, onPaid, actions, answerable = false, onChanged, onClose }) => {
   const [html, setHtml] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [reload, setReload] = useState(0);
@@ -74,6 +77,15 @@ const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ id, number, kind = 'rec
         />
       )}
 
+      {html !== null && answerable && kind === 'quote' && (
+        <QuoteAnswerPanel
+          id={id}
+          onAnswered={() => {
+            setReload((n) => n + 1);
+            onChanged?.();
+          }}
+        />
+      )}
       {html !== null && actions && (kind === 'invoice' || kind === 'quote') && (
         <DocumentActions
           id={id}
