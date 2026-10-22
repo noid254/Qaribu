@@ -730,7 +730,9 @@ export const issueReceipt = (input: { customer_phone: string; customer_name?: st
 export type DocumentKind = 'receipt' | 'invoice' | 'quote';
 
 export interface ReceiptItem {
-    balance_due: number | null; // invoices: what is still to pay
+    balance_due: number | null; // invoices: what is still to pay (null once cancelled)
+    cancelled?: boolean; // cancelled by the shop, with a reason, on its record
+    invoiced?: boolean; // a quote that has been made into an invoice
     kind: DocumentKind;
     due_date: string; // invoices
     valid_until: string; // quotes
@@ -973,6 +975,15 @@ export interface CreatedPayment {
 // invoice's balance goes down. An empty amount is the whole balance.
 export const recordPayment = (invoiceId: string, input: { amount?: string; method: PayMethod; reference?: string }): Promise<CreatedPayment> =>
     call(`/invoices/${encodeURIComponent(invoiceId)}/payments`, { method: 'POST', body: JSON.stringify(input) });
+
+// The shop cancels an invoice or quote it issued, with a reason. The document stays, marked cancelled. An invoice that
+// has payments against it cannot be cancelled.
+export const cancelDocument = (id: string, reason: string): Promise<{ id: string; kind: 'invoice' | 'quote'; number: string; cancelled: true; reason: string }> =>
+    call(`/documents/${encodeURIComponent(id)}/cancel`, { method: 'POST', body: JSON.stringify({ reason }) });
+
+// The shop makes a quote into an invoice: everything is copied from the quote, and it may give a due date and a deposit.
+export const invoiceFromQuote = (quoteId: string, input: { due_date?: string; deposit?: string } = {}): Promise<CreatedDocument> =>
+    call(`/quotes/${encodeURIComponent(quoteId)}/invoice`, { method: 'POST', body: JSON.stringify(input) });
 
 // --- Transferring an item: the seller starts it and confirms with a code to their own phone, then the buyer accepts with a
 // code to theirs, on the page their message links to (architecture section 24) ---

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as api from '../../services/api';
 import ClaimPanel from './ClaimPanel';
+import DocumentActions from './DocumentActions';
 import PaymentPanel from './PaymentPanel';
 
 interface ReceiptPreviewProps {
@@ -16,13 +17,16 @@ interface ReceiptPreviewProps {
   // An invoice I issued with something still to pay: the shop can record a payment against it.
   payable?: { balance: number };
   onPaid?: () => void;
+  // An invoice or quote I issued: make a quote an invoice, or cancel one sent in error.
+  actions?: { canInvoice: boolean; canCancel: boolean };
+  onChanged?: () => void;
   onClose: () => void;
 }
 
 // A receipt, shown as the customer sees it: the real receipt page, fetched signed in and put in a frame. The
 // customer's own link is never opened for this, because it opens only once, and nothing is drawn twice, so what is
 // previewed is what the customer gets. A receipt cannot be edited or deleted, so there is no such button here.
-const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ id, number, kind = 'receipt', smsLink, whatsappLink, claimable = false, onOpenAssets, payable, onPaid, onClose }) => {
+const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ id, number, kind = 'receipt', smsLink, whatsappLink, claimable = false, onOpenAssets, payable, onPaid, actions, onChanged, onClose }) => {
   const [html, setHtml] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [reload, setReload] = useState(0);
@@ -66,6 +70,19 @@ const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ id, number, kind = 'rec
           onPaid={() => {
             setReload((n) => n + 1);
             onPaid?.();
+          }}
+        />
+      )}
+
+      {html !== null && actions && (kind === 'invoice' || kind === 'quote') && (
+        <DocumentActions
+          id={id}
+          kind={kind}
+          canInvoice={actions.canInvoice}
+          canCancel={actions.canCancel}
+          onChanged={() => {
+            setReload((n) => n + 1);
+            onChanged?.();
           }}
         />
       )}
