@@ -125,7 +125,9 @@ const DocumentList: React.FC<DocumentListProps> = ({ mode, refreshKey, onOpenAss
             </div>
             <div className="text-right shrink-0">
               <p className="font-bold text-brand-navy">{formatKsh(r.amount)}</p>
-              {r.kind === 'invoice' && r.balance_due !== null && (
+              {r.cancelled && <p className="text-xs font-semibold text-red-700">Cancelled</p>}
+              {!r.cancelled && r.kind === 'quote' && r.invoiced && <p className="text-xs font-semibold text-green-700">Invoiced</p>}
+              {!r.cancelled && r.kind === 'invoice' && r.balance_due !== null && (
                 <p className={`text-xs font-semibold ${r.balance_due <= 0 ? 'text-green-700' : 'text-amber-700'}`}>{r.balance_due <= 0 ? 'Paid' : `Balance ${formatKsh(r.balance_due)}`}</p>
               )}
             </div>
@@ -142,7 +144,7 @@ const DocumentList: React.FC<DocumentListProps> = ({ mode, refreshKey, onOpenAss
         </button>
       ))}
 
-      {current && <ReceiptPreview id={current.id} number={current.number} kind={current.kind} smsLink={current.sms_link} whatsappLink={current.whatsapp_link} claimable={mode === 'received' && current.kind === 'receipt'} onOpenAssets={onOpenAssets} payable={mode === 'issued' && current.kind === 'invoice' && (current.balance_due ?? 0) > 0 ? { balance: current.balance_due ?? 0 } : undefined} onPaid={() => setPaidKey((n) => n + 1)} onClose={() => setOpen(null)} />}
+      {current && <ReceiptPreview id={current.id} number={current.number} kind={current.kind} smsLink={current.sms_link} whatsappLink={current.whatsapp_link} claimable={mode === 'received' && current.kind === 'receipt'} onOpenAssets={onOpenAssets} payable={mode === 'issued' && current.kind === 'invoice' && !current.cancelled && (current.balance_due ?? 0) > 0 ? { balance: current.balance_due ?? 0 } : undefined} onPaid={() => setPaidKey((n) => n + 1)} actions={mode === 'issued' && (current.kind === 'invoice' || current.kind === 'quote') && !current.cancelled ? { canInvoice: current.kind === 'quote' && !current.invoiced, canCancel: !current.invoiced } : undefined} onChanged={() => setPaidKey((n) => n + 1)} onClose={() => setOpen(null)} />}
     </div>
   );
 };
