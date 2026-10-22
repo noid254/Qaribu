@@ -13,7 +13,6 @@ import ServiceMarketplace from './components/ServiceMarketplace';
 import MyPlaces from './components/MyPlaces';
 import GatePass from './components/GatePass';
 import VisitorsHub from './components/VisitorsHub';
-import JourneyPage from './components/JourneyPage';
 import InvoiceHub from './components/InvoiceHub';
 import DocumentsHub from './components/documents/DocumentsHub';
 import AssetsHub from './components/assets/AssetsHub';
@@ -81,7 +80,7 @@ function App() {
 
   // Setup State
   const [scannedSetupData, setScannedSetupData] = useState<SetupData | null>(null);
-  const [selectedTools, setSelectedTools] = useState<CurrentPage[]>(['qaribu', 'invoices', 'myplaces', 'services', 'tukosoko', 'journey']);
+  const [selectedTools, setSelectedTools] = useState<CurrentPage[]>(['qaribu', 'invoices', 'myplaces', 'services', 'tukosoko']);
   const [businessAssets, setBusinessAssets] = useState<BusinessAssets | null>(null);
 
   // Initial Load
@@ -457,15 +456,6 @@ function App() {
             onUpdatePremise={handleUpdatePremise}
           />
         );
-      case 'journey':
-        return (
-          <JourneyPage
-            providers={providers}
-            currentUser={currentUser}
-            onSelectProvider={handleSelectProvider}
-            onBack={() => setCurrentPage('home')}
-          />
-        );
       case 'invoices':
         // The hub opens for everyone. Receipts and the brand kit are real and kept on the server (their own screens
         // check the brand kit). Invoices and quotes still use the old on-device set-up until their turn.
@@ -700,7 +690,6 @@ function App() {
                 { label: 'Boda & Taxi', icon: <span>🏍️</span>, page: 'bodaTaxi' },
                 { label: 'Services', icon: <span>🛠️</span>, page: 'services' },
                 { label: 'Market', icon: <span>🛒</span>, page: 'tukosoko' },
-                { label: 'Journey', icon: <span>🚀</span>, page: 'journey' },
                 { label: 'Admin', icon: <span>🛡️</span>, page: 'admin' },
                 { label: 'Garage', icon: <span>🚗</span>, page: 'assetRegistry' },
             ]}
