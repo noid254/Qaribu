@@ -29,10 +29,12 @@ const BrandKitForm: React.FC<BrandKitFormProps> = ({ initial, onSaved, onCancel 
   const [color, setColor] = useState(initial?.color ?? '');
   const [color2, setColor2] = useState(initial?.color2 ?? '');
   const [font, setFont] = useState(initial?.font ?? '');
+  const [design, setDesign] = useState(initial?.design ?? '');
   const [hasLogo, setHasLogo] = useState(initial?.has_logo ?? false);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [logoBusy, setLogoBusy] = useState(false);
   const fonts = initial?.fonts ?? [];
+  const designs = initial?.designs ?? [];
   const [agreed, setAgreed] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -121,6 +123,7 @@ const BrandKitForm: React.FC<BrandKitFormProps> = ({ initial, onSaved, onCancel 
         color,
         color2,
         font,
+        design,
         accept_terms: termsDone ? undefined : agreed,
       });
       onSaved(kit);
@@ -273,8 +276,18 @@ const BrandKitForm: React.FC<BrandKitFormProps> = ({ initial, onSaved, onCancel 
               </div>
             </div>
           )}
+          {designs.length > 0 && (
+            <div>
+              <p className="block text-sm font-medium text-gray-700">Design</p>
+              <div className="grid grid-cols-3 gap-2 mt-1">
+                {designs.map((d) => (
+                  <button key={d.key} type="button" onClick={() => setDesign(d.key === 'band' ? '' : d.key)} className={`py-2 rounded-lg border text-sm ${(design || 'band') === d.key ? 'border-brand-gold bg-yellow-50 font-bold' : 'border-gray-300'}`} data-testid={`brand-kit-design-${d.key}`}>{d.label}</button>
+                ))}
+              </div>
+            </div>
+          )}
           <div className="rounded-lg overflow-hidden border" aria-label="Preview">
-            <div style={{ background: color ? `linear-gradient(135deg,${color},${color2 || color})` : 'linear-gradient(135deg,#0f766e,#0b4f3a)', color: '#fff', fontFamily: fonts.find((f) => f.key === font)?.stack, padding: '14px' }} className="flex items-center gap-3">
+            <div style={{ background: design === 'plain' ? '#fff' : color ? `linear-gradient(135deg,${color},${color2 || color})` : 'linear-gradient(135deg,#0f766e,#0b4f3a)', color: design === 'plain' ? '#111827' : '#fff', borderBottom: design === 'plain' ? `4px solid ${color || '#0f766e'}` : undefined, fontFamily: fonts.find((f) => f.key === font)?.stack, padding: '14px' }} className={`flex items-center gap-3 ${design === 'centred' ? 'flex-col text-center' : ''}`}>
               {logoUrl && <img src={logoUrl} alt="" className="h-10 w-10 object-contain bg-white/90 rounded" />}
               <div>
                 <p className="font-bold text-lg leading-tight">{businessName || 'Your business'}</p>
@@ -300,7 +313,7 @@ const BrandKitForm: React.FC<BrandKitFormProps> = ({ initial, onSaved, onCancel 
             {row('One line', tagline)}
             {row('How you get paid', paymentDetails)}
             {row('Receipt note', receiptNote)}
-            {row('Look', [hasLogo && 'logo', color && `colours ${color}${color2 ? ` and ${color2}` : ''}`, font && `${fonts.find((f) => f.key === font)?.label ?? font} font`].filter(Boolean).join(', ') || "Qaribu's own")}
+            {row('Look', [hasLogo && 'logo', design && `${designs.find((d) => d.key === design)?.label ?? design} design`, color && `colours ${color}${color2 ? ` and ${color2}` : ''}`, font && `${fonts.find((f) => f.key === font)?.label ?? font} font`].filter(Boolean).join(', ') || "Qaribu's own")}
           </div>
           {termsDone ? (
             <p className="text-xs text-gray-500">

@@ -684,6 +684,8 @@ export interface BrandKit {
     font: string;
     has_logo: boolean;
     fonts: { key: string; label: string; stack: string }[];
+    design: string; // band, plain or centred; empty means band
+    designs: { key: string; label: string }[];
 }
 
 export const getBrandKit = (): Promise<BrandKit> => call('/me/brand-kit');
@@ -701,6 +703,7 @@ export const saveBrandKit = (input: {
     color?: string;
     color2?: string;
     font?: string;
+    design?: string;
 }): Promise<BrandKit> => call('/me/brand-kit', { method: 'PUT', body: JSON.stringify(input) });
 
 // The logo: a PNG or JPEG up to 100 KB, sent as the raw bytes.
