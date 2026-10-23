@@ -310,6 +310,8 @@ interface ListedProfessional {
     about: string;
     area: string;
     county: string;
+    category: string;
+    rate: { amount: number; per: string };
     verified: boolean;
     buttons: string[];
     skills: { title: string; category: string }[];
@@ -329,13 +331,13 @@ export const getProfessionals = async (search = ''): Promise<ServiceProvider[]> 
         coverImageUrl: '',
         rating: 0,
         distanceKm: 0,
-        hourlyRate: 0,
-        rateType: 'per task',
+        hourlyRate: p.rate.amount,
+        rateType: p.rate.per as ServiceProvider['rateType'],
         currency: 'Ksh',
         isVerified: p.verified,
         about: p.about,
         works: [],
-        category: (p.skills.find((s) => s.category)?.category || 'OTHER').toUpperCase(),
+        category: p.category || 'OTHER',
         location: [p.area, p.county].filter(Boolean).join(', '),
         isOnline: false,
         accountType: 'individual',
@@ -1181,6 +1183,8 @@ export interface SkillIdProfile {
     county: string;
     listed: boolean;
     has_photo: boolean;
+    category: string;
+    rate: { amount: number; per: string };
     buttons: string[];
     skills: SkillItem[];
     checklist: { key: string; label: string; done: boolean }[];
@@ -1194,7 +1198,7 @@ export interface SkillIdState extends Identity {
 }
 
 export const getSkillIdState = (): Promise<SkillIdState> => call('/me/skill-id');
-export const saveSkillId = (input: { tagline?: string; about?: string; area?: string; county?: string; listed?: boolean; buttons?: string[] }): Promise<SkillIdState> =>
+export const saveSkillId = (input: { tagline?: string; about?: string; area?: string; county?: string; listed?: boolean; buttons?: string[]; category?: string; rate?: { amount: number; per: string } }): Promise<SkillIdState> =>
     call('/me/skill-id', { method: 'PUT', body: JSON.stringify(input) });
 export const addMySkill = (title: string, category?: string): Promise<SkillIdState> =>
     call('/me/skills', { method: 'POST', body: JSON.stringify({ title, category }) });
