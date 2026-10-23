@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as api from '../../services/api';
 import { primaryButton } from '../visitors/shared';
 import { FormLine } from './FormLine';
@@ -19,6 +19,7 @@ const BUTTONS: { value: string; label: string; hint: string }[] = [
   { value: 'catalogue', label: 'Catalogue', hint: 'Show what you sell' },
 ];
 const MAX_BUTTONS = 4;
+const RATE_TYPES = ['per hour', 'per day', 'per task', 'per month', 'per piece work', 'per km', 'per sqm', 'per cbm', 'per appearance'];
 
 const Card: React.FC<{ title?: string; children: React.ReactNode }> = ({ title, children }) => (
   <section className="bg-white rounded-lg shadow-sm p-5">
@@ -35,11 +36,21 @@ const SkillIdEditor: React.FC<SkillIdEditorProps> = ({ state, onChange, only }) 
   const [about, setAbout] = useState(profile.about);
   const [area, setArea] = useState(profile.area);
   const [county, setCounty] = useState(profile.county);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [category, setCategory] = useState(profile.category);
+  const [amount, setAmount] = useState(profile.rate.amount > 0 ? String(profile.rate.amount) : '');
+  const [per, setPer] = useState(profile.rate.per);
   const [buttons, setButtons] = useState<string[]>(profile.buttons);
   const [skill, setSkill] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [note, setNote] = useState('');
+
+  useEffect(() => {
+    api.getCategories().then(setCategories).catch(() => undefined);
+  }, []);
+  // A category the person typed is not in the list: it is shown as 'Other' with its text.
+  const listed = categories.includes(category);
 
   const run = async (job: () => Promise<api.SkillIdState>, saved = '') => {
     setBusy(true);
@@ -60,7 +71,7 @@ const SkillIdEditor: React.FC<SkillIdEditorProps> = ({ state, onChange, only }) 
   const saveAll = () =>
     run(async () => {
       if (name.trim() !== profile.name) await api.setMyName(name);
-      return api.saveSkillId({ tagline, about, area, county, buttons });
+      return api.saveSkillId({ tagline, about, area, county, buttons, category: category.trim(), rate: { amount: parseInt(amount, 10) || 0, per } });
     }, 'Saved.');
 
   const toggleButton = (value: string) =>
@@ -111,6 +122,25 @@ const SkillIdEditor: React.FC<SkillIdEditorProps> = ({ state, onChange, only }) 
       <Card title="Your details">
         <FormLine label="Your name or nickname" value={name} onChange={setName} max={80} />
         <FormLine label="What you do, in a line" value={tagline} onChange={setTagline} max={80} placeholder="Plumber and pipe fitter" />
+        <div className="border-b border-gray-200 py-3">
+          <label htmlFor="sid-category" className="block text-xs text-gray-400 font-medium mb-1">Category</label>
+          <select id="sid-category" value={listed ? category : category ? 'other' : ''} onChange={(e) => setCategory(e.target.value === 'other' ? ' ' : e.target.value)} className="w-full text-base text-gray-800 bg-transparent focus:outline-none">
+            <option value="">Choose a category</option>
+            {categories.map((c) => <option key={c} value={c}>{c}</option>)}
+            <option value="other">Other (please specify)</option>
+          </select>
+        </div>
+        {category !== '' && !listed && <FormLine label="Your category" value={category.trim()} onChange={(v) => setCategory(v || ' ')} max={40} />}
+        <div className="border-b border-gray-200 py-3">
+          <label htmlFor="sid-charge" className="block text-xs text-gray-400 font-medium mb-1">Charge</label>
+          <div className="flex items-center gap-2">
+            <span className="text-base text-gray-500">Ksh</span>
+            <input id="sid-charge" type="number" inputMode="numeric" min={0} placeholder="1000" value={amount} onChange={(e) => setAmount(e.target.value)} className="text-base text-gray-800 bg-transparent focus:outline-none w-28" data-testid="skill-id-charge" />
+            <select value={per} onChange={(e) => setPer(e.target.value)} aria-label="What the charge is for" className="text-base text-gray-800 bg-transparent focus:outline-none border-l pl-2">
+              {RATE_TYPES.map((t) => <option key={t} value={t}>{t.replace('piece work', 'piece')}</option>)}
+            </select>
+          </div>
+        </div>
         <FormLine label="About me" value={about} onChange={setAbout} max={500} multiline />
         <FormLine label="Where you work (estate or area)" value={area} onChange={setArea} max={60} placeholder="Kileleshwa" />
         <FormLine label="County" value={county} onChange={setCounty} max={40} placeholder="Nairobi" />
