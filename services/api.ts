@@ -312,6 +312,7 @@ interface ListedProfessional {
     county: string;
     category: string;
     rate: { amount: number; per: string };
+    hasCover: boolean;
     verified: boolean;
     buttons: string[];
     skills: { title: string; category: string }[];
@@ -328,7 +329,8 @@ export const getProfessionals = async (search = ''): Promise<ServiceProvider[]> 
         phone: '',
         service: p.tagline,
         avatarUrl: `${API_BASE_URL}/professionals/${p.id}/photo`,
-        coverImageUrl: '',
+        // Without a banner the card and the profile show a plain navy block, not someone's photo stretched wide.
+        coverImageUrl: p.hasCover ? `${API_BASE_URL}/professionals/${p.id}/cover` : '',
         rating: 0,
         distanceKm: 0,
         hourlyRate: p.rate.amount,
@@ -1183,6 +1185,7 @@ export interface SkillIdProfile {
     county: string;
     listed: boolean;
     has_photo: boolean;
+    has_cover: boolean;
     category: string;
     rate: { amount: number; per: string };
     buttons: string[];
@@ -1193,7 +1196,7 @@ export interface SkillIdProfile {
 // Where the person stands (nickname, Skill ID, verified) and, once they have made a Skill ID, the profile itself.
 export interface SkillIdState extends Identity {
     // The name and photo anyone has, with or without a Skill ID.
-    me: { name: string; has_photo: boolean };
+    me: { name: string; has_photo: boolean; has_cover: boolean };
     skill_id: SkillIdProfile | null;
 }
 
@@ -1204,23 +1207,24 @@ export const addMySkill = (title: string, category?: string): Promise<SkillIdSta
     call('/me/skills', { method: 'POST', body: JSON.stringify({ title, category }) });
 export const removeMySkill = (id: string): Promise<SkillIdState> => call(`/me/skills/${encodeURIComponent(id)}`, { method: 'DELETE' });
 
-// The photo: a PNG or JPEG of at most 150 KB, sent as the picture itself.
-export const uploadSkillIdPhoto = async (file: Blob): Promise<SkillIdState> => {
+// The photo (150 KB) and the banner (250 KB): a PNG or JPEG sent as the picture itself.
+export type ProfilePicture = 'photo' | 'cover';
+export const uploadProfilePicture = async (which: ProfilePicture, file: Blob): Promise<SkillIdState> => {
     const token = getToken();
-    const response = await fetch(`${API_BASE_URL}/me/skill-id/photo`, {
+    const response = await fetch(`${API_BASE_URL}/me/skill-id/${which}`, {
         method: 'PUT',
         headers: { 'Content-Type': file.type, ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: file,
         cache: 'no-store',
     });
     const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new ApiError(response.status, data.message || (response.status === 413 ? 'That photo is too large.' : `Something went wrong (${response.status}).`));
+    if (!response.ok) throw new ApiError(response.status, data.message || (response.status === 413 ? 'That picture is too large.' : `Something went wrong (${response.status}).`));
     return data;
 };
-export const removeSkillIdPhoto = (): Promise<SkillIdState> => call('/me/skill-id/photo', { method: 'DELETE' });
-export const fetchSkillIdPhotoUrl = async (): Promise<string | null> => {
+export const removeProfilePicture = (which: ProfilePicture): Promise<SkillIdState> => call(`/me/skill-id/${which}`, { method: 'DELETE' });
+export const fetchProfilePictureUrl = async (which: ProfilePicture): Promise<string | null> => {
     const token = getToken();
-    const response = await fetch(`${API_BASE_URL}/me/skill-id/photo`, { headers: token ? { Authorization: `Bearer ${token}` } : {}, cache: 'no-store' });
+    const response = await fetch(`${API_BASE_URL}/me/skill-id/${which}`, { headers: token ? { Authorization: `Bearer ${token}` } : {}, cache: 'no-store' });
     if (!response.ok) return null;
     return URL.createObjectURL(await response.blob());
 };

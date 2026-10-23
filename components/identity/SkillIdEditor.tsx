@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import * as api from '../../services/api';
 import { primaryButton } from '../visitors/shared';
 import { FormLine } from './FormLine';
-import PhotoPicker from './PhotoPicker';
+import ProfileHeader from './ProfileHeader';
 
 interface SkillIdEditorProps {
   state: api.SkillIdState;
@@ -21,10 +21,11 @@ const BUTTONS: { value: string; label: string; hint: string }[] = [
 const MAX_BUTTONS = 4;
 const RATE_TYPES = ['per hour', 'per day', 'per task', 'per month', 'per piece work', 'per km', 'per sqm', 'per cbm', 'per appearance'];
 
-const Card: React.FC<{ title?: string; children: React.ReactNode }> = ({ title, children }) => (
-  <section className="bg-white rounded-lg shadow-sm p-5">
-    {title && <h2 className="text-lg font-bold text-gray-800 mb-2">{title}</h2>}
-    {children}
+const Card: React.FC<{ title: string; hint?: string; children: React.ReactNode }> = ({ title, hint, children }) => (
+  <section className="bg-white rounded-2xl shadow-sm p-5">
+    <h2 className="text-base font-semibold text-brand-navy">{title}</h2>
+    {hint && <p className="text-sm text-slate-500 mt-0.5 mb-2">{hint}</p>}
+    <div className={hint ? '' : 'mt-1'}>{children}</div>
   </section>
 );
 
@@ -84,8 +85,9 @@ const SkillIdEditor: React.FC<SkillIdEditorProps> = ({ state, onChange, only }) 
   };
 
   const missing = profile.checklist.filter((c) => !c.done);
+  const done = profile.checklist.length - missing.length;
   const skillsCard = (
-    <Card title="Your skills">
+    <Card title="Your skills" hint="Up to 10. Short names work best, such as Plumbing or Wedding photography.">
       {profile.skills.length === 0 && <p className="text-sm text-gray-500 mb-2">None yet. Add what you can do.</p>}
       <ul className="space-y-2 mb-3">
         {profile.skills.map((s) => (
@@ -99,7 +101,6 @@ const SkillIdEditor: React.FC<SkillIdEditorProps> = ({ state, onChange, only }) 
         <input value={skill} onChange={(e) => setSkill(e.target.value)} maxLength={60} placeholder="For example Plumbing" aria-label="Add a skill" data-testid="skill-id-new-skill" className="flex-1 px-3 py-3 bg-gray-100 rounded-lg shadow-inner text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold" />
         <button type="submit" disabled={busy || !skill.trim()} className="shrink-0 bg-brand-navy text-white font-semibold px-4 rounded-lg disabled:opacity-40">Add</button>
       </form>
-      <p className="text-xs text-gray-400 mt-2">Up to 10 skills.</p>
       {error && <p data-testid="skill-id-error" className="text-red-500 text-sm mt-2">{error}</p>}
     </Card>
   );
@@ -108,18 +109,20 @@ const SkillIdEditor: React.FC<SkillIdEditorProps> = ({ state, onChange, only }) 
 
   return (
     <div data-testid="skill-id-editor" className="space-y-4">
-      <PhotoPicker hasPhoto={profile.has_photo} onState={onChange} />
+      <ProfileHeader name={name} tagline={tagline} hasPhoto={profile.has_photo} hasCover={profile.has_cover} onState={onChange} />
 
-      {missing.length > 0 ? (
-        <div data-testid="skill-id-missing" className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm text-yellow-900">
-          <p className="font-semibold">Complete your Skill ID</p>
-          <ul className="list-disc ml-5 mt-1">{missing.map((m) => <li key={m.key}>{m.label}</li>)}</ul>
+      <section data-testid={missing.length > 0 ? 'skill-id-missing' : 'skill-id-complete'} className="bg-white rounded-2xl shadow-sm p-5">
+        <div className="flex items-baseline justify-between">
+          <h2 className="text-base font-semibold text-brand-navy">{missing.length > 0 ? 'Complete your Skill ID' : 'Your Skill ID is complete'}</h2>
+          <span className="text-sm text-slate-500">{done} of {profile.checklist.length}</span>
         </div>
-      ) : (
-        <p className="text-sm text-green-700 font-semibold text-center">✓ Your Skill ID is complete.</p>
-      )}
+        <div className="mt-2 h-1.5 rounded-full bg-slate-100" role="progressbar" aria-valuenow={done} aria-valuemin={0} aria-valuemax={profile.checklist.length}>
+          <div className="h-1.5 rounded-full bg-brand-gold transition-all" style={{ width: `${(done / profile.checklist.length) * 100}%` }} />
+        </div>
+        {missing.length > 0 && <p className="mt-3 text-sm text-slate-600">Still to add: {missing.map((m) => m.label.toLowerCase()).join(', ')}.</p>}
+      </section>
 
-      <Card title="Your details">
+      <Card title="Your details" hint="This is what people see on your profile.">
         <FormLine label="Your name or nickname" value={name} onChange={setName} max={80} />
         <FormLine label="What you do, in a line" value={tagline} onChange={setTagline} max={80} placeholder="Plumber and pipe fitter" />
         <div className="border-b border-gray-200 py-3">
@@ -146,14 +149,13 @@ const SkillIdEditor: React.FC<SkillIdEditorProps> = ({ state, onChange, only }) 
         <FormLine label="County" value={county} onChange={setCounty} max={40} placeholder="Nairobi" />
       </Card>
 
-      <Card title="Buttons on your profile">
-        <p className="text-xs text-gray-400 mb-2">Choose up to {MAX_BUTTONS}. They show in the order you choose them.</p>
+      <Card title="Buttons on your profile" hint={`Choose up to ${MAX_BUTTONS}. They show in the order you pick them.`}>
         <div className="grid grid-cols-2 gap-2">
           {BUTTONS.map((b) => {
             const at = buttons.indexOf(b.value);
             const on = at >= 0;
             return (
-              <label key={b.value} className={`flex items-start gap-2 p-3 border rounded-lg cursor-pointer ${on ? 'border-brand-navy bg-brand-navy/5' : 'border-gray-200'} ${!on && buttons.length >= MAX_BUTTONS ? 'opacity-40' : ''}`}>
+              <label key={b.value} className={`flex items-start gap-2 p-3 border rounded-xl cursor-pointer transition-colors ${on ? 'border-brand-navy bg-brand-navy/5' : 'border-slate-200'} ${!on && buttons.length >= MAX_BUTTONS ? 'opacity-40' : ''}`}>
                 <input type="checkbox" checked={on} onChange={() => toggleButton(b.value)} disabled={!on && buttons.length >= MAX_BUTTONS} className="mt-1 text-brand-navy focus:ring-brand-gold" data-testid={`button-${b.value}`} />
                 <span>
                   <span className="block text-sm font-semibold text-gray-800">{b.label}{on ? <span className="ml-1 text-xs text-brand-navy">#{at + 1}</span> : null}</span>
@@ -165,7 +167,7 @@ const SkillIdEditor: React.FC<SkillIdEditorProps> = ({ state, onChange, only }) 
         </div>
       </Card>
 
-      <div className="sticky bottom-0 bg-gray-50 py-3">
+      <div className="sticky bottom-0 -mx-4 border-t border-slate-200 bg-slate-50/95 px-4 py-3 backdrop-blur-sm">
         <button type="button" onClick={saveAll} disabled={busy} data-testid="skill-id-save" className={primaryButton}>{busy ? 'Saving…' : 'Save my details'}</button>
         {note && <p className="text-sm text-green-700 text-center mt-2">{note}</p>}
         {error && <p data-testid="skill-id-error" className="text-red-500 text-sm text-center mt-2">{error}</p>}
@@ -173,8 +175,7 @@ const SkillIdEditor: React.FC<SkillIdEditorProps> = ({ state, onChange, only }) 
 
       {skillsCard}
 
-      <Card title="Be found as a professional">
-        <p className="text-xs text-gray-500 mb-3">When you are listed, people searching for your skills can find your name, photo, what you do, where you work and your skills. Your phone number is never shown. You can stop at any time.</p>
+      <Card title="Be found as a professional" hint="When you are listed, people searching can find your name, photo, what you do, where you work and your skills. Your phone number is not shown. You can stop at any time.">
         <button
           type="button"
           onClick={() => run(() => api.saveSkillId({ listed: !profile.listed }), profile.listed ? 'You are no longer listed.' : 'You are listed.')}

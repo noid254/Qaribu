@@ -17,13 +17,17 @@ const ServiceCard: React.FC<{ provider: ServiceProvider; onClick: () => void }> 
     return (
         <div onClick={onClick} className="bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer w-full group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
             <div className="relative h-40">
-                <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src={provider.coverImageUrl} alt={provider.service} />
+                {provider.coverImageUrl ? (
+                    <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src={provider.coverImageUrl} alt={provider.service} />
+                ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-brand-navy to-slate-600" />
+                )}
                 {provider.isVerified && (
                     <div className="absolute top-2 right-2 bg-blue-500 text-white rounded-full p-1 shadow-md">
                         <VerifiedIcon className="w-4 h-4"/>
                     </div>
                 )}
-                <img src={provider.avatarUrl} alt={provider.name} className="absolute -bottom-6 left-3 w-12 h-12 rounded-full border-4 border-white shadow-lg" />
+                <img src={provider.avatarUrl} alt={provider.name} className="absolute -bottom-6 left-3 w-12 h-12 rounded-full border-4 border-white shadow-lg object-cover bg-slate-200" />
                 <div className="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white text-[10px] px-2 py-1 rounded-full font-semibold flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" /></svg>
                     <span>{provider.distanceKm}km Near you</span>
