@@ -301,6 +301,51 @@ export const gateCheckout = (slug: string, visitor: string): Promise<{ ok: boole
     call(`/gate/${encodeURIComponent(slug)}/checkout`, { method: 'POST', body: JSON.stringify({ visitor }) });
 
 // --- Data Fetching (GET) ---
+// The professionals Nikosoko lists inside Qaribu: real Skill IDs whose owners chose to be listed. The server never sends a phone number,
+// so call and WhatsApp buttons are left out until a way to reach the person without publishing the number is decided.
+interface ListedProfessional {
+    id: string;
+    name: string;
+    tagline: string;
+    about: string;
+    area: string;
+    county: string;
+    verified: boolean;
+    buttons: string[];
+    skills: { title: string; category: string }[];
+}
+
+export const getProfessionals = async (search = ''): Promise<ServiceProvider[]> => {
+    const q = search.trim() ? `?q=${encodeURIComponent(search.trim())}` : '';
+    const response = await fetch(`${API_BASE_URL}/professionals${q}`, { cache: 'no-store' });
+    if (!response.ok) return [];
+    const data = await response.json().catch(() => ({ items: [] }));
+    return (data.items as ListedProfessional[]).map((p) => ({
+        id: p.id,
+        name: p.name,
+        phone: '',
+        service: p.tagline,
+        avatarUrl: `${API_BASE_URL}/professionals/${p.id}/photo`,
+        coverImageUrl: '',
+        rating: 0,
+        distanceKm: 0,
+        hourlyRate: 0,
+        rateType: 'per task',
+        currency: 'Ksh',
+        isVerified: p.verified,
+        about: p.about,
+        works: [],
+        category: (p.skills.find((s) => s.category)?.category || 'OTHER').toUpperCase(),
+        location: [p.area, p.county].filter(Boolean).join(', '),
+        isOnline: false,
+        accountType: 'individual',
+        flagCount: 0,
+        views: 0,
+        cta: p.buttons.filter((b): b is 'book' | 'catalogue' => b === 'book' || b === 'catalogue'),
+        skills: p.skills.map((s, i) => ({ id: `${p.id}-${i}`, name: s.title, iconUrl: '', isVerified: false, verifier: { type: 'mentor', name: '', details: '' } })),
+    }));
+};
+
 export const getProviders = (): Promise<ServiceProvider[]> => Promise.resolve(mockProviders);
 export const getEvents = (): Promise<Event[]> => Promise.resolve(mockEvents);
 export const getGigs = (): Promise<Gig[]> => Promise.resolve(mockGigs);

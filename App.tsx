@@ -56,6 +56,8 @@ function App() {
   
   // Data State
   const [providers, setProviders] = useState<ServiceProvider[]>([]);
+  // The people Nikosoko lists, from real Skill IDs. The pages that show professionals use this, not the sample providers.
+  const [professionals, setProfessionals] = useState<ServiceProvider[]>([]);
   const [catalogueItems, setCatalogueItems] = useState<CatalogueItem[]>([]);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [qaribuRequests, setQaRibuRequests] = useState<QaRibuRequest[]>([]);
@@ -133,6 +135,7 @@ function App() {
         ]);
 
         setProviders(providersData);
+        setProfessionals(await api.getProfessionals().catch(() => []));
         setCatalogueItems(catalogueData);
         setDocuments(docsData);
         setQaRibuRequests(requestsData);
@@ -346,7 +349,7 @@ function App() {
       case 'home':
         return (
           <NikoSoko
-            providers={providers}
+            providers={professionals}
             onSelectProvider={handleSelectProvider}
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
@@ -360,7 +363,7 @@ function App() {
       case 'services':
         return (
           <ServiceMarketplace
-            providers={providers}
+            providers={professionals}
             specialBanners={specialBanners}
             onSelectProvider={handleSelectProvider}
             onBack={() => setCurrentPage('home')}
@@ -373,7 +376,7 @@ function App() {
         return (
           <ServiceMarketplace
             key="bodaTaxi"
-            providers={providers}
+            providers={professionals}
             specialBanners={specialBanners}
             onSelectProvider={handleSelectProvider}
             onBack={() => setCurrentPage('home')}
@@ -387,7 +390,7 @@ function App() {
         return (
           <Tukosoko
             items={catalogueItems}
-            providers={providers}
+            providers={professionals}
             specialBanners={specialBanners}
             onSelectProvider={handleSelectProvider}
             onBack={() => setCurrentPage('home')}
