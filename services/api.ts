@@ -683,6 +683,7 @@ export interface BrandKit {
     color2: string;
     font: string;
     has_logo: boolean;
+    has_letterhead: boolean;
     fonts: { key: string; label: string; stack: string }[];
     design: string; // band, plain or centred; empty means band
     designs: { key: string; label: string }[];
@@ -718,6 +719,29 @@ export const uploadLogo = async (file: Blob): Promise<BrandKit> => {
     const data = await response.json().catch(() => ({}));
     if (!response.ok) throw new ApiError(response.status, data.message || (response.status === 413 ? 'That picture is too large. Use one under 100 KB.' : `Something went wrong (${response.status}).`));
     return data;
+};
+
+// The letterhead picture (PNG or JPEG under 250 KB): used when the design is 'letterhead'.
+export const uploadLetterhead = async (file: Blob): Promise<BrandKit> => {
+    const token = getToken();
+    const response = await fetch(`${API_BASE_URL}/me/brand-kit/letterhead`, {
+        method: 'PUT',
+        headers: { 'Content-Type': file.type, ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        body: file,
+        cache: 'no-store',
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new ApiError(response.status, data.message || (response.status === 413 ? 'That picture is too large. Use one under 250 KB.' : `Something went wrong (${response.status}).`));
+    return data;
+};
+
+export const removeLetterhead = (): Promise<BrandKit> => call('/me/brand-kit/letterhead', { method: 'DELETE' });
+
+export const fetchLetterheadUrl = async (): Promise<string | null> => {
+    const token = getToken();
+    const response = await fetch(`${API_BASE_URL}/me/brand-kit/letterhead`, { headers: token ? { Authorization: `Bearer ${token}` } : {}, cache: 'no-store' });
+    if (!response.ok) return null;
+    return URL.createObjectURL(await response.blob());
 };
 
 export const removeLogo = (): Promise<BrandKit> => call('/me/brand-kit/logo', { method: 'DELETE' });
