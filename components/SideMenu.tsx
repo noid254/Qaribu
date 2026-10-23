@@ -1,5 +1,6 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import * as api from '../services/api';
 import type { ServiceProvider, CurrentPage } from '../types';
 
 interface SideMenuProps {
@@ -22,6 +23,27 @@ const AdminIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w
 const ToolboxIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>;
 
 const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose, onNavigate, currentUser, isSuperAdmin, onLogout }) => {
+  // The Skill ID photo is the picture people see for you, so the menu shows it when there is one.
+  const [skillPhoto, setSkillPhoto] = useState<string | null>(null);
+  const signedIn = !!currentUser;
+  useEffect(() => {
+    if (!isOpen || !signedIn) return;
+    let live = true;
+    let url: string | null = null;
+    api
+      .getSkillIdState()
+      .then((state) => (state.skill_id?.has_photo ? api.fetchSkillIdPhotoUrl() : null))
+      .then((u) => {
+        url = u;
+        if (live) setSkillPhoto(u);
+      })
+      .catch(() => undefined);
+    return () => {
+      live = false;
+      if (url) URL.revokeObjectURL(url);
+    };
+  }, [isOpen, signedIn]);
+
   const menuItems: { label: string; page: CurrentPage | 'profile'; icon: React.ReactNode }[] = [
     { label: 'My Wallet', page: 'qaribu', icon: <WalletIcon /> },
     { label: 'My Catalogue', page: 'mycatalogue', icon: <CatalogueIcon /> },
@@ -59,7 +81,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose, onNavigate, curren
             <button onClick={() => handleNavigate('identity')} className="w-full text-left">
               <header className="p-6 border-b border-white/10 hover:bg-white/5 transition-colors">
                   <div className="flex items-center gap-4">
-                      <img src={currentUser.avatarUrl || 'https://i.pravatar.cc/150?img=5'} alt="User Avatar" className="w-14 h-14 rounded-full border-2 border-white/30" />
+                      <img src={skillPhoto || currentUser.avatarUrl || 'https://i.pravatar.cc/150?img=5'} alt="User Avatar" className="w-14 h-14 rounded-full border-2 border-white/30" />
                       <div>
                           <p className="font-semibold text-lg">{currentUser.name}</p>
                           <p className="text-xs text-gray-400">{currentUser.service}</p>
