@@ -302,7 +302,7 @@ export interface HeroBanner {
 }
 
 // FIX: Moved CurrentPage type here from App.tsx to be globally accessible.
-export type CurrentPage = 'home' | 'invite' | 'nikosoko' | 'services' | 'bodaTaxi' | 'myplaces' | 'qaribu' | 'invoices' | 'invoiceGenerator' | 'quoteGenerator' | 'receiptGenerator' | 'brandKit' | 'myDocuments' | 'scanDocument' | 'profile' | 'tukosoko' | 'mycontacts' | 'mycatalogue' | 'settings' | 'identity' | 'admin' | 'gigs' | 'createGig' | 'addService' | 'messages' | 'assetRegistry' | 'registerAsset' | 'ownershipCheck' | 'documentDetail' | 'createPost' | 'createProductPost' | 'mytoolkit' | 'workshopSetup' | 'login' | 'qrScan' | 'premiseLanding' | 'manage_order' | 'hostSetup' | 'doorProfile';
+export type CurrentPage = 'home' | 'invite' | 'nikosoko' | 'services' | 'bodaTaxi' | 'myplaces' | 'qaribu' | 'invoices' | 'invoiceGenerator' | 'quoteGenerator' | 'receiptGenerator' | 'brandKit' | 'myDocuments' | 'scanDocument' | 'profile' | 'tukosoko' | 'mycontacts' | 'mycatalogue' | 'settings' | 'identity' | 'admin' | 'gigs' | 'createGig' | 'addService' | 'messages' | 'assetRegistry' | 'registerAsset' | 'ownershipCheck' | 'documentDetail' | 'createPost' | 'createProductPost' | 'mytoolkit' | 'workshopSetup' | 'login' | 'qrScan' | 'premiseLanding' | 'manage_order' | 'hostSetup' | 'doorProfile' | 'skills' | 'bookings';
 
 export type DocumentType = 'Invoice' | 'Quote' | 'Receipt';
 
