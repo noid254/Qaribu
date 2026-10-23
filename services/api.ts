@@ -1228,3 +1228,31 @@ export const fetchProfilePictureUrl = async (which: ProfilePicture): Promise<str
     if (!response.ok) return null;
     return URL.createObjectURL(await response.blob());
 };
+
+
+// --- Bookings: ask a listed professional for a time, and answer (architecture section 28) ---
+export type BookingStatus = 'Pending' | 'Confirmed' | 'Completed' | 'Cancelled' | 'Rescheduled';
+export interface BookingRecord {
+    id: string;
+    role: 'client' | 'provider';
+    providerId: string;
+    providerName: string;
+    providerService: string;
+    providerAvatar: string;
+    clientName: string;
+    clientPhone: string;
+    date: string;
+    time: string;
+    serviceTitle: string;
+    notes: string;
+    status: BookingStatus;
+    cancellationReason: string;
+    cancelledBy: string;
+}
+export type BookingAction = 'confirm' | 'decline' | 'complete' | 'cancel' | 'reschedule';
+
+export const makeBooking = (input: { professional_id: string; date: string; time: string; service_title?: string; notes?: string }): Promise<BookingRecord> =>
+    call('/bookings', { method: 'POST', body: JSON.stringify(input) });
+export const listBookings = async (side: 'mine' | 'received'): Promise<BookingRecord[]> => (await call(`/me/bookings?side=${side}`)).items;
+export const changeBooking = (id: string, action: BookingAction, body: { reason?: string; date?: string; time?: string } = {}): Promise<BookingRecord> =>
+    call(`/bookings/${encodeURIComponent(id)}/${action}`, { method: 'POST', body: JSON.stringify(body) });

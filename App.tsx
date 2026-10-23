@@ -9,6 +9,7 @@ import {
 import AuthModal from './components/AuthModal';
 import SideMenu from './components/SideMenu';
 import BookingsView from './components/BookingsView';
+import BookingForm from './components/BookingForm';
 import NikoSoko from './components/NikoSoko';
 import ServiceMarketplace from './components/ServiceMarketplace';
 import MyPlaces from './components/MyPlaces';
@@ -69,6 +70,8 @@ function App() {
 
   // View State
   const [viewingProvider, setViewingProvider] = useState<ServiceProvider | null>(null);
+  // Set when a person taps Book on a listed professional: shows the form for asking for a time.
+  const [bookingFor, setBookingFor] = useState<ServiceProvider | null>(null);
   const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
   const [selectedPremise, setSelectedPremise] = useState<Premise | null>(null);
   const [manageOrderData, setManageOrderData] = useState<OrderData | null>(null);
@@ -535,7 +538,7 @@ function App() {
             savedContacts={[]}
             onToggleSaveContact={() => {}}
             catalogueItems={catalogueItems.filter(i => i.providerId === viewingProvider.id)}
-            onBook={() => {}}
+            onBook={(provider) => setBookingFor(provider)}
             onJoin={() => {}}
             isFlaggedByUser={false}
             onFlag={() => {}}
@@ -587,7 +590,7 @@ function App() {
           />
         );
       case 'bookings':
-        return <BookingsView onBack={() => setCurrentPage('home')} />;
+        return <BookingsView isAuthenticated={isAuthenticated} onSignIn={() => setIsAuthModalOpen(true)} onBack={() => setCurrentPage('home')} />;
       case 'admin':
         return (
           <SuperAdminDashboard
@@ -832,6 +835,8 @@ function App() {
         onLogout={handleLogout}
       />
       
+      {bookingFor && <BookingForm provider={bookingFor} onClose={() => setBookingFor(null)} onBooked={() => { setBookingFor(null); setCurrentPage('bookings'); }} />}
+
       {isAuthModalOpen && (
         <AuthModal 
           onClose={() => setIsAuthModalOpen(false)} 
