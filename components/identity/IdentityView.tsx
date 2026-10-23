@@ -82,7 +82,7 @@ const IdentityView: React.FC<IdentityViewProps> = ({ isAuthenticated, userName, 
   }
 
   return (
-    <div className="pb-20">
+    <div className="pb-20 min-h-screen bg-slate-50">
       {header}
       <div className="p-4 space-y-4 max-w-md mx-auto">
         {error && <p className="text-red-500 text-sm">{error}</p>}
@@ -108,7 +108,7 @@ const IdentityView: React.FC<IdentityViewProps> = ({ isAuthenticated, userName, 
               <p className="text-sm text-gray-600 bg-white rounded-lg shadow-sm p-5">Skills belong to a Skill ID. Make your Skill ID first, then add what you can do.</p>
             )}
 
-            {section !== 'skills' && <div data-testid="identity-level" className="bg-white rounded-xl shadow p-5 space-y-2">
+            {section !== 'skills' && <div data-testid="identity-level" className="bg-white rounded-2xl shadow-sm p-5 space-y-2">
               <p className="text-xs uppercase tracking-wide text-gray-500">You are</p>
               <h2 className="text-lg font-bold text-brand-navy">{identity.level === 'verified' ? '✓ ' : ''}{LEVEL_TEXT[identity.level].title}</h2>
               <p className="text-sm text-gray-600">{LEVEL_TEXT[identity.level].body}</p>

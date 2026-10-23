@@ -446,7 +446,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profileData, isOwner, isAuthe
                 {/* Cover and Header */}
                 <div className="relative">
                     <div className="h-40 bg-gray-300 relative">
-                        <img src={editedCoverImage || profileData.coverImageUrl} alt="Cover" className="w-full h-full object-cover" />
+                        {(editedCoverImage || profileData.coverImageUrl) ? <img src={editedCoverImage || profileData.coverImageUrl} alt="Cover" className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gradient-to-br from-brand-navy to-slate-600" />}
                         {isEditing && (
                             <button onClick={() => coverImageInputRef.current?.click()} className="absolute inset-0 bg-black bg-opacity-40 hover:bg-opacity-60 transition-all flex items-center justify-center text-white text-sm font-semibold">
                                 Change Banner

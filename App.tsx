@@ -186,6 +186,14 @@ function App() {
     setCurrentPage('home');
   };
 
+  // The listing is read again each time a person comes back to a page that shows it, so a change on My Skill ID shows at once.
+  useEffect(() => {
+    if (isLoading) return;
+    if (['home', 'services', 'bodaTaxi', 'tukosoko'].includes(currentPage)) {
+      api.getProfessionals().then(setProfessionals).catch(() => undefined);
+    }
+  }, [currentPage, isLoading]);
+
   const handleSelectProvider = (provider: ServiceProvider) => {
     setViewingProvider(provider);
     setCurrentPage('profile');

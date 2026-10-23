@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import * as api from '../../services/api';
 import { primaryButton } from '../visitors/shared';
-import PhotoPicker from './PhotoPicker';
+import ProfileHeader from './ProfileHeader';
 import { FormLine } from './FormLine';
 
 interface ProfileCardProps {
@@ -33,8 +33,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ state, onChange }) => {
 
   return (
     <div data-testid="profile-card" className="space-y-4">
-      <PhotoPicker hasPhoto={state.me.has_photo} onState={onChange} />
-      <div className="bg-white rounded-lg shadow-sm p-5">
+      <ProfileHeader name={state.me.name} hasPhoto={state.me.has_photo} hasCover={state.me.has_cover} onState={onChange} />
+      <div className="bg-white rounded-2xl shadow-sm p-5">
         <FormLine label="Name or nickname" value={name} onChange={setName} max={80} />
         <button type="button" onClick={save} disabled={busy || name.trim() === state.me.name} data-testid="profile-save" className={`${primaryButton} mt-4 disabled:opacity-40`}>{busy ? 'Saving…' : 'Save'}</button>
         {note && <p className="text-sm text-green-700 mt-2">{note}</p>}

@@ -29,26 +29,28 @@ const AdminIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w
 const ToolboxIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>;
 
 const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose, onNavigate, currentUser, isSuperAdmin, onLogout }) => {
-  // The Skill ID photo is the picture people see for you, so the menu shows it when there is one.
+  // The photo people see for you. It is fetched as soon as you are signed in (not when the menu opens) and again whenever the menu
+  // opens, and the last one stays on screen meanwhile, so there is no stock picture and no flash.
   const [skillPhoto, setSkillPhoto] = useState<string | null>(null);
   const signedIn = !!currentUser;
   useEffect(() => {
-    if (!isOpen || !signedIn) return;
+    if (!signedIn) {
+      setSkillPhoto(null);
+      return;
+    }
     let live = true;
-    let url: string | null = null;
     api
       .getSkillIdState()
-      .then((state) => (state.me.has_photo ? api.fetchSkillIdPhotoUrl() : null))
+      .then((state) => (state.me.has_photo ? api.fetchProfilePictureUrl('photo') : null))
       .then((u) => {
-        url = u;
         if (live) setSkillPhoto(u);
       })
       .catch(() => undefined);
     return () => {
       live = false;
-      if (url) URL.revokeObjectURL(url);
     };
   }, [isOpen, signedIn]);
+  const initials = (currentUser?.name ?? '').split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]!.toUpperCase()).join('') || '?';
 
   const menuItems: { label: string; page: CurrentPage | 'profile'; icon: React.ReactNode }[] = [
     { label: 'Assets', page: 'assetRegistry', icon: <AssetsIcon /> },
@@ -90,7 +92,11 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose, onNavigate, curren
             <button onClick={() => handleNavigate('identity')} className="w-full text-left">
               <header className="p-6 border-b border-white/10 hover:bg-white/5 transition-colors">
                   <div className="flex items-center gap-4">
-                      <img src={skillPhoto || currentUser.avatarUrl || 'https://i.pravatar.cc/150?img=5'} alt="User Avatar" className="w-14 h-14 rounded-full border-2 border-white/30" />
+                      {skillPhoto ? (
+                        <img src={skillPhoto} alt="Your photo" className="w-14 h-14 rounded-full border-2 border-white/30 object-cover" />
+                      ) : (
+                        <span className="w-14 h-14 rounded-full border-2 border-white/30 bg-white/10 flex items-center justify-center text-lg font-bold">{initials}</span>
+                      )}
                       <div>
                           <p className="font-semibold text-lg">{currentUser.name}</p>
                           <p className="text-xs text-gray-400">{currentUser.service}</p>
