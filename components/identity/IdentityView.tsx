@@ -3,6 +3,7 @@ import * as api from '../../services/api';
 import { primaryButton } from '../visitors/shared';
 import KycCapture from './KycCapture';
 import KycReview from './KycReview';
+import ProfileCard from './ProfileCard';
 import SkillIdEditor from './SkillIdEditor';
 
 interface IdentityViewProps {
@@ -10,6 +11,8 @@ interface IdentityViewProps {
   userName: string;
   onSignIn: () => void;
   onBack: () => void;
+  // 'skills' is the Skills page: only the skill list of the Skill ID.
+  section?: 'skills';
 }
 
 const LEVEL_TEXT: Record<api.IdentityLevel, { title: string; body: string }> = {
@@ -20,7 +23,7 @@ const LEVEL_TEXT: Record<api.IdentityLevel, { title: string; body: string }> = {
 
 // "My ID": where you are (nickname, Skill ID, verified), the next step, and, for a reviewer, the queue. The server decides
 // what each level may do; this page only shows the way.
-const IdentityView: React.FC<IdentityViewProps> = ({ isAuthenticated, userName, onSignIn, onBack }) => {
+const IdentityView: React.FC<IdentityViewProps> = ({ isAuthenticated, userName, onSignIn, onBack, section }) => {
   const [identity, setIdentity] = useState<api.SkillIdState | null>(null);
   const [mode, setMode] = useState<'home' | 'kyc' | 'review'>('home');
   const [reviewer, setReviewer] = useState(false);
@@ -63,7 +66,7 @@ const IdentityView: React.FC<IdentityViewProps> = ({ isAuthenticated, userName, 
   const header = (
     <div className="bg-brand-navy text-white px-4 py-4 flex items-center">
       <button onClick={onBack} className="mr-3 text-xl" aria-label="Back">&larr;</button>
-      <h1 className="text-xl font-bold">My Skill ID</h1>
+      <h1 className="text-xl font-bold">{section === 'skills' ? 'Skills' : 'My Skill ID'}</h1>
     </div>
   );
 
@@ -99,31 +102,37 @@ const IdentityView: React.FC<IdentityViewProps> = ({ isAuthenticated, userName, 
 
         {mode === 'home' && identity && (
           <>
-            <div data-testid="identity-level" className="bg-white rounded-xl shadow p-5 space-y-2">
+            {identity.level === 'nickname' && section !== 'skills' && <ProfileCard state={identity} onChange={setIdentity} />}
+
+            {section === 'skills' && !identity.skill_id && (
+              <p className="text-sm text-gray-600 bg-white rounded-lg shadow-sm p-5">Skills belong to a Skill ID. Make your Skill ID first, then add what you can do.</p>
+            )}
+
+            {section !== 'skills' && <div data-testid="identity-level" className="bg-white rounded-xl shadow p-5 space-y-2">
               <p className="text-xs uppercase tracking-wide text-gray-500">You are</p>
               <h2 className="text-lg font-bold text-brand-navy">{identity.level === 'verified' ? '✓ ' : ''}{LEVEL_TEXT[identity.level].title}</h2>
               <p className="text-sm text-gray-600">{LEVEL_TEXT[identity.level].body}</p>
-            </div>
+            </div>}
 
             {identity.level === 'nickname' && (
               <button onClick={makeSkillId} disabled={busy} data-testid="make-skill-id" className={primaryButton}>{busy ? 'Making…' : 'Make my Skill ID'}</button>
             )}
 
-            {identity.skill_id && <SkillIdEditor state={identity} onChange={setIdentity} />}
+            {identity.skill_id && <SkillIdEditor state={identity} onChange={setIdentity} only={section} />}
 
-            {identity.level === 'skill_id' && identity.kyc.status === 'pending' && (
+            {section !== 'skills' && identity.level === 'skill_id' && identity.kyc.status === 'pending' && (
               <p data-testid="kyc-pending" className="bg-yellow-50 border border-yellow-200 text-yellow-800 text-sm rounded-lg p-3">Your ID and selfie are with a reviewer. You will see the result here.</p>
             )}
 
-            {identity.level === 'skill_id' && identity.kyc.status === 'rejected' && (
+            {section !== 'skills' && identity.level === 'skill_id' && identity.kyc.status === 'rejected' && (
               <p data-testid="kyc-rejected" className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg p-3">Not verified. {identity.kyc.reason} You can try again.</p>
             )}
 
-            {identity.level === 'skill_id' && identity.kyc.status !== 'pending' && (
+            {section !== 'skills' && identity.level === 'skill_id' && identity.kyc.status !== 'pending' && (
               <button onClick={() => setMode('kyc')} data-testid="start-kyc" className={primaryButton}>Verify with my ID</button>
             )}
 
-            {reviewer && (
+            {section !== 'skills' && reviewer && (
               <button onClick={() => setMode('review')} data-testid="open-review" className="w-full border border-brand-navy text-brand-navy font-semibold py-3 rounded-lg">
                 Review KYC{waiting > 0 ? ` (${waiting} waiting)` : ''}
               </button>

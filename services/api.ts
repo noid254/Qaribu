@@ -1136,15 +1136,20 @@ export interface SkillIdProfile {
     county: string;
     listed: boolean;
     has_photo: boolean;
+    buttons: string[];
     skills: SkillItem[];
     checklist: { key: string; label: string; done: boolean }[];
     complete: boolean;
 }
 // Where the person stands (nickname, Skill ID, verified) and, once they have made a Skill ID, the profile itself.
-export interface SkillIdState extends Identity { skill_id: SkillIdProfile | null }
+export interface SkillIdState extends Identity {
+    // The name and photo anyone has, with or without a Skill ID.
+    me: { name: string; has_photo: boolean };
+    skill_id: SkillIdProfile | null;
+}
 
 export const getSkillIdState = (): Promise<SkillIdState> => call('/me/skill-id');
-export const saveSkillId = (input: { tagline?: string; about?: string; area?: string; county?: string; listed?: boolean }): Promise<SkillIdState> =>
+export const saveSkillId = (input: { tagline?: string; about?: string; area?: string; county?: string; listed?: boolean; buttons?: string[] }): Promise<SkillIdState> =>
     call('/me/skill-id', { method: 'PUT', body: JSON.stringify(input) });
 export const addMySkill = (title: string, category?: string): Promise<SkillIdState> =>
     call('/me/skills', { method: 'POST', body: JSON.stringify({ title, category }) });

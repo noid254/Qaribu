@@ -8,6 +8,7 @@ import {
 
 import AuthModal from './components/AuthModal';
 import SideMenu from './components/SideMenu';
+import BookingsView from './components/BookingsView';
 import NikoSoko from './components/NikoSoko';
 import ServiceMarketplace from './components/ServiceMarketplace';
 import MyPlaces from './components/MyPlaces';
@@ -564,6 +565,18 @@ function App() {
             onBack={() => setCurrentPage('home')}
           />
         );
+      case 'skills':
+        return (
+          <IdentityView
+            section="skills"
+            isAuthenticated={isAuthenticated}
+            userName={currentUser?.name ?? ''}
+            onSignIn={() => setIsAuthModalOpen(true)}
+            onBack={() => setCurrentPage('home')}
+          />
+        );
+      case 'bookings':
+        return <BookingsView onBack={() => setCurrentPage('home')} />;
       case 'admin':
         return (
           <SuperAdminDashboard
