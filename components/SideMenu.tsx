@@ -26,7 +26,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose, onNavigate, curren
     { label: 'My Wallet', page: 'qaribu', icon: <WalletIcon /> },
     { label: 'My Catalogue', page: 'mycatalogue', icon: <CatalogueIcon /> },
     { label: 'My Toolkit', page: 'mytoolkit', icon: <ToolboxIcon /> },
-    { label: 'My ID', page: 'identity', icon: <IdIcon /> },
+    { label: 'My Skill ID', page: 'identity', icon: <IdIcon /> },
     { label: 'Settings', page: 'settings', icon: <SettingsIcon /> },
   ];
 
@@ -56,7 +56,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose, onNavigate, curren
         
         {/* User Profile Section */}
         {currentUser ? (
-            <button onClick={() => handleNavigate('profile')} className="w-full text-left">
+            <button onClick={() => handleNavigate('identity')} className="w-full text-left">
               <header className="p-6 border-b border-white/10 hover:bg-white/5 transition-colors">
                   <div className="flex items-center gap-4">
                       <img src={currentUser.avatarUrl || 'https://i.pravatar.cc/150?img=5'} alt="User Avatar" className="w-14 h-14 rounded-full border-2 border-white/30" />
