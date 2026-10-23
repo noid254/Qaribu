@@ -3,6 +3,7 @@ import * as api from '../../services/api';
 import { primaryButton } from '../visitors/shared';
 import KycCapture from './KycCapture';
 import KycReview from './KycReview';
+import SkillIdEditor from './SkillIdEditor';
 
 interface IdentityViewProps {
   isAuthenticated: boolean;
@@ -20,7 +21,7 @@ const LEVEL_TEXT: Record<api.IdentityLevel, { title: string; body: string }> = {
 // "My ID": where you are (nickname, Skill ID, verified), the next step, and, for a reviewer, the queue. The server decides
 // what each level may do; this page only shows the way.
 const IdentityView: React.FC<IdentityViewProps> = ({ isAuthenticated, userName, onSignIn, onBack }) => {
-  const [identity, setIdentity] = useState<api.Identity | null>(null);
+  const [identity, setIdentity] = useState<api.SkillIdState | null>(null);
   const [mode, setMode] = useState<'home' | 'kyc' | 'review'>('home');
   const [reviewer, setReviewer] = useState(false);
   const [waiting, setWaiting] = useState(0);
@@ -29,7 +30,7 @@ const IdentityView: React.FC<IdentityViewProps> = ({ isAuthenticated, userName, 
 
   const load = () =>
     api
-      .getIdentity()
+      .getSkillIdState()
       .then(setIdentity)
       .catch((err) => setError(err.message || 'Could not load your ID.'));
 
@@ -50,7 +51,8 @@ const IdentityView: React.FC<IdentityViewProps> = ({ isAuthenticated, userName, 
     setBusy(true);
     setError('');
     try {
-      setIdentity(await api.createSkillId());
+      await api.createSkillId();
+      await load();
     } catch (err: any) {
       setError(err.message || 'Could not make your Skill ID.');
     } finally {
@@ -61,7 +63,7 @@ const IdentityView: React.FC<IdentityViewProps> = ({ isAuthenticated, userName, 
   const header = (
     <div className="bg-brand-navy text-white px-4 py-4 flex items-center">
       <button onClick={onBack} className="mr-3 text-xl" aria-label="Back">&larr;</button>
-      <h1 className="text-xl font-bold">My ID</h1>
+      <h1 className="text-xl font-bold">My Skill ID</h1>
     </div>
   );
 
@@ -106,6 +108,8 @@ const IdentityView: React.FC<IdentityViewProps> = ({ isAuthenticated, userName, 
             {identity.level === 'nickname' && (
               <button onClick={makeSkillId} disabled={busy} data-testid="make-skill-id" className={primaryButton}>{busy ? 'Making…' : 'Make my Skill ID'}</button>
             )}
+
+            {identity.skill_id && <SkillIdEditor state={identity} onChange={setIdentity} />}
 
             {identity.level === 'skill_id' && identity.kyc.status === 'pending' && (
               <p data-testid="kyc-pending" className="bg-yellow-50 border border-yellow-200 text-yellow-800 text-sm rounded-lg p-3">Your ID and selfie are with a reviewer. You will see the result here.</p>
