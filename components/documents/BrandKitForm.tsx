@@ -33,6 +33,9 @@ const BrandKitForm: React.FC<BrandKitFormProps> = ({ initial, onSaved, onCancel 
   const [hasLogo, setHasLogo] = useState(initial?.has_logo ?? false);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [logoBusy, setLogoBusy] = useState(false);
+  const [hasLetterhead, setHasLetterhead] = useState(initial?.has_letterhead ?? false);
+  const [letterheadUrl, setLetterheadUrl] = useState<string | null>(null);
+  const [letterheadBusy, setLetterheadBusy] = useState(false);
   const fonts = initial?.fonts ?? [];
   const designs = initial?.designs ?? [];
   const [agreed, setAgreed] = useState(false);
@@ -56,6 +59,62 @@ const BrandKitForm: React.FC<BrandKitFormProps> = ({ initial, onSaved, onCancel 
       if (url) URL.revokeObjectURL(url);
     };
   }, [hasLogo]);
+
+  useEffect(() => {
+    let url: string | null = null;
+    let live = true;
+    if (hasLetterhead) {
+      api.fetchLetterheadUrl().then((u) => {
+        url = u;
+        if (live) setLetterheadUrl(u);
+      });
+    } else {
+      setLetterheadUrl(null);
+    }
+    return () => {
+      live = false;
+      if (url) URL.revokeObjectURL(url);
+    };
+  }, [hasLetterhead]);
+
+  const pickLetterhead = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    setError('');
+    if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
+      setError('Use a PNG or JPEG picture.');
+      return;
+    }
+    if (file.size > 250 * 1024) {
+      setError('That picture is too large. Use one under 250 KB.');
+      return;
+    }
+    setLetterheadBusy(true);
+    try {
+      const kit = await api.uploadLetterhead(file);
+      setHasLetterhead(kit.has_letterhead);
+      setDesign('letterhead'); // they uploaded it to use it
+    } catch (err: any) {
+      setError(err.message || 'Could not save the letterhead.');
+    } finally {
+      setLetterheadBusy(false);
+    }
+  };
+
+  const dropLetterhead = async () => {
+    setLetterheadBusy(true);
+    setError('');
+    try {
+      await api.removeLetterhead();
+      setHasLetterhead(false);
+      if (design === 'letterhead') setDesign('');
+    } catch (err: any) {
+      setError(err.message || 'Could not remove the letterhead.');
+    } finally {
+      setLetterheadBusy(false);
+    }
+  };
 
   const pickLogo = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -279,15 +338,28 @@ const BrandKitForm: React.FC<BrandKitFormProps> = ({ initial, onSaved, onCancel 
           {designs.length > 0 && (
             <div>
               <p className="block text-sm font-medium text-gray-700">Design</p>
-              <div className="grid grid-cols-3 gap-2 mt-1">
+              <div className="grid grid-cols-2 gap-2 mt-1">
                 {designs.map((d) => (
-                  <button key={d.key} type="button" onClick={() => setDesign(d.key === 'band' ? '' : d.key)} className={`py-2 rounded-lg border text-sm ${(design || 'band') === d.key ? 'border-brand-gold bg-yellow-50 font-bold' : 'border-gray-300'}`} data-testid={`brand-kit-design-${d.key}`}>{d.label}</button>
+                  <button key={d.key} type="button" onClick={() => setDesign(d.key === 'band' ? '' : d.key)} disabled={d.key === 'letterhead' && !hasLetterhead} className={`py-2 rounded-lg border text-sm disabled:opacity-40 ${(design || 'band') === d.key ? 'border-brand-gold bg-yellow-50 font-bold' : 'border-gray-300'}`} data-testid={`brand-kit-design-${d.key}`}>{d.label}</button>
                 ))}
               </div>
             </div>
           )}
+          <div>
+            <p className="block text-sm font-medium text-gray-700">Your own letterhead <span className="text-gray-400">(PNG or JPEG, under 250 KB)</span></p>
+            <p className="text-xs text-gray-500">A wide, short picture of your letterhead. It goes across the top of your documents, with your details and the items below it.</p>
+            <div className="flex items-center gap-3 mt-1">
+              {letterheadUrl && <img src={letterheadUrl} alt="Your letterhead" className="h-12 max-w-[10rem] object-contain bg-gray-50 rounded border" />}
+              <label className={`text-sm font-semibold border border-gray-300 rounded-lg px-3 py-2 cursor-pointer ${letterheadBusy ? 'opacity-50' : ''}`}>
+                {hasLetterhead ? 'Change' : 'Choose picture'}
+                <input type="file" accept="image/png,image/jpeg" onChange={pickLetterhead} disabled={letterheadBusy} className="hidden" data-testid="brand-kit-letterhead" />
+              </label>
+              {hasLetterhead && <button type="button" onClick={dropLetterhead} disabled={letterheadBusy} className="text-sm text-red-600 font-semibold">Remove</button>}
+            </div>
+          </div>
           <div className="rounded-lg overflow-hidden border" aria-label="Preview">
-            <div style={{ background: design === 'plain' ? '#fff' : color ? `linear-gradient(135deg,${color},${color2 || color})` : 'linear-gradient(135deg,#0f766e,#0b4f3a)', color: design === 'plain' ? '#111827' : '#fff', borderBottom: design === 'plain' ? `4px solid ${color || '#0f766e'}` : undefined, fontFamily: fonts.find((f) => f.key === font)?.stack, padding: '14px' }} className={`flex items-center gap-3 ${design === 'centred' ? 'flex-col text-center' : ''}`}>
+            {design === 'letterhead' && letterheadUrl && <img src={letterheadUrl} alt="" className="block w-full h-auto" />}
+            <div style={{ background: design === 'plain' ? '#fff' : color ? `linear-gradient(135deg,${color},${color2 || color})` : 'linear-gradient(135deg,#0f766e,#0b4f3a)', color: design === 'plain' ? '#111827' : '#fff', borderBottom: design === 'plain' ? `4px solid ${color || '#0f766e'}` : undefined, fontFamily: fonts.find((f) => f.key === font)?.stack, padding: '14px' }} className={`flex items-center gap-3 ${design === 'centred' ? 'flex-col text-center' : ''} ${design === 'letterhead' && letterheadUrl ? 'hidden' : ''}`}>
               {logoUrl && <img src={logoUrl} alt="" className="h-10 w-10 object-contain bg-white/90 rounded" />}
               <div>
                 <p className="font-bold text-lg leading-tight">{businessName || 'Your business'}</p>
