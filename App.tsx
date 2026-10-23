@@ -20,6 +20,7 @@ import Tukosoko from './components/Tukosoko';
 import MyContactsView from './components/MyContactsView';
 import CatalogueView from './components/CatalogueView';
 import SettingsView from './components/SettingsView';
+import IdentityView from './components/identity/IdentityView';
 import SuperAdminDashboard from './components/SuperAdminDashboard';
 import GigsPage from './components/GigsPage';
 import CreatePostView from './components/CreatePostView';
@@ -553,6 +554,16 @@ function App() {
         );
       case 'settings':
         return <SettingsView onBack={() => setCurrentPage('home')} />;
+      case 'identity':
+        // "My ID": nickname, Skill ID, and verifying with an ID and a selfie (architecture section 28).
+        return (
+          <IdentityView
+            isAuthenticated={isAuthenticated}
+            userName={currentUser?.name ?? ''}
+            onSignIn={() => setIsAuthModalOpen(true)}
+            onBack={() => setCurrentPage('home')}
+          />
+        );
       case 'admin':
         return (
           <SuperAdminDashboard
