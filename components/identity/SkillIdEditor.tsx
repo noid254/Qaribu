@@ -47,6 +47,8 @@ const SkillIdEditor: React.FC<SkillIdEditorProps> = ({ state, onChange }) => {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [note, setNote] = useState('');
+  // A new photo keeps has_photo true, so the picture is fetched again whenever this counter moves.
+  const [photoVersion, setPhotoVersion] = useState(0);
 
   useEffect(() => {
     let live = true;
@@ -63,7 +65,7 @@ const SkillIdEditor: React.FC<SkillIdEditorProps> = ({ state, onChange }) => {
       live = false;
       if (url) URL.revokeObjectURL(url);
     };
-  }, [profile.has_photo]);
+  }, [profile.has_photo, photoVersion]);
 
   const run = async (job: () => Promise<api.SkillIdState>, saved = '') => {
     setBusy(true);
@@ -90,6 +92,7 @@ const SkillIdEditor: React.FC<SkillIdEditorProps> = ({ state, onChange }) => {
     e.target.value = '';
     if (!file) return;
     await run(async () => api.uploadSkillIdPhoto(await shrink(file)));
+    setPhotoVersion((v) => v + 1);
   };
 
   const addSkill = (e: React.FormEvent) => {
