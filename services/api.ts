@@ -678,6 +678,12 @@ export interface BrandKit {
     receipt_note: string; // printed at the foot of every receipt
     terms_accepted_at: string; // empty until the terms are accepted
     complete: boolean;
+    // How its documents look: two colours (#rrggbb, empty for Qaribu's own), a font key, and whether a logo is saved.
+    color: string;
+    color2: string;
+    font: string;
+    has_logo: boolean;
+    fonts: { key: string; label: string; stack: string }[];
 }
 
 export const getBrandKit = (): Promise<BrandKit> => call('/me/brand-kit');
@@ -692,7 +698,34 @@ export const saveBrandKit = (input: {
     payment_details?: string;
     receipt_note?: string;
     accept_terms?: boolean;
+    color?: string;
+    color2?: string;
+    font?: string;
 }): Promise<BrandKit> => call('/me/brand-kit', { method: 'PUT', body: JSON.stringify(input) });
+
+// The logo: a PNG or JPEG up to 100 KB, sent as the raw bytes.
+export const uploadLogo = async (file: Blob): Promise<BrandKit> => {
+    const token = getToken();
+    const response = await fetch(`${API_BASE_URL}/me/brand-kit/logo`, {
+        method: 'PUT',
+        headers: { 'Content-Type': file.type, ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        body: file,
+        cache: 'no-store',
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new ApiError(response.status, data.message || (response.status === 413 ? 'That picture is too large. Use one under 100 KB.' : `Something went wrong (${response.status}).`));
+    return data;
+};
+
+export const removeLogo = (): Promise<BrandKit> => call('/me/brand-kit/logo', { method: 'DELETE' });
+
+// The saved logo as a picture the page can show (the server needs the sign-in to give it), or null if there is none.
+export const fetchLogoUrl = async (): Promise<string | null> => {
+    const token = getToken();
+    const response = await fetch(`${API_BASE_URL}/me/brand-kit/logo`, { headers: token ? { Authorization: `Bearer ${token}` } : {}, cache: 'no-store' });
+    if (!response.ok) return null;
+    return URL.createObjectURL(await response.blob());
+};
 
 // One line of a receipt, as the shop types it (strings, as typed) and as the server returns it.
 export interface ReceiptLineInput {
