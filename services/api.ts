@@ -1071,3 +1071,55 @@ export const confirmTransfer = (id: string, code: string): Promise<SentTransfer>
     call(`/transfers/${encodeURIComponent(id)}/confirm`, { method: 'POST', body: JSON.stringify({ code }) });
 
 export const cancelTransfer = (id: string): Promise<{ status: 'cancelled' }> => call(`/transfers/${encodeURIComponent(id)}/cancel`, { method: 'POST', body: '{}' });
+
+// --- Skill ID and KYC (architecture section 28) ---
+
+export type IdentityLevel = 'nickname' | 'skill_id' | 'verified';
+
+export interface Identity {
+    level: IdentityLevel;
+    skill_id_at: string | null;
+    // status is unverified, pending, verified or rejected; reason says why, after a rejection.
+    kyc: { status: 'unverified' | 'pending' | 'verified' | 'rejected'; reason: string; submitted_at: string | null };
+    reject_reasons: Record<string, string>;
+}
+
+export const getIdentity = (): Promise<Identity> => call('/me/identity');
+export const createSkillId = (): Promise<Identity> => call('/me/skill-id', { method: 'POST', body: '{}' });
+
+export type KycIdType = 'national_id' | 'passport' | 'alien_id';
+export type KycPart = 'front' | 'back' | 'selfie';
+
+// One picture from the camera. The answer is the name to give back when the details are sent.
+export const uploadKycPicture = async (file: Blob): Promise<string> => {
+    const token = getToken();
+    const response = await fetch(`${API_BASE_URL}/me/kyc/pictures`, {
+        method: 'PUT',
+        headers: { 'Content-Type': file.type, ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        body: file,
+        cache: 'no-store',
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new ApiError(response.status, data.message || (response.status === 429 ? 'Too many pictures. Try again later.' : `Something went wrong (${response.status}).`));
+    return data.ref;
+};
+
+export const submitKyc = (input: { name: string; id_type: KycIdType; id_number: string; consent: boolean; files: Partial<Record<KycPart, string>> }): Promise<{ submission: { id: string; status: 'pending' } }> =>
+    call('/me/kyc', { method: 'POST', body: JSON.stringify(input) });
+
+// The reviewer's side. The server refuses anyone who is not a reviewer (403).
+export interface KycPending { id: string; name: string; id_type: string; submitted_at: string }
+export interface KycDetail { id: string; name: string; id_type: string; id_number: string; phone: string; parts: KycPart[]; submitted_at: string; decision: string | null }
+
+export const kycPending = (): Promise<{ items: KycPending[] }> => call('/kyc/pending');
+export const kycDetail = (id: string): Promise<KycDetail> => call(`/kyc/${encodeURIComponent(id)}`);
+export const kycDecide = (id: string, decision: 'approve' | 'reject', reason?: string): Promise<Identity> =>
+    call(`/kyc/${encodeURIComponent(id)}/decision`, { method: 'POST', body: JSON.stringify({ decision, reason }) });
+
+// A picture to look at, as an address the page can show (the server needs the reviewer's sign-in to give it).
+export const kycPictureUrl = async (id: string, part: KycPart): Promise<string | null> => {
+    const token = getToken();
+    const response = await fetch(`${API_BASE_URL}/kyc/${encodeURIComponent(id)}/pictures/${part}`, { headers: token ? { Authorization: `Bearer ${token}` } : {}, cache: 'no-store' });
+    if (!response.ok) return null;
+    return URL.createObjectURL(await response.blob());
+};
